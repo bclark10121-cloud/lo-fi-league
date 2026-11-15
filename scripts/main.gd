@@ -7,8 +7,10 @@ extends Node3D
 const PlayerModel := preload("res://scripts/player.gd")
 const HudScript := preload("res://scripts/hud.gd")
 const League := preload("res://scripts/league.gd")
+const SaveStore := preload("res://addons/bc_common/save_store.gd")
+const TestBridge := preload("res://addons/bc_common/test_bridge.gd")
 
-const VERSION := "0.2.0"
+const VERSION := "0.2.1"
 const HL := 30.0
 const HW := 20.0
 const GOAL_HW := 3.0
@@ -84,7 +86,8 @@ var bot_games := 6
 var bot_done := 0
 var verbose := false
 var test_hook := false
-var test_t := 0.0
+var store: SaveStore
+var bridge: TestBridge
 
 var pl: Array = [[], []]
 var all: Array = []
@@ -149,8 +152,8 @@ func _ready() -> void:
 		elif a == "--verbose": verbose = true
 		elif a.begins_with("--games="): bot_games = int(a.substr(8))
 		elif a == "--season": bot_season = true
-	if OS.has_feature("web"):
-		test_hook = str(JavaScriptBridge.eval("window.location.search")).contains("test")
+	store = SaveStore.new(SAVE_PATH); store.disabled = bot
+	bridge = TestBridge.new("lofi"); test_hook = bridge.enabled
 	teams = _load_json("res://data/teams.json")
 	for t in teams: by_id[t.id] = t
 	league_cfg = _load_json("res://data/league.json")
@@ -179,17 +182,13 @@ func _load_json(path: String):
 	return d
 
 func _load_save() -> void:
-	if not FileAccess.file_exists(SAVE_PATH): return
-	var d = JSON.parse_string(FileAccess.get_file_as_string(SAVE_PATH))
-	if d is Dictionary:
-		for k in save:
-			if d.has(k) and typeof(d[k]) == typeof(save[k]): save[k] = d[k]
-		if not save.league.is_empty() and int(save.league.get("v", 0)) != 1: save.league = {}
+	# shared save (G10): fills only known fields, keeps number fields as numbers across a reload
+	if store.load_into(save) and not save.league.is_empty() and int(save.league.get("v", 0)) != 1: save.league = {}
 
 func _write_save() -> void:
+	# shared save (G10, E6.4): browser syncs to IndexedDB at once, Android writes a temp file and renames it
 	if bot: return
-	var f := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
-	if f: f.store_string(JSON.stringify(save))
+	store.write(save)
 
 func dirx(side: int) -> float:
 	return 1.0 if side == 0 else -1.0
@@ -561,6 +560,8 @@ func _input(e: InputEvent) -> void:
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_GO_BACK_REQUEST and hud != null:
 		_set_menu(not hud.menu_open)
+	# E6.5: save at once when the app is paused, loses focus or closes
+	if SaveStore.is_save_moment(what) and store != null and teams.size() > 0: _write_save()   # E6.5
 
 # ---------- match setup ----------
 
@@ -661,10 +662,8 @@ func _process(dt: float) -> void:
 	hud.clear_just()
 	_sync_view(dt)
 	_hud_update()
-	if test_hook:
-		test_t -= dt
-		if test_t <= 0.0:
-			test_t = 0.12; _test_report()
+	var cmd := bridge.tick(dt, _test_state)   # shared test bridge (G10): window.lofi and window.lofi_cmd in ?test only
+	if cmd != "": _on_menu(cmd)
 
 func _key(k: int) -> bool:
 	return Input.is_physical_key_pressed(k)
@@ -1299,20 +1298,18 @@ func _hud_update() -> void:
 	hud.pad.labels["A"] = "Pass" if mine else "Switch"
 	hud.pad.labels["B"] = "Shoot" if mine else "Tackle"
 
-func _test_report() -> void:
+func _test_state() -> Dictionary:
 	var phase := 0
 	if screen == S_TEAMS: phase = 1
 	elif screen == S_PLAY: phase = 2 + state
 	elif screen == S_MODES: phase = 20
 	elif screen == S_LEAGUE: phase = 21
-	var cmd := str(JavaScriptBridge.eval("window.lofi_cmd || ''"))
-	if cmd != "":
-		JavaScriptBridge.eval("window.lofi_cmd = '';"); _on_menu(cmd)
 	var d := {"phase": phase, "half": half, "clock": snappedf(clock, 0.1), "score": score, "ball": [snappedf(bpos.x, 0.1), snappedf(bpos.y, 0.1), snappedf(bpos.z, 0.1)],
 		"carrier": carrier.side if carrier != null else -1, "mine": carrier != null and carrier == ctrl, "practice": practice, "menu": hud.menu_open, "touch": hud.touch_seen,
 		"ctrl": [snappedf(ctrl.pos.x, 0.1), snappedf(ctrl.pos.y, 0.1)] if ctrl != null else [], "shots": shots, "counts": counts, "paused": paused, "mode": mode,
-		"league_md": int(save.league.get("md", -1)), "league_results": (save.league.get("results", []) as Array).size(), "league_club": str(save.league.get("club", ""))}
-	JavaScriptBridge.eval("window.lofi=" + JSON.stringify(d) + ";")
+		"league_md": int(save.league.get("md", -1)), "league_results": (save.league.get("results", []) as Array).size(), "league_club": str(save.league.get("club", "")),
+		"seasons": int(save.seasons), "best_finish": int(save.best_finish), "wins": int(save.wins), "draws": int(save.draws), "losses": int(save.losses)}
+	return d
 
 # ---------- test bot ----------
 
@@ -1431,6 +1428,14 @@ func _rules_league() -> int:
 		if old.has(k) and typeof(old[k]) == typeof(save[k]): save[k] = old[k]
 	fails += _check(save.league.is_empty() and save.sound == false and int(save.wins) == 2 and save.has("best_finish"), "old save file loads with the new fields at their defaults")
 	save = keep
+	var st := SaveStore.new("user://rules_check_save.json")
+	var src := {"v": 1, "wins": 3, "seasons": 2, "best_finish": 4, "sound": false, "team": "rainy", "league": {"md": 5, "club": "rainy"}}
+	var wrote := st.write(src)
+	var dst := {"v": 1, "wins": 0, "seasons": 0, "best_finish": 0, "sound": true, "team": "", "league": {}, "new_field": 7}
+	var loaded := st.load_into(dst)
+	fails += _check(wrote and loaded and typeof(dst.wins) == TYPE_INT and dst.wins == 3 and dst.seasons == 2 and dst.best_finish == 4 and dst.sound == false and dst.team == "rainy" and int(dst.league.md) == 5 and dst.new_field == 7,
+		"save file round trip on disk keeps numbers as numbers and new fields at their defaults (%s)" % [dst])
+	DirAccess.remove_absolute(ProjectSettings.globalize_path("user://rules_check_save.json"))
 	return fails
 
 func _bot_season_start() -> void:

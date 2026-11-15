@@ -19,7 +19,7 @@ Changes: re-encoded to Ogg Vorbis at a lower bit rate.
 
 ## Made for this game
 
-- Whistle, crowd, cheer, kick and click sounds: made by `tools/make_sfx.py`.
+- Whistle, crowd, cheer, kick and click sounds: made by `tools/common/make_sfx.py` (shared kit).
 - Player models, pitch, stadium, skyline and icon: made in code.
 
 ## Tools

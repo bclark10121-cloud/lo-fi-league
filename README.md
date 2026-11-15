@@ -6,12 +6,13 @@ Game page (play in the browser or download the Android APK): https://bclark10121
 
 ## Status
 
-v0.2.0: League mode with a 7 matchday season and a table, exhibition matches against the computer, eight fictional clubs, four formations, throw-ins, corners, goal kicks and a Practice mode.
+v0.2.1: League mode with a 7 matchday season and a table, exhibition matches against the computer, eight fictional clubs, four formations, throw-ins, corners, goal kicks and a Practice mode.
 
 ## Standards
 
-- `handoff/GAME_STANDARDS.md`: the shared game standards (rule ids start with G). Never edit it for this game.
-- `STANDARDS_OVERRIDES.md`: where this game does something else, open items, rules met and rules not in use.
+- The standards live in the private repo `bclark10121-cloud/game-standards` (one source). This repo holds no copies.
+- `STANDARDS_OVERRIDES.md`: where this game does something else, open items, rules met, rules not in use and the standards version it was checked against.
+- `common.lock`: the version of the shared kit pulled into `addons/bc_common/`, `tools/common/` and `tests/common/`. Never edit those files here.
 - `CLAUDE.md`: this game's pillars and rules.
 
 ## Layout
@@ -22,10 +23,12 @@ v0.2.0: League mode with a 7 matchday season and a table, exhibition matches aga
 - `scripts/league.gd`: the league schedule, table and simulated matches.
 - `scripts/hud.gd`: scoreboard, Menu button, shot meter, mode and club screens, league table, panels and touch controls.
 - `data/teams.json`, `data/formations.json`, `data/league.json`: clubs, formations and the league. New content needs no code.
-- `audio/`: lo-fi music and a tackle sound from Patch.gg (see `CREDITS.md`) and stadium sounds made by `tools/make_sfx.py`.
+- `audio/`: lo-fi music and a tackle sound from Patch.gg (see `CREDITS.md`) and stadium sounds made by `tools/common/make_sfx.py`.
+- `addons/bc_common/`, `tools/common/`, `tests/common/`: the shared kit from `game-standards` (save store, test bridge, signing, handoff zip, Patch.gg fetcher, sound maker, browser test helpers).
 - `tests/web_test.py`: browser check with screenshots.
+- `tests/e2e_test.py`: end-to-end check of the game page and two league seasons.
 - `docs/`: the GitHub Pages site. Game page at the root, the game in `docs/play/`, APKs in `docs/downloads/`.
-- `BACKLOG.md`: the backlog. `PLAN.md`: the first plan. `handoff/`: the shared standards.
+- `BACKLOG.md`: the backlog. `PLAN.md`: the first plan.
 
 ## Build and test
 
@@ -35,4 +38,6 @@ v0.2.0: League mode with a 7 matchday season and a table, exhibition matches aga
     godot --headless --path . -- --bot --season               # plays a full league season, must print: SEASON done
     godot --headless --path . --export-release Web
     python3 tests/web_test.py <web folder> <shots folder>     # must print: errors []
-    godot --headless --path . --export-release Android
+    bash tools/common/sync_common.sh --check .                # must print: COMMON check ok
+    GODOT=godot bash tools/common/sign_android.sh ../LoFiLeague-v<version>.apk   # needs ../game-signing
+    python3 tests/e2e_test.py <game page url> <shots folder>  # must print: errors []

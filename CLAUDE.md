@@ -1,9 +1,12 @@
 # Lo-Fi League: project rules
 
 Lo-Fi League is Brian Clark's laid-back 7 a side soccer game. Godot 4.6, Android and browser. This repo is public.
-Read `handoff/GAME_STANDARDS.md` first (rule ids start with G). Engineering rules go in `handoff/ENGINEERING_STANDARDS.md` (rule ids start with E) once Brian sends it.
-Overrides and open items for this game live in `STANDARDS_OVERRIDES.md`. Order of authority: Brian in the chat, then `STANDARDS_OVERRIDES.md`, then the standards files.
-Never edit a standards file for this game. Propose the change to Brian.
+## Standards (G0.10, G10)
+
+- Read `GAME_STANDARDS.md` (rule ids start with G) and `ENGINEERING_STANDARDS.md` (rule ids start with E) first. Both live only in the private repo `bclark10121-cloud/game-standards`. Clone it to `../game-standards`, outside this repo. This repo holds no copies.
+- Overrides, open items and the standards version this game was checked against live in `STANDARDS_OVERRIDES.md`. Order of authority: Brian in the chat, then `STANDARDS_OVERRIDES.md`, then the standards.
+- The shared kit is pulled into `addons/bc_common/`, `tools/common/` and `tests/common/` with `bash ../game-standards/common/sync_common.sh ../game-standards .`. `common.lock` names the version. Never edit those files here. Propose kit changes to Brian.
+- Never edit a standards file. Propose the change to Brian. The master changes first.
 
 ## Pillars (never break these)
 
@@ -26,15 +29,19 @@ This game has an opponent and a final score. Override rows for G4.1 and G4.4 in 
 - Clubs live in `data/teams.json` and formations in `data/formations.json`. New clubs need no code. `tools/make_teams.py` wrote the eight clubs.
 - The league lives in `data/league.json` (clubs, points, simulated goals). `scripts/league.gd` holds the schedule, table and simulated matches as plain data.
 - A season is saved under `league` in the save file. Quitting a league match never records it.
-- Save file is `user://lofi_league.json`, format `v: 1`. Only add fields, each with a safe default. v0.2.0 added `league`, `seasons`, `titles` and `best_finish`.
+- Save file is `user://lofi_league.json`, format `v: 1`, written with the shared `addons/bc_common/save_store.gd`. Only add fields, each with a safe default. v0.2.0 added `league`, `seasons`, `titles` and `best_finish`.
+- The browser test state comes from the shared `addons/bc_common/test_bridge.gd` as `window.lofi` and `window.lofi_cmd`.
 - Every outside asset goes in `CREDITS.md` with its licence. Music comes from the Patch.gg library (G8.1).
 
 ## Test gate
 
+- `bash tools/common/sync_common.sh --check .` must print `COMMON check ok` (G10.3).
 - `godot --headless --path . -- --bot --rules` must print `RULES done, 0 failed`.
 - `godot --headless --path . -- --bot --games=6` must finish every match and print `BOT done`. Typical scores sit between 0 and 7 a side.
 - `godot --headless --path . -- --bot --season` must play a full league season through the real league path and print `SEASON done`.
 - `python3 tests/web_test.py <web folder> <shots folder>` must print `errors []`. View the screenshots. In `?test` mode the page reports `window.lofi` and runs one menu action from `window.lofi_cmd`.
+- `python3 tests/e2e_test.py <game page url> <shots folder>` must print `errors []`. It plays two league seasons, reloads, plays practice and exhibition and checks phone-size screens. Run it on a local copy of `docs/` before the push and on the live page after.
+- `python3 tests/common/page_check.py https://bclark10121-cloud.github.io/lo-fi-league/` after every push must print `errors []`.
 
 ## Deliver every time (every release)
 
@@ -42,14 +49,14 @@ This game has an opponent and a final score. Override rows for G4.1 and G4.4 in 
 2. GitHub repo link: https://github.com/bclark10121-cloud/lo-fi-league
 3. The APK, named `LoFiLeague-v<version>.apk`, in `docs/downloads/` and sent to Brian as a file. Package id `com.brianclark.lofileague`. Raise `version/code` by one on every build.
 4. The backlog: `BACKLOG.md`, updated, linked and sent as a file.
-5. The game standards handoff zip, rebuilt with `tools/make_handoff.sh` and sent as a file.
-6. `docs/index.html` updated and `docs/release-notes/v<version>.md` added with a test checklist. The browser build goes in `docs/play/`.
+5. The game standards handoff zip, built with `tools/common/make_handoff.sh ../game-standards` and sent as a file.
+6. `docs/index.html` updated: the line under the buttons reads exactly `Version <version>. Release notes · Backlog · Source on GitHub` (G1.8). `docs/release-notes/v<version>.md` added with a test checklist and the kit version (G10.4). The browser build goes in `docs/play/`.
 
 ## Android signing
 
 Sign every APK with Brian's key `wandervalley.jks` (G6.3). The signature SHA-256 starts with `5db69ffb`.
-The key, alias and password live in the private repo `bclark10121-cloud/keeper-of-the-hollow-source` (`apk/wandervalley.jks` and `apk/app/build.gradle`). Brian said on 2026-11-14 to fetch it from there.
-Copy it to a folder outside every repo for the build. Never commit it here. Pass it to Godot with the `GODOT_ANDROID_KEYSTORE_RELEASE_*` environment variables.
+The key and its settings live in the private repo `bclark10121-cloud/game-signing` (G1.2, G1.7). Clone it to `../game-signing`, outside this repo.
+Build with `bash tools/common/sign_android.sh <apk path>`. It exports, signs and fails unless the signature is right. Never commit the key or its passwords here.
 v0.1.0 was signed with a throwaway test key. Testers uninstall v0.1.0 once before installing v0.1.1 or later.
 
 ## Reporting to Brian

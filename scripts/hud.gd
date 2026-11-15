@@ -259,6 +259,9 @@ func _btn_centres() -> Dictionary:
 
 func _input(e: InputEvent) -> void:
 	if e is InputEventScreenTouch or e is InputEventScreenDrag: touch_seen = true
+	# E5.4: a key or gamepad input hides the touch controls. The next touch shows them again.
+	elif e is InputEventKey or e is InputEventJoypadButton or (e is InputEventJoypadMotion and absf(e.axis_value) > 0.4):
+		if touch_seen: touch_seen = false; reset_touch()
 	if not pad_active or menu_open: return
 	var s := root.size
 	var scale_v := s / Vector2(get_viewport().get_visible_rect().size)

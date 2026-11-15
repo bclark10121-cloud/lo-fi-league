@@ -1,12 +1,12 @@
 # Lo-Fi League: backlog
 
-Updated 2026-11-14 for v0.2.0. Brian decides the order.
+Updated 2026-11-14 for v0.2.1. Brian decides the order.
 
 ## Done
 
 - Reviewed the game standards, the Keeper of the Hollow overrides and the reference team editor. Name check for "Lo-Fi League".
 - Plan written: `PLAN.md`.
-- Adopted the shared game standards of 2026-11-14 (`handoff/GAME_STANDARDS.md`) and wrote `STANDARDS_OVERRIDES.md`.
+- Adopted the shared game standards of 2026-11-14 and wrote `STANDARDS_OVERRIDES.md`. Since v0.2.1 the standards are read from `game-standards` and this repo holds no copies.
 - v0.1.0: 7 a side exhibition match against the computer. Two 3-minute halves.
 - Six fictional clubs with home and away kits. The away kit shows when colors clash.
 - Four formations as data: 2-3-1, 3-2-1, 2-2-2 and 1-3-2.
@@ -26,10 +26,14 @@ Updated 2026-11-14 for v0.2.0. Brian decides the order.
 - v0.2.0: mode screen (Exhibition, League, Practice) and a Back button on the club screen.
 - v0.2.0: test gate adds league rules checks, a full bot season and a league walk in the browser test.
 - Pillars confirmed by Brian (2026-11-14).
+- v0.2.1: season saves at once in the browser and on Android (E6.4, E6.5). Records no longer reset on reload. Touch controls hide on key or gamepad input (E5.4). Version code 4.
+- v0.2.1: moved to one source. Standards read from `game-standards`, shared kit 1.1.0 pulled, key from `game-signing`, version line under the buttons on the game page (G1.8, Tiny Titans layout).
+- End-to-end test of the live game page: two full seasons, reloads, practice, exhibition and phone-size screens (`tests/e2e_test.py`).
 
 ## Now
 
-- Brian plays v0.2.0 and reports how the league and the matches feel.
+- Brian plays v0.2.1 and reports how the league and the matches feel.
+- Brian picks the next release from the ideas below.
 
 ## Asked for by Brian, not built yet
 
@@ -67,6 +71,40 @@ Nothing open.
 28. League history: past seasons' champions and your finishes.
 29. Simulate a matchday instead of playing it.
 
+Quality of life (from the 2026-11-14 end-to-end run)
+
+30. Bigger text on phones. The table, full time and menu text read small on a 915 x 412 screen. Scale the panels up on short screens.
+31. Camera zoom setting: Near, Normal and Far. Closer by default on phones, where the players look small.
+32. An arrow at the screen edge when the ball is off screen. The name of the player you control shows for a second after a switch.
+33. Pass aim line: a short arrow shows who gets the ball before you pass.
+34. A check before Quit to title in a league match: "This match will not count".
+35. Remember the last mode and club. Start goes straight to them, one press from the title to the table.
+36. Goal scorers and the minute of each goal on the full time screen.
+37. Now playing: the track name shows for 3 seconds when a track starts. Next track in the Menu.
+38. Solid panels behind the table and menus, so the match behind them does not show through.
+39. Fixtures screen: the whole season's fixtures and results, from the table screen.
+40. Club screen: tap a club in the table to see its players and ratings.
+41. Touch: left-handed layout and a button size setting.
+42. Controller rumble on a tackle, a save and a goal.
+43. First-match hints: one line at the bottom suggests the next useful action. Turns off after three matches.
+
+New features
+
+44. Season stats: top scorers in the league and your club's leading scorer.
+45. Personal goals in a small journal: win by 3, keep a clean sheet, score a hat-trick, finish a season unbeaten. Personal bests only.
+46. Rain matches with a soft rain sound and a wet-pitch look (builds on idea 16).
+47. Night matches under the floodlights, with a moon over the skyline (builds on idea 16).
+48. A calm text commentary line at the bottom of the screen. Can be turned off.
+49. Photo mode: pause, move the camera and save a picture.
+50. Penalty shootout as its own mode (from idea 3).
+51. Player growth: players improve a little after each season.
+52. Daily challenge: a set-piece puzzle, such as score from this corner in 3 tries.
+53. More pitches: rooftop, beach and park (builds on idea 17).
+
+Engineering
+
+54. Clear the engineering open items in `STANDARDS_OVERRIDES.md`: typed arrays, squared distances, one MultiMesh for the boards and the skyline, safe areas, 3D render scale and a 60 fps cap on phones, input actions for keys, the shadow atlas size and `.wav` short sounds.
+
 ## Later
 
 - Google Play release.
@@ -85,9 +123,19 @@ Nothing open.
 - 2026-11-14: Use best judgment for the first MVP. Brian tests and gives feedback.
 - 2026-11-14: Deeper greens on the pitch.
 - 2026-11-14: v0.2.0 scope is League mode only. Pillars confirmed as written.
+- 2026-11-14: Run an end-to-end test and add QoL and feature ideas to the backlog.
+- 2026-11-14: One public repo per game plus one private repo for the key (`game-signing`). One source for the standards and a shared kit in `game-standards`. Version line under the buttons on every game page: `Version <version>. Release notes · Backlog · Source on GitHub`, with no description.
 - 2026-11-14: Create the repo in the browser and push the game.
 - 2026-11-14: Fetch `wandervalley.jks` from `keeper-of-the-hollow-source` and sign with it.
 - 2026-11-14: G4.1, G4.4, G7.1 and things to find (G4.3, G7.2) do not apply to sports games or where they clearly do not make sense. Override rows 1 to 3 agreed.
+
+## Judgment calls made in v0.2.1 (Brian to confirm or change)
+
+1. Fixed the two save bugs as v0.2.1 before any new feature (G3.5).
+2. Removed every copy of the standards and other games' files from `handoff/`. They now come from `game-standards`.
+3. Switched the save and the browser test bridge to the shared kit now. The rest of the game code is unchanged.
+4. Touch controls now hide on key or gamepad input (E5.4).
+5. The physics engine setting went back to Godot's default. The game uses no physics bodies (override row 5, Proposed).
 
 ## Judgment calls made in v0.2.0 (Brian to confirm or change)
 

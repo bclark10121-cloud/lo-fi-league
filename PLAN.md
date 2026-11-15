@@ -1,7 +1,7 @@
 # Lo-Fi League: plan before the build
 
 Written 2026-11-14 for Brian. G4.8 (Proposed) asks for a review, a plan and a backlog before any build.
-Rule ids updated 2026-11-14 to the shared standards: G for `handoff/GAME_STANDARDS.md`, E for `handoff/ENGINEERING_STANDARDS.md`. Overrides and open items live in `STANDARDS_OVERRIDES.md`.
+Rule ids updated 2026-11-14 to the shared standards: G for `GAME_STANDARDS.md`, E for `ENGINEERING_STANDARDS.md`, both read from the private repo `game-standards`. Overrides and open items live in `STANDARDS_OVERRIDES.md`.
 
 ## 1. What I reviewed
 

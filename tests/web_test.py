@@ -5,44 +5,23 @@
 # window.lofi_cmd runs one menu action in ?test mode only (end_match ends the match).
 # The game reports its state to the page (?test) as window.lofi, so the test waits for each state instead of guessing times (G7.6).
 # usage: web_test.py [web build folder] [shots folder]
-import asyncio, sys, subprocess, time, os
-from playwright.async_api import async_playwright
+import asyncio, os, sys, time
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "common"))
+from webkit import Run, serve   # shared kit (G10)
 OUT = sys.argv[1] if len(sys.argv) > 1 else "/home/claude/lofi-out/web"
 SHOTS = sys.argv[2] if len(sys.argv) > 2 else "/home/claude/lofi-out/shots"
-os.makedirs(SHOTS, exist_ok=True)
-errs = []; notes = []
 TITLE, TEAMS, RESTART, LIVE, GOAL, HALFTIME, OVER = range(7)
 MODES, LEAGUE = 20, 21
 
 async def main():
-    srv = subprocess.Popen([sys.executable, "-m", "http.server", "8793", "--bind", "127.0.0.1"], cwd=OUT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL); time.sleep(1)
-    try:
-        async with async_playwright() as p:
-            b = await p.chromium.launch(executable_path="/usr/bin/google-chrome", args=["--no-sandbox", "--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist", "--autoplay-policy=no-user-gesture-required"])
-            ctx = await b.new_context(viewport={"width": 1280, "height": 720}, has_touch=True)
-            pg = await ctx.new_page()
-            pg.on("pageerror", lambda e: errs.append("page: " + str(e)))
-            pg.on("console", lambda m: errs.append("console: " + m.text) if m.type == "error" else None)
-            await pg.goto("http://127.0.0.1:8793/index.html?test")
-            async def st(): return await pg.evaluate("window.lofi || null")
-            async def wait_phase(phases, secs=40):
-                t = time.time()
-                while time.time() - t < secs:
-                    s = await st()
-                    if s and s["phase"] in phases: return s
-                    await pg.wait_for_timeout(120)
-                errs.append("timeout waiting for %s, got %s" % (phases, await st())); return await st()
-            async def wait_for(fn, secs, what):
-                t = time.time()
-                while time.time() - t < secs:
-                    s = await st()
-                    if s and fn(s): return s
-                    await pg.wait_for_timeout(120)
-                notes.append("did not see: " + what); return await st()
-            async def shot(n): await pg.screenshot(path=SHOTS + "/" + n + ".png")
-            async def key(k, wait=400): await pg.keyboard.press(k); await pg.wait_for_timeout(wait)
+    with serve(OUT, 8793) as base:
+        async with Run("lofi", SHOTS) as r:
+            pg, ctx, errs, notes = r.page, r.ctx, r.errs, r.notes
+            st, wait_phase, wait_for, shot = r.state, r.wait_phase, r.wait_for, r.shot
+            async def key(k, wait=400): await r.key(k, wait)
+            await r.open(base + "index.html?test")
             await wait_phase([TITLE], 90); await pg.wait_for_timeout(2500); await shot("01_title")
-            async def cmd(c, wait=500): await pg.evaluate("window.lofi_cmd = '%s'" % c); await pg.wait_for_timeout(wait)
+            cmd = r.cmd
             await key("Enter"); await wait_phase([MODES]); await pg.wait_for_timeout(700); await shot("02_modes")
             # league: start a season, play matchday 1 to full time, back to the table
             await key("ArrowDown", 300); await key("Enter"); await wait_phase([TEAMS]); await pg.wait_for_timeout(700); await shot("03_league_clubs")
@@ -94,13 +73,11 @@ async def main():
             await cdp.send("Input.dispatchTouchEvent", {"type": "touchMove", "touchPoints": [{"x": 250, "y": 470, "id": 1}]})
             await pg.wait_for_timeout(1200); s = await st(); notes.append("touch=%s" % s["touch"]); await shot("17_touch")
             await cdp.send("Input.dispatchTouchEvent", {"type": "touchEnd", "touchPoints": []})
-            # the season must survive a reload
+            # the season must survive a reload (wait for the save to reach browser storage first)
+            await r.wait_saved(['"club":"tapedeck"', '"md":1,'])
             await pg.goto("http://127.0.0.1:8793/index.html?test"); s = await wait_phase([TITLE], 90)
             notes.append("after reload md=%s club=%s" % (s["league_md"], s["league_club"]))
             if s["league_md"] != 1: errs.append("season did not survive a reload: %s" % s)
             await key("Enter"); await wait_phase([MODES]); await pg.wait_for_timeout(700); await shot("18_modes_after_reload")
-            await b.close()
-    finally:
-        srv.kill()
-    print("notes", notes); print("errors", errs)
+    print(r.report())
 asyncio.run(main())
