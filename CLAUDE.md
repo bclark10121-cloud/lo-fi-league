@@ -21,7 +21,7 @@ This game has an opponent and a final score. Override rows for G4.1 and G4.4 in 
 
 ## Rules
 
-- This repo is public. Never commit a signing key, keystore or password.
+- This repo is public. Never commit a signing key, keystore or password. Never write a password in a build file, a doc or a reply (G1.9). The key and its settings live in the private repo `game-signing`, cloned to `../game-signing`.
 - Pitch units are yards. The pitch runs along X. Goal lines sit at x = -30 and x = +30. Sidelines sit at z = -20 and z = +20.
 - Side 0 (the player) always attacks +X, the right of the screen. The camera sits on the +Z sideline. Teams do not switch ends.
 - Players and the ball move with plain maths, not physics bodies. `main.gd` sets `want` and each player eases toward it.
@@ -36,6 +36,8 @@ This game has an opponent and a final score. Override rows for G4.1 and G4.4 in 
 ## Test gate
 
 - `bash tools/common/sync_common.sh --check .` must print `COMMON check ok` (G10.3).
+- `bash tools/common/check_secrets.sh` must print `SECRETS check ok` (G1.9). No key, keystore, password or token in the repo.
+- Test hooks stay off for players (G7.8). `window.lofi` and `window.lofi_cmd` work only with the whole-word `?test` flag (kit 1.3.0). Every browser test opens `index.html?test`.
 - `godot --headless --path . -- --bot --rules` must print `RULES done, 0 failed`.
 - `godot --headless --path . -- --bot --games=6` must finish every match and print `BOT done`. Typical scores sit between 0 and 7 a side.
 - `godot --headless --path . -- --bot --season` must play a full league season through the real league path and print `SEASON done`.

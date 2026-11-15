@@ -4,8 +4,8 @@ Standards: `GAME_STANDARDS.md` (rule ids start with G) and `ENGINEERING_STANDARD
 This file lists where this game does something else, and why. A rule not listed here applies in full.
 Order of authority: Brian in the chat, then this file, then the standards.
 
-Last reviewed: v0.2.1 (2026-11-14). First engineering audit on the same date.
-Checked against: game-standards version 2026-11-14 (commit ee33b2f). Shared kit 1.1.0 (`common.lock`).
+Last reviewed: v0.2.1 (2026-11-14). First engineering audit on the same date. Standards update on 2026-11-15: G1.9, G7.8 and kit 1.3.0.
+Checked against: game-standards version 2026-11-15 (commit e4688a1). Shared kit 1.3.0 (`common.lock`).
 
 ## Overrides
 
@@ -24,6 +24,8 @@ Game standards:
 
 - G5.2: the sprint bar and the shot power meter sit on screen with the scoreboard. They are counted as status readouts. Brian to confirm.
 - G6.6: players, ball, posts and crossbar collide by plain maths. The nets do not catch the ball. A goal ends the play at the line.
+- G7.8: the source uses kit 1.3.0, so `window.lofi` and `window.lofi_cmd` work only with the whole-word `?test` flag. The live browser build in `docs/play/` is still the v0.2.1 build with kit 1.1.0. Its bridge switches on for any page address that contains the letters "test", such as `?contest`. The next release build ships the fix. No new build was pushed for this update (Brian, 2026-11-15).
+- G10.4: the next release notes name kit 1.3.0. The v0.2.1 notes name kit 1.1.0.
 
 Engineering standards (from the first audit, 2026-11-14):
 
@@ -50,7 +52,7 @@ Game standards:
 
 - G0.3: this file, at the repo root, in the appendix format, with the Checked against line.
 - G0.10: no copies of the standards in this repo. `handoff/` was removed on 2026-11-14. The standards are read from `game-standards`.
-- G0.12: checked against game-standards commit ee33b2f for v0.2.1.
+- G0.12: checked against game-standards commit ee33b2f for v0.2.1, then against commit e4688a1 on 2026-11-15.
 - G1.1: public repo `bclark10121-cloud/lo-fi-league`, created 2026-11-14.
 - G1.2: no key, keystore or password in the repo. `.gitignore` blocks `*.jks` and `*.keystore`.
 - G1.3: game page `docs/index.html`, served from `main` `/docs`.
@@ -58,6 +60,7 @@ Game standards:
 - G1.5: browser build in `docs/play/`, APK in `docs/downloads/`, release notes in `docs/release-notes/`.
 - G1.6, G2.1, G2.2: game page https://bclark10121-cloud.github.io/lo-fi-league/ and repo https://github.com/bclark10121-cloud/lo-fi-league given to Brian.
 - G1.7: one public repo. No private repo for this game. The key comes from `game-signing` at build time and lives in a folder outside the repo.
+- G1.9: no key, keystore, password or token in the repo. `bash tools/common/check_secrets.sh` is in the test gate and prints `SECRETS check ok`. `.gitignore` blocks `signing.properties` and `game-signing/`. The game reads the key from a fresh copy of `game-signing` (new password from 2026-11-15).
 - G1.8: the line under the buttons reads exactly `Version 0.2.1. Release notes · Backlog · Source on GitHub`. It matches the title card and the APK name (shared page check).
 - G2.3: `LoFiLeague-v0.2.1.apk` built, arm64, package `com.brianclark.lofileague`, version code 4.
 - G2.4: `BACKLOG.md` updated for v0.2.1.
@@ -77,11 +80,12 @@ Game standards:
 - G7.3: `tests/web_test.py` and `tests/e2e_test.py` load the web build in headless Chrome and print `errors []`. Screenshots viewed. Both use the shared `tests/common/webkit.py`.
 - G7.4: the live game page, every link and the version line were checked after the push with the shared `tests/common/page_check.py`.
 - G7.5: stated in the release notes and the report to Brian.
+- G7.8 (source): test state and commands come only from the shared `test_bridge.gd` (kit 1.3.0) with the whole-word `?test` flag. The only other test switches are command line flags (`--bot`, `--rules`, `--games`, `--season`). The Android build takes no test commands. Headless bots never write the player's save (`store.disabled`). The live build is an open item.
 - G8.1: four CC0 lo-fi tracks by Holizna, found through Patch.gg.
 - G8.3: `CREDITS.md` lists every outside asset with its source and licence.
 - G8.4: eight fictional clubs, original player names, kits and formations. Nothing from the reference game is in the repo.
-- G10.1, G10.2: shared kit 1.1.0 pulled into `addons/bc_common/`, `tools/common/` and `tests/common/`. `common.lock` names the version and commit. This game's own copies of the handoff script, Patch.gg fetcher and sound maker were removed.
-- G10.3: `bash tools/common/sync_common.sh --check .` is in the test gate and prints `COMMON check ok`.
+- G10.1, G10.2: shared kit 1.3.0 pulled (1.1.0 at v0.2.1) into `addons/bc_common/`, `tools/common/` and `tests/common/`. `common.lock` names the version and commit. This game's own copies of the handoff script, Patch.gg fetcher and sound maker were removed.
+- G10.3: `bash tools/common/sync_common.sh --check .` is in the test gate and prints `COMMON check ok: 1.3.0 e4688a1`.
 - G10.4: the v0.2.1 release notes name kit 1.1.0.
 - G10.5: the shared save store and test bridge came from this game. No other proposals yet.
 
