@@ -36,6 +36,8 @@ This game has an opponent and a final score. Override rows for G4.1 and G4.4 in 
 
 ## Test gate
 
+The browser tests take minutes each here: this workspace draws the game in software at 1 or 2 frames a second.
+
 - `bash tools/common/sync_common.sh --check .` must print `COMMON check ok` (G10.3).
 - `bash tools/common/check_secrets.sh` must print `SECRETS check ok` (G1.9). No key, keystore, password or token in the repo.
 - `godot --headless --path . -s res://tests/common/save_store_check.gd` must print `SAVESTORE check ok` (E6.7).
@@ -46,8 +48,13 @@ This game has an opponent and a final score. Override rows for G4.1 and G4.4 in 
 - `python3 tests/pad_test.py <web folder> <shots folder>` must print `errors []` (G5.8). A pretend Xbox controller plays from the title card into a match and through the Menu with no keyboard or touch.
 - `python3 tests/qol_test.py <web folder> <shots folder>` must print `errors []`. On a 915 x 412 touch screen it checks Large text by default, Text in the Menu, touch with Large text, the pause on focus loss, the remembered mode and club, the Quit check in a league match and the scorers at full time. View the screenshots.
 - `python3 tests/web_test.py <web folder> <shots folder>` must print `errors []`. View the screenshots. In `?test` mode the page reports `window.lofi` and runs one menu action from `window.lofi_cmd`.
-- `python3 tests/e2e_test.py <game page url> <shots folder>` must print `errors []`. It plays two league seasons, reloads, plays practice and exhibition and checks phone-size screens. Run it on a local copy of `docs/` before the push and on the live page after.
 - `python3 tests/common/page_check.py https://bclark10121-cloud.github.io/lo-fi-league/` after every push must print `errors []`.
+
+Test what changed (G7.9, Brian 2026-11-15). Every release runs the quick checks above: kit, secrets, save store, rules, bot matches and the bot season. It also runs the browser tests for the parts it changed and the page check after the push. `web_test.py` covers one league match, a reload, an exhibition, touch and the Menu. `pad_test.py` covers the controller. `qol_test.py` covers the comfort features. Say in the report which ran and which were skipped.
+
+Android production release only (Google Play), or when Brian asks:
+
+- `python3 tests/e2e_test.py <game page url> <shots folder>` must print `errors []`. It plays two league seasons, reloads, plays practice and exhibition and checks phone-size screens. Run it on a local copy of `docs/` before the push and on the live page after.
 
 ## Deliver every time (every release)
 

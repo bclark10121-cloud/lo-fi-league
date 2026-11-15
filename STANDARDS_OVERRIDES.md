@@ -113,6 +113,7 @@ Proposed rules this game already follows (not in force, listed for Brian):
 - G4.9: clubs, formations and the league are data in `data/teams.json`, `data/formations.json` and `data/league.json`.
 - G6.7: the signing key was fetched only after Brian said so in the chat (2026-11-14). It now comes from `game-signing` and lives outside the repo.
 - G7.6: `--bot --games=6` plays six full matches and prints each result. `--bot --rules` checks every restart and the league schedule, table, simulated scores and save file. `--bot --season` plays a full season. The browser tests read `window.lofi` instead of guessing wait times.
+- G7.9: the test gate in `CLAUDE.md` is split into every release and Android production release only. The two-season end-to-end test runs only for a Google Play release or when Brian asks.
 - G7.7: the engineering release checklist was ticked for v0.2.3 and this file was reviewed.
 - E5.5: the game caps the frame step and takes up to three smaller steps per frame.
 

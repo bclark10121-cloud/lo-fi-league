@@ -99,8 +99,8 @@ async def main():
         await key("Enter"); await wait_phase([LIVE]); await pg.wait_for_timeout(2000); await shot("13_phone_match")
         cdp = await r.touch_drag(150, 300, 190, 280)
         await shot("14_phone_touch"); await r.touch_end(cdp)
-        s = await st(); shown = s["touch"]
-        await key("d", 400); s = await st()
+        s = await r.wait_for(lambda s: s["touch"], 10, "touch controls after a touch"); shown = s["touch"]   # wait, do not read at once
+        await key("d", 400); s = await r.wait_for(lambda s: not s["touch"], 10, "touch controls hidden after a key")
         check(shown and not s["touch"], "touch controls show on a touch and hide on a key press (E5.4)")
         await cmd("title"); await r.wait_for(lambda s: s.get("quit_armed"), 10, "the quit check")   # a league match quits on the second press (v0.2.3)
         await cmd("title"); await wait_phase([TITLE])
