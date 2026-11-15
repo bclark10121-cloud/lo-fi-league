@@ -14,7 +14,7 @@ Proposed 2026-11-14. Brian to confirm (G4.2).
 3. Soccer rules people know: goals, throw-ins, corners, goal kicks, kickoffs and halves.
 4. Original everything. Fictional clubs, our own formations, art and names. Nothing from Pixel Cup Soccer or any other game.
 
-This game has an opponent and a final score. That needs override rows for G4.1 and G4.4 (Proposed in `STANDARDS_OVERRIDES.md`).
+This game has an opponent and a final score. Override rows for G4.1 and G4.4 in `STANDARDS_OVERRIDES.md` (agreed 2026-11-14: these rules do not apply to sports games).
 
 ## Rules
 
@@ -42,9 +42,12 @@ This game has an opponent and a final score. That needs override rows for G4.1 a
 5. The game standards handoff zip, rebuilt with `tools/make_handoff.sh` and sent as a file.
 6. `docs/index.html` updated and `docs/release-notes/v<version>.md` added with a test checklist. The browser build goes in `docs/play/`.
 
-## Open item: Android signing
+## Android signing
 
-v0.1.0 is signed with a throwaway test key (Proposed override row 4). Brian's key `wandervalley.jks` lives in a private repo. Ask Brian before using it. Testers must uninstall a test-key build first.
+Sign every APK with Brian's key `wandervalley.jks` (G6.3). The signature SHA-256 starts with `5db69ffb`.
+The key, alias and password live in the private repo `bclark10121-cloud/keeper-of-the-hollow-source` (`apk/wandervalley.jks` and `apk/app/build.gradle`). Brian said on 2026-11-14 to fetch it from there.
+Copy it to a folder outside every repo for the build. Never commit it here. Pass it to Godot with the `GODOT_ANDROID_KEYSTORE_RELEASE_*` environment variables.
+v0.1.0 was signed with a throwaway test key. Testers uninstall v0.1.0 once before installing v0.1.1 or later.
 
 ## Reporting to Brian
 

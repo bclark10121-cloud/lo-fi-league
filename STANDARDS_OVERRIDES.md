@@ -4,7 +4,7 @@ Standards: `handoff/GAME_STANDARDS.md` (rule ids start with G) and `handoff/ENGI
 This file lists where this game does something else, and why. A rule not listed here applies in full.
 Order of authority: Brian in the chat, then this file, then the standards.
 
-Last reviewed: v0.1.0, test build (2026-11-14).
+Last reviewed: v0.1.1 (2026-11-14).
 
 ## Overrides
 
@@ -13,7 +13,6 @@ Last reviewed: v0.1.0, test build (2026-11-14).
 | 1 | G4.1 | Calm games. No combat. No way to lose. A reset never costs anything | A soccer match against the computer with a final score. A match ends in a win, a draw or a loss. Tackles win the ball. No injuries and no cards. Restart match costs nothing | Sports game. Brian, 2026-11-14: these rules do not apply to sports games or where they clearly do not make sense | Never, unless Brian changes the kind of game | 2026-11-14 |
 | 2 | G4.4 | Records and achievements are personal bests only. No leaderboards, no opponents | One computer opponent per match. A win, draw and loss record saved on the device. No leaderboards | Sports game. Brian, 2026-11-14: these rules do not apply to sports games or where they clearly do not make sense | Never, unless Brian changes the kind of game | 2026-11-14 |
 | 3 | G7.1 | A headless test driver proves the main route is drivable with 0 resets | A headless test bot plays 6 full matches. Every match must finish and print its result, then print `BOT done` | A soccer match has no route to drive. Brian, 2026-11-14: these rules do not apply to sports games or where they clearly do not make sense | G7.6 comes into force. The bot then counts as a rule met | 2026-11-14 |
-| 4 | G6.3 | Sign the APK with `wandervalley.jks`. The signature SHA-256 starts with `5db69ffb` | Test builds are signed with a throwaway key. Testers must uninstall before a build signed with the real key | The key lives in a private repo. This chat does not have it and will not fetch it without Brian's word in the chat | Brian says in the chat to use `wandervalley.jks` | Proposed |
 
 A Proposed row is not in force. The standard applies until Brian agrees.
 
@@ -35,17 +34,18 @@ Checked on 2026-11-14 by reading the files and by running the checks named below
 - G1.1: public repo `bclark10121-cloud/lo-fi-league`, created 2026-11-14.
 - G1.3: game page `docs/index.html`, served from `main` `/docs`.
 - G1.4: the game page has the description, Play in your browser, the APK download, three screenshots, what kind of game it is, things to do, controls, install steps, a feedback list and links to release notes, backlog and source.
-- G1.5: browser build in `docs/play/`, APK in `docs/downloads/`, release notes in `docs/release-notes/v0.1.0.md`.
+- G1.5: browser build in `docs/play/`, APK in `docs/downloads/`, release notes in `docs/release-notes/`.
 - G1.6, G2.1, G2.2: game page https://bclark10121-cloud.github.io/lo-fi-league/ and repo https://github.com/bclark10121-cloud/lo-fi-league given to Brian.
 - G1.2: no key, keystore or password in the folder. `.gitignore` blocks `*.jks` and `*.keystore`. The test key lives outside the repo.
-- G2.3: `LoFiLeague-v0.1.0.apk` built, arm64, package `com.brianclark.lofileague`, version code 1.
+- G2.3: `LoFiLeague-v0.1.1.apk` built, arm64, package `com.brianclark.lofileague`, version code 2.
 - G2.4: `BACKLOG.md` updated for v0.1.0.
 - G2.5: `tools/make_handoff.sh` builds the handoff zip with `GAME_STANDARDS.md`, this file, the templates and the reusable code.
-- G2.6: release notes with a test checklist in `docs/release-notes/v0.1.0.md`. Game page has the version line, what is new and the APK link.
+- G2.6: release notes with a test checklist in `docs/release-notes/v0.1.1.md`. Game page has the version line, what is new and the APK link.
 - G4.6: `BACKLOG.md` has Done, Now, Asked for by Brian, Ideas to choose from (numbered), Later, Not planned and Decisions.
 - G5.1: Menu button at the top right opens Resume, How to play, Sound, Music, Restart match and Quit to title in a row. It reads Close while open. Esc toggles it (headless Chrome). Controller Back is wired, not tested on a controller.
 - G5.4, G5.5: title card shows the name, version line, one line on the game, keyboard, controller and touch controls and a Start button.
-- G6.2: Web (no threads) and Android (arm64) export presets.
+- G6.2: Web (no threads) and Android (arm64) export presets. Version code raised to 2 for v0.1.1.
+- G6.3: v0.1.1 is signed with `wandervalley.jks`. The signature SHA-256 starts with `5db69ffb`.
 - G6.4: the pitch, goals, stands, skyline and players are built in code.
 - G6.5: pitch lines are painted into one ground texture. The outer ground sits 0.6 yards below the pitch. The control ring is a raised mesh.
 - G7.3: `tests/web_test.py` loads the web build in headless Chrome and prints `errors []`. Screenshots viewed.
@@ -59,7 +59,7 @@ Proposed rules this game already follows (not in force, listed for Brian):
 
 - G4.8: review, name check, plan and backlog came before the build.
 - G4.9: clubs and formations are data in `data/teams.json` and `data/formations.json`.
-- G6.7: the signing key has not been fetched. The APK uses a throwaway test key.
+- G6.7: the signing key was fetched only after Brian said so in the chat (2026-11-14). It lives outside the repo.
 - G7.6: `--bot --games=6` plays six full matches and prints each result. `--bot --rules` checks every restart. The browser test reads `window.lofi` instead of guessing wait times.
 
 ## Not in use in this game
@@ -79,4 +79,6 @@ Proposed rules this game already follows (not in force, listed for Brian):
 
 ## Ended overrides
 
-None yet.
+| # | Rule | This game did | Ended | Why |
+|---|---|---|---|---|
+| 4 | G6.3 | v0.1.0 was signed with a throwaway test key. The row stayed Proposed and was never in force | 2026-11-14 | Brian said in the chat to fetch `wandervalley.jks` from `keeper-of-the-hollow-source`. v0.1.1 uses the real key |

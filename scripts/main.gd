@@ -7,7 +7,7 @@ extends Node3D
 const PlayerModel := preload("res://scripts/player.gd")
 const HudScript := preload("res://scripts/hud.gd")
 
-const VERSION := "0.1.0"
+const VERSION := "0.1.1"
 const HL := 30.0
 const HW := 20.0
 const GOAL_HW := 3.0

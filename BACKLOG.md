@@ -1,6 +1,6 @@
 # Lo-Fi League: backlog
 
-Updated 2026-11-14 for v0.1.0. Brian decides the order.
+Updated 2026-11-14 for v0.1.1. Brian decides the order.
 
 ## Done
 
@@ -20,11 +20,11 @@ Updated 2026-11-14 for v0.1.0. Brian decides the order.
 - Side camera that follows the ball across the pitch. Sunset stadium with a skyline.
 - Deeper greens on the pitch (Brian, 2026-11-14).
 - Public repo `bclark10121-cloud/lo-fi-league` created and the game page turned on (Brian, 2026-11-14).
+- v0.1.1: APK signed with the real key `wandervalley.jks` (Brian, 2026-11-14). Version code 2.
 
 ## Now
 
 - Brian plays v0.1.0 and reports how it feels.
-- Brian decides on the Android signing key (override row 4, still Proposed).
 
 ## Asked for by Brian, not built yet
 
@@ -76,6 +76,7 @@ Nothing open.
 - 2026-11-14: Use best judgment for the first MVP. Brian tests and gives feedback.
 - 2026-11-14: Deeper greens on the pitch.
 - 2026-11-14: Create the repo in the browser and push the game.
+- 2026-11-14: Fetch `wandervalley.jks` from `keeper-of-the-hollow-source` and sign with it.
 - 2026-11-14: G4.1, G4.4, G7.1 and things to find (G4.3, G7.2) do not apply to sports games or where they clearly do not make sense. Override rows 1 to 3 agreed.
 
 ## Judgment calls made in v0.1.0 (Brian to confirm or change)
@@ -88,5 +89,5 @@ Nothing open.
 6. Throw-ins and corners: you stand still and choose a short pass (Space) or a long ball (F).
 7. Keepers are always computer controlled.
 8. The kit clash check swaps the computer club to its away kit.
-9. The APK is signed with a throwaway test key.
+9. v0.1.1 keeps the same game as v0.1.0. Only the version and the signature changed.
 10. The first push holds the full game, the v0.1.0 build and the APK, and the standards files with the four override rows still Proposed.
