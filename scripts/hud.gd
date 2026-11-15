@@ -16,10 +16,13 @@ var banner: Label
 var banner_t := 0.0
 var hint: Label
 var menu_btn: Button
-var menu_row: HBoxContainer
+var menu_row: HFlowContainer
 var menu_open := false
 var sound_btn: Button
 var music_btn: Button
+var text_btn: Button
+var quit_btn: Button
+var quit_armed := false
 var title_panel: Control
 var team_panel: Control
 var over_panel: Control
@@ -111,19 +114,23 @@ func build(version: String, teams: Array) -> void:
 	meter.offset_left = -180; meter.offset_right = 180; meter.offset_top = 0; meter.offset_bottom = 26; meter.visible = false; meter.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_build_title(version); _build_modes(); _build_team(teams); _build_league(); _build_over(); _build_help()
 	# Menu button and its row, top right (built last so it sits on top)
-	menu_row = HBoxContainer.new(); root.add_child(menu_row); menu_row.anchor_left = 0; menu_row.anchor_right = 1; menu_row.offset_left = 300; menu_row.offset_right = -150; menu_row.offset_top = 12; menu_row.offset_bottom = 60
-	menu_row.alignment = BoxContainer.ALIGNMENT_END; menu_row.add_theme_constant_override("separation", 8); menu_row.visible = false
-	for item in [["Resume", "resume"], ["How to play", "help"], ["Sound: On", "sound"], ["Music: On", "music"], ["Restart match", "restart"], ["Quit to title", "title"]]:
-		var b := _btn(item[0], 19); var act: String = item[1]
+	# a flow row: when Large text makes it too wide for the screen, it wraps onto a second line instead of running under Close
+	menu_row = HFlowContainer.new(); root.add_child(menu_row); menu_row.anchor_left = 0; menu_row.anchor_right = 1; menu_row.offset_left = 200; menu_row.offset_right = -150; menu_row.offset_top = 12; menu_row.offset_bottom = 60
+	menu_row.alignment = FlowContainer.ALIGNMENT_END; menu_row.add_theme_constant_override("h_separation", 8); menu_row.add_theme_constant_override("v_separation", 8); menu_row.visible = false
+	for item in [["Resume", "resume"], ["How to play", "help"], ["Sound: On", "sound"], ["Music: On", "music"], ["Text: Normal", "text"], ["Restart match", "restart"], ["Quit to title", "title"]]:
+		var b := _btn(item[0], 18); var act: String = item[1]
 		b.pressed.connect(func(): menu_action.emit(act)); menu_row.add_child(b)
 		if act == "sound": sound_btn = b
 		if act == "music": music_btn = b
+		if act == "text": text_btn = b
+		if act == "title": quit_btn = b
 	menu_btn = _btn("Menu", 22); root.add_child(menu_btn); menu_btn.anchor_left = 1; menu_btn.anchor_right = 1; menu_btn.offset_left = -136; menu_btn.offset_right = -14; menu_btn.offset_top = 12; menu_btn.offset_bottom = 60
 	menu_btn.focus_mode = Control.FOCUS_NONE
 	menu_btn.pressed.connect(func(): menu_action.emit("toggle"))
 
 func set_menu(open: bool) -> void:
 	menu_open = open; menu_row.visible = open; menu_btn.text = "Close" if open else "Menu"
+	arm_quit(false)
 	if open and menu_row.get_child_count() > 0: (menu_row.get_child(0) as Button).grab_focus()
 
 func _build_title(version: String) -> void:
@@ -151,11 +158,19 @@ func _build_modes() -> void:
 		if act == "mode_league": mode_league_btn = b
 	var back := _btn("Back", 22); back.size_flags_horizontal = Control.SIZE_SHRINK_CENTER; back.pressed.connect(func(): menu_action.emit("modes_back")); v.add_child(back)
 
-func show_modes(on: bool, league_text := "League") -> void:
+func show_modes(on: bool, league_text := "League", focus_id := "mode_exhibition") -> void:
 	mode_panel.visible = on
 	if on:
 		mode_league_btn.text = league_text
-		(mode_panel.find_child("mode_exhibition", true, false) as Button).grab_focus.call_deferred()
+		# the last mode played has the focus, so Start then A or Enter takes you straight back to it
+		var b := mode_panel.find_child(focus_id, true, false) as Button
+		if b == null: b = mode_panel.find_child("mode_exhibition", true, false) as Button
+		b.grab_focus.call_deferred()
+
+## A league match only ends early with a second press of Quit to title, because a quit match does not count.
+func arm_quit(on: bool) -> void:
+	quit_armed = on
+	if quit_btn != null: quit_btn.text = "Quit? It will not count" if on else "Quit to title"
 
 func _build_team(teams: Array) -> void:
 	team_panel = _full(); team_panel.mouse_filter = Control.MOUSE_FILTER_STOP; team_panel.visible = false
@@ -171,10 +186,13 @@ func _build_team(teams: Array) -> void:
 	team_note = _centre(_lbl("", 18, Color(1, 1, 1, 0.8))); v.add_child(team_note)
 	var back := _btn("Back", 22); back.size_flags_horizontal = Control.SIZE_SHRINK_CENTER; back.pressed.connect(func(): menu_action.emit("team_back")); v.add_child(back)
 
-func show_team(on: bool, title := "Pick your club", note := "") -> void:
+func show_team(on: bool, title := "Pick your club", note := "", focus_idx := 0) -> void:
 	team_panel.visible = on
 	team_title.text = title; team_note.text = note
-	if on: (team_panel.find_child("Teams", true, false).get_child(0) as Button).grab_focus.call_deferred()
+	if on:
+		# the last club played has the focus
+		var g := team_panel.find_child("Teams", true, false)
+		(g.get_child(clampi(focus_idx, 0, g.get_child_count() - 1)) as Button).grab_focus.call_deferred()
 
 func _build_league() -> void:
 	league_panel = _full(); league_panel.mouse_filter = Control.MOUSE_FILTER_STOP; league_panel.visible = false

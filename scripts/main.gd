@@ -11,7 +11,7 @@ const SaveStore := preload("res://addons/bc_common/save_store.gd")
 const TestBridge := preload("res://addons/bc_common/test_bridge.gd")
 const InputSetup := preload("res://addons/bc_common/input_setup.gd")
 
-const VERSION := "0.2.2"
+const VERSION := "0.2.3"
 const HL := 30.0
 const HW := 20.0
 const GOAL_HW := 3.0
@@ -138,7 +138,9 @@ var _pb := false
 var _psw := false
 
 var save := {"v": 1, "sound": true, "music": true, "wins": 0, "draws": 0, "losses": 0, "goals_for": 0, "goals_against": 0, "team": "",
-	"league": {}, "seasons": 0, "titles": 0, "best_finish": 0}
+	"league": {}, "seasons": 0, "titles": 0, "best_finish": 0, "last_mode": "", "text": -1}
+# v0.2.3 added last_mode (the last mode played) and text (-1 automatic, 0 normal, 1 large)
+var goals: Array = []   # this match: {"side", "name", "min"} for each goal, for the full time screen
 var snd := {}
 var music: AudioStreamPlayer
 var tracks: Array = []
@@ -157,7 +159,7 @@ func _ready() -> void:
 	store = SaveStore.new(SAVE_PATH); store.disabled = bot
 	# E6.7: clamp the counters so an edited or broken save can never load a silly number
 	store.limits = {"wins": [0, 1000000], "draws": [0, 1000000], "losses": [0, 1000000], "goals_for": [0, 10000000],
-		"goals_against": [0, 10000000], "seasons": [0, 100000], "titles": [0, 100000], "best_finish": [0, 8]}
+		"goals_against": [0, 10000000], "seasons": [0, 100000], "titles": [0, 100000], "best_finish": [0, 8], "text": [-1, 1]}
 	bridge = TestBridge.new("lofi"); test_hook = bridge.enabled
 	teams = _load_json("res://data/teams.json")
 	for t in teams: by_id[t.id] = t
@@ -171,6 +173,7 @@ func _ready() -> void:
 	hud.menu_action.connect(_on_menu)
 	_build_audio()
 	_apply_audio_labels()
+	_apply_text()
 	if bot:
 		if OS.get_cmdline_user_args().has("--rules"):
 			_rules_test(); get_tree().quit(); return
@@ -387,6 +390,16 @@ func sfx(n: String) -> void:
 	if bot or attract or not save.sound or not snd.has(n) or snd[n].stream == null: return
 	snd[n].play()
 
+## Text size (v0.2.3). Large draws every panel, button and label 25 percent bigger. Automatic picks Large on a
+## touch screen (phones and tablets) and Normal elsewhere. The player can switch it in the Menu.
+func _text_large() -> bool:
+	var t := int(save.text)
+	return t == 1 or (t == -1 and DisplayServer.is_touchscreen_available())
+
+func _apply_text() -> void:
+	get_tree().root.content_scale_factor = 1.25 if _text_large() else 1.0
+	hud.text_btn.text = "Text: Large" if _text_large() else "Text: Normal"
+
 func _apply_audio_labels() -> void:
 	hud.sound_btn.text = "Sound: On" if save.sound else "Sound: Off"
 	hud.music_btn.text = "Music: On" if save.music else "Music: Off"
@@ -423,14 +436,14 @@ func _to_modes() -> void:
 	var lg: Dictionary = save.league
 	if League.is_over(lg): lt = "League: season over"
 	elif not lg.is_empty(): lt = "League: matchday %d of %d" % [int(lg.md) + 1, League.rounds(lg)]
-	hud.show_modes(true, lt)
+	hud.show_modes(true, lt, "mode_" + (str(save.last_mode) if str(save.last_mode) in ["exhibition", "league", "practice"] else "exhibition"))
 
 func _to_teams(for_what: String) -> void:
 	pick_for = for_what; screen = S_TEAMS; _hide_panels()
 	match for_what:
-		"league": hud.show_team(true, "Pick your club for the season", "7 matchdays. Every club plays every other club once.")
-		"practice": hud.show_team(true, "Pick your club for practice", "No clock and no score. Only a keeper defends.")
-		_: hud.show_team(true, "Pick your club", "Exhibition: two 3-minute halves against the computer.")
+		"league": hud.show_team(true, "Pick your club for the season", "7 matchdays. Every club plays every other club once.", _team_ix(save.team))
+		"practice": hud.show_team(true, "Pick your club for practice", "No clock and no score. Only a keeper defends.", _team_ix(save.team))
+		_: hud.show_team(true, "Pick your club", "Exhibition: two 3-minute halves against the computer.", _team_ix(save.team))
 
 func _on_team(idx: int) -> void:
 	_start_audio()
@@ -524,15 +537,20 @@ func _on_menu(action: String) -> void:
 					if music.stream == null: music.stream = tracks[track_i]
 					music.play()
 				else: music.stop()
+		"text":
+			save.text = 0 if _text_large() else 1; _write_save(); _apply_text()
 		"restart":
 			if screen == S_PLAY:
 				_set_menu(false); hud.over_panel.visible = false
 				start_match(team_ix[0], team_ix[1], practice, true); get_viewport().gui_release_focus()
 		"title":
+			# a league match only ends early on a second press, because a quit match does not count
+			if screen == S_PLAY and mode == "league" and state != OVER and not hud.quit_armed:
+				hud.arm_quit(true); return
 			_set_menu(false); _to_title()
-		"mode_exhibition": _to_teams("exhibition")
-		"mode_practice": _to_teams("practice")
-		"mode_league": _to_league()
+		"mode_exhibition": save.last_mode = "exhibition"; _to_teams("exhibition")
+		"mode_practice": save.last_mode = "practice"; _to_teams("practice")
+		"mode_league": save.last_mode = "league"; _write_save(); _to_league()
 		"modes_back": _to_title()
 		"team_back": _to_modes()
 		"league": _to_league()
@@ -540,6 +558,9 @@ func _on_menu(action: String) -> void:
 		"league_new":
 			save.league = {}; _write_save(); _to_teams("league")
 		"league_back": _to_modes()
+		"test_goal":   # ?test only: the controlled player scores, so the full time scorers can be checked
+			if test_hook and screen == S_PLAY and state == LIVE and ctrl != null:
+				last_kicker = ctrl; _goal(0)
 		"end_match":
 			if test_hook and screen == S_PLAY and state == LIVE:
 				half = 2; clock = HALF_SECS - 0.3
@@ -579,6 +600,11 @@ func _notification(what: int) -> void:
 		_set_menu(not hud.menu_open)
 	# E6.5: save at once when the app is paused, loses focus or closes
 	if SaveStore.is_save_moment(what) and store != null and teams.size() > 0: _write_save()   # E6.5
+	# v0.2.3: a match pauses itself when the game loses focus (a call, another app, another tab)
+	var lost := what == NOTIFICATION_APPLICATION_FOCUS_OUT or what == NOTIFICATION_APPLICATION_PAUSED or what == NOTIFICATION_WM_WINDOW_FOCUS_OUT
+	if lost and hud != null and not bot \
+			and screen == S_PLAY and not attract and state != OVER and not hud.menu_open:
+		_set_menu(true)
 
 # ---------- match setup ----------
 
@@ -588,7 +614,7 @@ func _kit_clash(a: Dictionary, b: Dictionary) -> bool:
 
 func start_match(t0: int, t1: int, prac: bool, is_human: bool) -> void:
 	for c in players_root.get_children(): c.queue_free()
-	team_ix = [t0, t1]; practice = prac; human = is_human; attract = false
+	team_ix = [t0, t1]; practice = prac; human = is_human; attract = false; goals = []
 	pl = [[], []]; all = []
 	var kits := [teams[t0].home, teams[t1].home]
 	if _kit_clash(kits[0], kits[1]): kits[1] = teams[t1].away
@@ -988,6 +1014,8 @@ func _goal(side: int) -> void:
 	score[side] += 1
 	state = GOAL; state_t = 0.0; carrier = null; pass_to = null; charge = -1.0
 	rs_side = 1 - side
+	var scorer := last_kicker.pname if last_kicker != null and last_kicker.side == side else "Own goal"
+	goals.append({"side": side, "name": scorer, "min": int(((half - 1) * HALF_SECS + clock) / 60.0) + 1})
 	if bot and verbose: print("  goal side %d at %d:%02d of half %d" % [side, int(clock) / 60, int(clock) % 60, half])
 	if human:
 		sfx("cheer")
@@ -1009,7 +1037,9 @@ func _full_time() -> void:
 	var tot: float = maxf(0.1, poss_t[0] + poss_t[1])
 	var head := "You win" if a > b else ("You lose this one" if a < b else "A draw")
 	hud.over_title.text = "FULL TIME"
-	var txt := "%s\n%s  %d - %d  %s\nShots %d - %d      Possession %d%% - %d%%\n" % [head, teams[team_ix[0]].name, a, b, teams[team_ix[1]].name, shots[0], shots[1], int(round(poss_t[0] / tot * 100.0)), int(round(poss_t[1] / tot * 100.0))]
+	var txt := "%s\n%s  %d - %d  %s\n" % [head, teams[team_ix[0]].name, a, b, teams[team_ix[1]].name]
+	txt += _scorers_text()
+	txt += "Shots %d - %d      Possession %d%% - %d%%\n" % [shots[0], shots[1], int(round(poss_t[0] / tot * 100.0)), int(round(poss_t[1] / tot * 100.0))]
 	if mode == "league":
 		var lg: Dictionary = save.league
 		var rows := _table()
@@ -1018,6 +1048,16 @@ func _full_time() -> void:
 	else:
 		txt += "Your record: %d wins, %d draws, %d losses" % [save.wins, save.draws, save.losses]
 	hud.show_over(txt, mode == "league")
+
+## Goal scorers with the minute of the match (1 to 6), one line per club that scored. Empty when nobody scored.
+func _scorers_text() -> String:
+	var out := ""
+	for side: int in [0, 1]:
+		var parts: Array[String] = []
+		for g: Dictionary in goals:
+			if int(g.side) == side: parts.append("%s %d'" % [g.name, int(g.min)])
+		if not parts.is_empty(): out += "%s: %s\n" % [teams[team_ix[side]].abbr, ", ".join(parts)]
+	return out
 
 # ---------- movement ----------
 
@@ -1322,7 +1362,8 @@ func _test_state() -> Dictionary:
 	elif screen == S_MODES: phase = 20
 	elif screen == S_LEAGUE: phase = 21
 	var d := {"phase": phase, "half": half, "clock": snappedf(clock, 0.1), "score": score, "ball": [snappedf(bpos.x, 0.1), snappedf(bpos.y, 0.1), snappedf(bpos.z, 0.1)],
-		"carrier": carrier.side if carrier != null else -1, "mine": carrier != null and carrier == ctrl, "practice": practice, "menu": hud.menu_open, "touch": hud.touch_seen,
+		"carrier": carrier.side if carrier != null else -1, "mine": carrier != null and carrier == ctrl, "practice": practice, "menu": hud.menu_open, "touch": hud.touch_seen, "quit_armed": hud.quit_armed, "text_large": _text_large(), "goals": goals.size(), "over_text": hud.over_lbl.text if hud.over_panel.visible else "",
+		"focus": (str(get_viewport().gui_get_focus_owner().name) + "|" + str((get_viewport().gui_get_focus_owner() as Button).text)) if get_viewport().gui_get_focus_owner() is Button else "",
 		"ctrl": [snappedf(ctrl.pos.x, 0.1), snappedf(ctrl.pos.y, 0.1)] if ctrl != null else [], "shots": shots, "counts": counts, "paused": paused, "mode": mode,
 		"league_md": int(save.league.get("md", -1)), "league_results": (save.league.get("results", []) as Array).size(), "league_club": str(save.league.get("club", "")),
 		"seasons": int(save.seasons), "best_finish": int(save.best_finish), "wins": int(save.wins), "draws": int(save.draws), "losses": int(save.losses)}

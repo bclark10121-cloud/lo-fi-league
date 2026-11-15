@@ -1,6 +1,6 @@
 # Lo-Fi League: backlog
 
-Updated 2026-11-15 for v0.2.2. Brian decides the order.
+Updated 2026-11-15 for v0.2.3. Brian decides the order.
 
 ## Done
 
@@ -31,10 +31,11 @@ Updated 2026-11-15 for v0.2.2. Brian decides the order.
 - End-to-end test of the live game page: two full seasons, reloads, practice, exhibition and phone-size screens (`tests/e2e_test.py`).
 - v0.2.2: play with only an Xbox controller (G5.8, Brian 2026-11-15). A chooses and B goes back in every menu, View and Menu toggle the Menu, Xbox button names, connect steps on the game page, pretend controller test (`tests/pad_test.py`). Version code 5.
 - v0.2.2: shared kit 1.5.0. Saves keep a backup and never load a newer save (E6.7). Test hooks only with `?test` (G7.8). Secrets check in the test gate (G1.9). Game Shelf link in the footer (G1.10).
+- v0.2.3 comfort release (Brian, 2026-11-15: "use your best judgement on what qol features to add next"). Ideas 30 (bigger text on phones, Text in the Menu), 34 (Quit check in a league match), 35 (remember the last mode and club) and 36 (goal scorers and minutes at full time). Also: the match pauses itself when the game loses focus, and the Menu row wraps instead of running under Close. New `tests/qol_test.py`. Version code 6.
 
 ## Now
 
-- Brian plays v0.2.2 with an Xbox controller and reports how the league and the matches feel.
+- Brian plays v0.2.3 on his phone and with an Xbox controller and reports how the text size, the league and the matches feel.
 - Brian picks the next release from the ideas below.
 
 ## Asked for by Brian, not built yet
@@ -75,13 +76,13 @@ Nothing open.
 
 Quality of life (from the 2026-11-14 end-to-end run)
 
-30. Bigger text on phones. The table, full time and menu text read small on a 915 x 412 screen. Scale the panels up on short screens.
+30. Done in v0.2.3: bigger text on phones.
 31. Camera zoom setting: Near, Normal and Far. Closer by default on phones, where the players look small.
 32. An arrow at the screen edge when the ball is off screen. The name of the player you control shows for a second after a switch.
 33. Pass aim line: a short arrow shows who gets the ball before you pass.
-34. A check before Quit to title in a league match: "This match will not count".
-35. Remember the last mode and club. Start goes straight to them, one press from the title to the table.
-36. Goal scorers and the minute of each goal on the full time screen.
+34. Done in v0.2.3: Quit check in a league match.
+35. Done in v0.2.3: remember the last mode and club.
+36. Done in v0.2.3: goal scorers and minutes at full time.
 37. Now playing: the track name shows for 3 seconds when a track starts. Next track in the Menu.
 38. Solid panels behind the table and menus, so the match behind them does not show through.
 39. Fixtures screen: the whole season's fixtures and results, from the table screen.

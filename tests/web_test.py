@@ -34,7 +34,7 @@ async def main():
             await key("Enter"); await wait_phase([LEAGUE]); await pg.wait_for_timeout(900); await shot("07_league_after")
             # exhibition
             await cmd("league_back"); await wait_phase([MODES])
-            await key("Enter"); await wait_phase([TEAMS]); await pg.wait_for_timeout(700); await shot("08_clubs")
+            await cmd("mode_exhibition"); await wait_phase([TEAMS])   # v0.2.3: the last mode played has the focus, so pick by name; await pg.wait_for_timeout(700); await shot("08_clubs")
             await key("Enter"); await wait_phase([RESTART, LIVE]); await pg.wait_for_timeout(500); await shot("09_kickoff")
             s = await wait_for(lambda s: s["phase"] == LIVE and s["mine"], 20, "player has the ball at kickoff")
             # dribble forward

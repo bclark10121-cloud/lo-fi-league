@@ -6,7 +6,7 @@ Game page (play in the browser or download the Android APK): https://bclark10121
 
 ## Status
 
-v0.2.2: play with only an Xbox controller. League mode with a 7 matchday season and a table, exhibition matches against the computer, eight fictional clubs, four formations, throw-ins, corners, goal kicks and a Practice mode.
+v0.2.3: bigger text on phones, auto pause and goal scorers at full time. Play with only an Xbox controller. League mode with a 7 matchday season and a table, exhibition matches against the computer, eight fictional clubs, four formations, throw-ins, corners, goal kicks and a Practice mode.
 
 ## Standards
 

@@ -4,7 +4,7 @@ Standards: `GAME_STANDARDS.md` (rule ids start with G) and `ENGINEERING_STANDARD
 This file lists where this game does something else, and why. A rule not listed here applies in full.
 Order of authority: Brian in the chat, then this file, then the standards.
 
-Last reviewed: v0.2.2 (2026-11-15). First engineering audit on 2026-11-14. v0.2.2 ships G1.9, G7.8, E6.7, G5.8 and kit 1.5.0.
+Last reviewed: v0.2.3 (2026-11-15). First engineering audit on 2026-11-14. v0.2.2 ships G1.9, G7.8, E6.7, G5.8 and kit 1.5.0.
 Checked against: game-standards version 2026-11-15 (commit b2c2865). Shared kit 1.5.0 (`common.lock`).
 
 ## Overrides
@@ -60,23 +60,23 @@ Game standards:
 - G1.7: one public repo. No private repo for this game. The key comes from `game-signing` at build time and lives in a folder outside the repo.
 - G1.10: the game page footer links to The Game Shelf at https://bclark10121-cloud.github.io/. Lo-Fi League has its card there. The card reads its version from the version line.
 - G1.11: no person's name on the game page (done 2026-11-15 in commit 0332d0a). The repo description was not checked from here.
-- G2.7: v0.2.2 put a fresh 960 x 540 screenshot on the Game Shelf card in the same release. The card text did not change. The card shows version 0.2.2.
+- G2.7: each release puts a fresh 960 x 540 screenshot on the Game Shelf card in the same push (v0.2.2 and v0.2.3). The card text did not change. The card shows the version from the version line.
 - G1.9: no key, keystore, password or token in the repo. `bash tools/common/check_secrets.sh` is in the test gate and prints `SECRETS check ok`. `.gitignore` blocks `signing.properties` and `game-signing/`. The game reads the key from a fresh copy of `game-signing` (new password from 2026-11-15).
-- G1.8: the line under the buttons reads exactly `Version 0.2.2. Release notes · Backlog · Source on GitHub`. It matches the title card and the APK name (shared page check).
-- G2.3: `LoFiLeague-v0.2.2.apk` built, arm64, package `com.brianclark.lofileague`, version code 5.
-- G2.4: `BACKLOG.md` updated for v0.2.2.
+- G1.8: the line under the buttons reads exactly `Version 0.2.3. Release notes · Backlog · Source on GitHub`. It matches the title card and the APK name (shared page check).
+- G2.3: `LoFiLeague-v0.2.3.apk` built, arm64, package `com.brianclark.lofileague`, version code 6.
+- G2.4: `BACKLOG.md` updated for v0.2.3.
 - G2.5: `tools/common/make_handoff.sh ../game-standards` builds the handoff zip from `game-standards` plus this game's files.
-- G2.6: the game page has the version line and the APK link. `docs/release-notes/v0.2.2.md` says what is new and has a test checklist.
+- G2.6: the game page has the version line and the APK link. `docs/release-notes/v0.2.3.md` says what is new and has a test checklist.
 - G4.2: four pillars in `CLAUDE.md`, confirmed by Brian 2026-11-14.
 - G4.6: `BACKLOG.md` has Done, Now, Asked for by Brian, Ideas to choose from (numbered), Later, Not planned and Decisions.
-- G5.1: Menu button at the top right opens Resume, How to play, Sound, Music, Restart match and Quit to title in a row. It reads Close while open. Esc toggles it (headless Chrome). Controller Back is wired, not tested on a controller.
+- G5.1: Menu button at the top right opens Resume, How to play, Sound, Music, Restart match and Quit to title in a row. It reads Close while open. Esc toggles it (headless Chrome). Controller Back is wired, not tested on a controller. From v0.2.3 the row wraps onto a second line when it is too wide, which happens only with Large text on a desktop-size screen. On phones it stays one row.
 - G5.3: drag on the left half to move, three buttons on the right. Shows and hides as E5.4 says (end-to-end test).
 - G5.8: `InputSetup.add_controller_ui()` from kit 1.5.0. A chooses, B goes back, View and Menu toggle the Menu. The title card, How to play and the game page use Xbox button names. The game page has the Play with an Xbox controller section. `tests/pad_test.py` plays with a pretend Xbox controller and prints `errors []`. Not tried with a real controller.
 - G5.4, G5.5: title card shows the name, version line, one line on the game, keyboard, controller and touch controls and a Start button.
 - G5.6: the save file `user://lofi_league.json` (`v: 1`) is read and written by the shared `save_store.gd`. Each field loads with a safe default. Number fields stay numbers across a reload (rules check on disk, end-to-end reload check). This fixed a v0.2.0 bug where wins, draws, losses, seasons, titles and best finish reset on reload.
 - G6.1: sensor landscape, 1280 x 720 base. Renderer and stretch as E2.1 and E5.1 say. Physics engine as override row 5 says.
-- G6.2: Web (no threads) and Android (arm64) export presets. Version code raised to 5 for v0.2.2.
-- G6.3: v0.2.2 is signed with `wandervalley.jks` from `game-signing`. The signature SHA-256 starts with `5db69ffb`.
+- G6.2: Web (no threads) and Android (arm64) export presets. Version code raised to 6 for v0.2.3.
+- G6.3: v0.2.3 is signed with `wandervalley.jks` from `game-signing`. The signature SHA-256 starts with `5db69ffb`.
 - G6.4: the pitch, goals, stands, skyline and players are built in code. Repeated scenery is open item E3.2.
 - G6.5: pitch lines are painted into one ground texture. The outer ground sits 0.6 yards below the pitch. The control ring is a raised mesh.
 - G7.3: `tests/web_test.py` and `tests/e2e_test.py` load the web build in headless Chrome and print `errors []`. Screenshots viewed. Both use the shared `tests/common/webkit.py`.
@@ -88,7 +88,7 @@ Game standards:
 - G8.4: eight fictional clubs, original player names, kits and formations. Nothing from the reference game is in the repo.
 - G10.1, G10.2: shared kit 1.5.0 pulled (1.1.0 at v0.2.1) into `addons/bc_common/`, `tools/common/` and `tests/common/`. `common.lock` names the version and commit. This game's own copies of the handoff script, Patch.gg fetcher and sound maker were removed.
 - G10.3: `bash tools/common/sync_common.sh --check .` is in the test gate and prints `COMMON check ok: 1.5.0 b2c2865`.
-- G10.4: the v0.2.2 release notes name kit 1.5.0.
+- G10.4: the v0.2.3 release notes name kit 1.5.0.
 - G10.5: the shared save store and test bridge came from this game. No other proposals yet.
 
 Engineering standards:
@@ -113,7 +113,7 @@ Proposed rules this game already follows (not in force, listed for Brian):
 - G4.9: clubs, formations and the league are data in `data/teams.json`, `data/formations.json` and `data/league.json`.
 - G6.7: the signing key was fetched only after Brian said so in the chat (2026-11-14). It now comes from `game-signing` and lives outside the repo.
 - G7.6: `--bot --games=6` plays six full matches and prints each result. `--bot --rules` checks every restart and the league schedule, table, simulated scores and save file. `--bot --season` plays a full season. The browser tests read `window.lofi` instead of guessing wait times.
-- G7.7: the engineering release checklist was ticked for v0.2.2 and this file was reviewed.
+- G7.7: the engineering release checklist was ticked for v0.2.3 and this file was reviewed.
 - E5.5: the game caps the frame step and takes up to three smaller steps per frame.
 
 ## Not in use in this game

@@ -26,7 +26,7 @@ async def main():
         play = PAGE + "play/index.html?test"
         await r.open(play)
         async def to_league_from_title():
-            await key("Enter"); await wait_phase([MODES]); await key("ArrowDown"); await key("Enter")
+            await key("Enter"); await wait_phase([MODES]); await cmd("mode_league")   # v0.2.3: the last mode played has the focus, so pick by name
             return await wait_phase([LEAGUE, TEAMS])
         t0 = time.time()
         await wait_phase([TITLE], 120); await pg.wait_for_timeout(1500); await shot("01_title")
@@ -41,6 +41,8 @@ async def main():
         check(s["mode"] == "league", "Play matchday 1 starts a league match")
         await cmd("restart"); s = await wait_phase([LIVE]); await pg.wait_for_timeout(500); s = await st()
         check(s["mode"] == "league" and s["league_md"] == 0, "Restart match keeps the same fixture and records nothing")
+        await cmd("title"); s = await r.wait_for(lambda s: s.get("quit_armed"), 10, "the quit check")
+        check(s["phase"] in (RESTART, LIVE) and s.get("quit_armed"), "one press of Quit to title in a league match only asks: It will not count (v0.2.3)")
         await cmd("title"); s = await wait_phase([TITLE])
         check(s["league_md"] == 0 and s["league_results"] == 0, "Quit to title during a league match records nothing")
         s = await to_league_from_title()
@@ -61,7 +63,7 @@ async def main():
         await key("Enter"); s = await wait_phase([TEAMS])
         check(s["phase"] == TEAMS, "New season opens the club picker")
         await key("Enter"); s = await wait_phase([LEAGUE])
-        check(s["league_md"] == 0 and s["league_results"] == 0 and s["league_club"] == "tapedeck", "season 2 starts at matchday 1 with Tape Deck Rovers")
+        check(s["league_md"] == 0 and s["league_results"] == 0 and s["league_club"] == "rainy", "season 2 starts at matchday 1 with the last club played, Rainy Window United (v0.2.3 remembers it)")
         # Start over: one press does nothing, two presses start over
         await key("Enter"); await wait_phase([LIVE]); await cmd("end_match", 300); await wait_phase([OVER]); await key("Enter"); s = await wait_phase([LEAGUE])
         check(s["league_md"] == 1, "season 2 matchday 1 recorded")
@@ -70,21 +72,21 @@ async def main():
         await key("Enter", 600); s = await wait_phase([TEAMS])
         check(s["league_md"] == -1, "a second press of Start over clears the season and opens the club picker")
         await key("ArrowRight"); await key("Enter"); s = await wait_phase([LEAGUE])
-        check(s["league_club"] == "vinyl" and s["league_md"] == 0, "a fresh season starts with Midnight Vinyl FC")
+        check(s["league_club"] == "static" and s["league_md"] == 0, "a fresh season starts with Sunday Static, one step right of the last club")
         await key("Enter"); await wait_phase([LIVE]); await cmd("end_match", 300); await wait_phase([OVER]); await key("Enter"); await wait_phase([LEAGUE])
         # reload keeps the season. Wait until the save reaches browser storage first: headless Chrome draws 1 or 2
         # frames a second and Godot syncs over many frames (about half a second on a real device)
-        took = await r.wait_saved(['"club":"vinyl"', '"md":1,', '"seasons":1'])
+        took = await r.wait_saved(['"club":"static"', '"md":1,', '"seasons":1'])
         r.notes.append("save reached browser storage in %.0fs" % took)
         await pg.goto(play); s = await wait_phase([TITLE], 120)
-        check(s["league_md"] == 1 and s["league_club"] == "vinyl", "a reload right after a match keeps the season (md %s club %s)" % (s["league_md"], s["league_club"]))
+        check(s["league_md"] == 1 and s["league_club"] == "static", "a reload right after a match keeps the season (md %s club %s)" % (s["league_md"], s["league_club"]))
         check(s["seasons"] == 1 and s["best_finish"] > 0, "a reload keeps the records: seasons %s, best finish %s" % (s["seasons"], s["best_finish"]))
         # ---------- 3. practice and exhibition ----------
         await key("Enter"); await wait_phase([MODES]); await pg.wait_for_timeout(500); await shot("07_modes")
-        await key("ArrowDown"); await key("ArrowDown"); await key("Enter"); await wait_phase([TEAMS]); await key("Enter")
+        await cmd("mode_practice"); await wait_phase([TEAMS]); await key("Enter")
         s = await wait_phase([LIVE]); await pg.wait_for_timeout(3000); s = await st(); await shot("08_practice")
         check(s["practice"] and s["mode"] == "practice" and s["clock"] == 0, "practice runs with no clock (clock %s)" % s["clock"])
-        await cmd("title"); await wait_phase([TITLE]); await key("Enter"); await wait_phase([MODES]); await key("Enter"); await wait_phase([TEAMS]); await key("Enter")
+        await cmd("title"); await wait_phase([TITLE]); await key("Enter"); await wait_phase([MODES]); await cmd("mode_exhibition"); await wait_phase([TEAMS]); await key("Enter")
         s = await wait_phase([LIVE]); await pg.keyboard.down("d"); await pg.wait_for_timeout(1500); await pg.keyboard.up("d"); await shot("09_exhibition")
         await cmd("end_match", 300); s = await wait_phase([OVER]); await pg.wait_for_timeout(700); await shot("10_exhibition_full_time")
         check(s["mode"] == "exhibition" and s["league_md"] == 1, "an exhibition match never touches the league (md %s)" % s["league_md"])
@@ -100,6 +102,7 @@ async def main():
         s = await st(); shown = s["touch"]
         await key("d", 400); s = await st()
         check(shown and not s["touch"], "touch controls show on a touch and hide on a key press (E5.4)")
+        await cmd("title"); await r.wait_for(lambda s: s.get("quit_armed"), 10, "the quit check")   # a league match quits on the second press (v0.2.3)
         await cmd("title"); await wait_phase([TITLE])
         r.notes.append("total %.0fs" % (time.time() - t0))
     print(r.report())
