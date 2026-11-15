@@ -1,6 +1,6 @@
 # Lo-Fi League: backlog
 
-Updated 2026-11-14 for v0.2.1. Brian decides the order.
+Updated 2026-11-15 for v0.2.2. Brian decides the order.
 
 ## Done
 
@@ -29,10 +29,12 @@ Updated 2026-11-14 for v0.2.1. Brian decides the order.
 - v0.2.1: season saves at once in the browser and on Android (E6.4, E6.5). Records no longer reset on reload. Touch controls hide on key or gamepad input (E5.4). Version code 4.
 - v0.2.1: moved to one source. Standards read from `game-standards`, shared kit 1.1.0 pulled, key from `game-signing`, version line under the buttons on the game page (G1.8, Tiny Titans layout).
 - End-to-end test of the live game page: two full seasons, reloads, practice, exhibition and phone-size screens (`tests/e2e_test.py`).
+- v0.2.2: play with only an Xbox controller (G5.8, Brian 2026-11-15). A chooses and B goes back in every menu, View and Menu toggle the Menu, Xbox button names, connect steps on the game page, pretend controller test (`tests/pad_test.py`). Version code 5.
+- v0.2.2: shared kit 1.5.0. Saves keep a backup and never load a newer save (E6.7). Test hooks only with `?test` (G7.8). Secrets check in the test gate (G1.9). Game Shelf link in the footer (G1.10).
 
 ## Now
 
-- Brian plays v0.2.1 and reports how the league and the matches feel.
+- Brian plays v0.2.2 with an Xbox controller and reports how the league and the matches feel.
 - Brian picks the next release from the ideas below.
 
 ## Asked for by Brian, not built yet

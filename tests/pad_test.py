@@ -32,7 +32,10 @@ async def main():
             s = await r.state(); r.check(bool(s.get("touch")), "touch controls show after a touch")
             s = await r.wait_for(lambda s: s["phase"] == LIVE and s["ctrl"], 30, "live play with a controlled player")
             x0 = s["ctrl"][0] if s.get("ctrl") else 0.0
-            await r.pad_stick(1.0, 0.0, 2500); s = await r.state(); await r.shot("p3_stick")
+            # hold the stick right until the player has moved, so a slow test browser does not fail it (up to 10 seconds)
+            await r.page.evaluate("() => window.__pad_axes(1, 0)")
+            s = await r.wait_for(lambda s: s.get("ctrl") and s["ctrl"][0] > x0 + 1.0, 10, "the player moving right")
+            await r.page.evaluate("() => window.__pad_axes(0, 0)"); await r.shot("p3_stick")
             x1 = s["ctrl"][0] if s.get("ctrl") else -99.0
             r.check(x1 > x0 + 1.0, "the left stick moves the player (x %.1f -> %.1f)" % (x0, x1))
             r.check(not s.get("touch"), "touch controls hide when the controller is used")

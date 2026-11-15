@@ -11,7 +11,7 @@ const SaveStore := preload("res://addons/bc_common/save_store.gd")
 const TestBridge := preload("res://addons/bc_common/test_bridge.gd")
 const InputSetup := preload("res://addons/bc_common/input_setup.gd")
 
-const VERSION := "0.2.1"
+const VERSION := "0.2.2"
 const HL := 30.0
 const HW := 20.0
 const GOAL_HW := 3.0

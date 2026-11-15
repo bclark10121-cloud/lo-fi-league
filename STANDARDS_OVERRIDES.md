@@ -4,7 +4,7 @@ Standards: `GAME_STANDARDS.md` (rule ids start with G) and `ENGINEERING_STANDARD
 This file lists where this game does something else, and why. A rule not listed here applies in full.
 Order of authority: Brian in the chat, then this file, then the standards.
 
-Last reviewed: v0.2.1 (2026-11-14). First engineering audit on the same date. Standards updates on 2026-11-15: G1.9, G7.8 and kit 1.3.0, then E6.7 and kit 1.4.0.
+Last reviewed: v0.2.2 (2026-11-15). First engineering audit on 2026-11-14. v0.2.2 ships G1.9, G7.8, E6.7, G5.8 and kit 1.5.0.
 Checked against: game-standards version 2026-11-15 (commit b2c2865). Shared kit 1.5.0 (`common.lock`).
 
 ## Overrides
@@ -24,9 +24,6 @@ Game standards:
 
 - G5.2: the sprint bar and the shot power meter sit on screen with the scoreboard. They are counted as status readouts. Brian to confirm.
 - G6.6: players, ball, posts and crossbar collide by plain maths. The nets do not catch the ball. A goal ends the play at the line.
-- G7.8: the source uses kit 1.3.0, so `window.lofi` and `window.lofi_cmd` work only with the whole-word `?test` flag. The live browser build in `docs/play/` is still the v0.2.1 build with kit 1.1.0. Its bridge switches on for any page address that contains the letters "test", such as `?contest`. The next release build ships the fix. No new build was pushed for this update (Brian, 2026-11-15).
-- G10.4: the next release notes name kit 1.5.0.
-- G5.8: the source meets it (see Rules met). The live v0.2.1 build cannot choose a menu button with A, because Godot 4.6 gives A no menu action. With only a controller, a player cannot press Start on the title card. The game page says so and names the next version as the fix. It reaches players with the next release. The v0.2.1 notes name kit 1.1.0.
 
 Engineering standards (from the first audit, 2026-11-14):
 
@@ -63,35 +60,35 @@ Game standards:
 - G1.7: one public repo. No private repo for this game. The key comes from `game-signing` at build time and lives in a folder outside the repo.
 - G1.10: the game page footer links to The Game Shelf at https://bclark10121-cloud.github.io/. Lo-Fi League has its card there. The card reads its version from the version line.
 - G1.11: no person's name on the game page (done 2026-11-15 in commit 0332d0a). The repo description was not checked from here.
-- G2.7: the dashboard card step is in the `CLAUDE.md` delivery list. It runs with the next release.
+- G2.7: v0.2.2 put a fresh 960 x 540 screenshot on the Game Shelf card in the same release. The card text did not change. The card shows version 0.2.2.
 - G1.9: no key, keystore, password or token in the repo. `bash tools/common/check_secrets.sh` is in the test gate and prints `SECRETS check ok`. `.gitignore` blocks `signing.properties` and `game-signing/`. The game reads the key from a fresh copy of `game-signing` (new password from 2026-11-15).
-- G1.8: the line under the buttons reads exactly `Version 0.2.1. Release notes · Backlog · Source on GitHub`. It matches the title card and the APK name (shared page check).
-- G2.3: `LoFiLeague-v0.2.1.apk` built, arm64, package `com.brianclark.lofileague`, version code 4.
-- G2.4: `BACKLOG.md` updated for v0.2.1.
+- G1.8: the line under the buttons reads exactly `Version 0.2.2. Release notes · Backlog · Source on GitHub`. It matches the title card and the APK name (shared page check).
+- G2.3: `LoFiLeague-v0.2.2.apk` built, arm64, package `com.brianclark.lofileague`, version code 5.
+- G2.4: `BACKLOG.md` updated for v0.2.2.
 - G2.5: `tools/common/make_handoff.sh ../game-standards` builds the handoff zip from `game-standards` plus this game's files.
-- G2.6: the game page has the version line and the APK link. `docs/release-notes/v0.2.1.md` says what is new and has a test checklist.
+- G2.6: the game page has the version line and the APK link. `docs/release-notes/v0.2.2.md` says what is new and has a test checklist.
 - G4.2: four pillars in `CLAUDE.md`, confirmed by Brian 2026-11-14.
 - G4.6: `BACKLOG.md` has Done, Now, Asked for by Brian, Ideas to choose from (numbered), Later, Not planned and Decisions.
 - G5.1: Menu button at the top right opens Resume, How to play, Sound, Music, Restart match and Quit to title in a row. It reads Close while open. Esc toggles it (headless Chrome). Controller Back is wired, not tested on a controller.
 - G5.3: drag on the left half to move, three buttons on the right. Shows and hides as E5.4 says (end-to-end test).
-- G5.8 (source): `InputSetup.add_controller_ui()` from kit 1.5.0. A chooses, B goes back, View and Menu toggle the Menu. The title card, How to play and the game page use Xbox button names. The game page has the Play with an Xbox controller section. `tests/pad_test.py` plays with a pretend Xbox controller and prints `errors []`. Not tried with a real controller.
+- G5.8: `InputSetup.add_controller_ui()` from kit 1.5.0. A chooses, B goes back, View and Menu toggle the Menu. The title card, How to play and the game page use Xbox button names. The game page has the Play with an Xbox controller section. `tests/pad_test.py` plays with a pretend Xbox controller and prints `errors []`. Not tried with a real controller.
 - G5.4, G5.5: title card shows the name, version line, one line on the game, keyboard, controller and touch controls and a Start button.
 - G5.6: the save file `user://lofi_league.json` (`v: 1`) is read and written by the shared `save_store.gd`. Each field loads with a safe default. Number fields stay numbers across a reload (rules check on disk, end-to-end reload check). This fixed a v0.2.0 bug where wins, draws, losses, seasons, titles and best finish reset on reload.
 - G6.1: sensor landscape, 1280 x 720 base. Renderer and stretch as E2.1 and E5.1 say. Physics engine as override row 5 says.
-- G6.2: Web (no threads) and Android (arm64) export presets. Version code raised to 4 for v0.2.1.
-- G6.3: v0.2.1 is signed with `wandervalley.jks` from `game-signing`. The signature SHA-256 starts with `5db69ffb`.
+- G6.2: Web (no threads) and Android (arm64) export presets. Version code raised to 5 for v0.2.2.
+- G6.3: v0.2.2 is signed with `wandervalley.jks` from `game-signing`. The signature SHA-256 starts with `5db69ffb`.
 - G6.4: the pitch, goals, stands, skyline and players are built in code. Repeated scenery is open item E3.2.
 - G6.5: pitch lines are painted into one ground texture. The outer ground sits 0.6 yards below the pitch. The control ring is a raised mesh.
 - G7.3: `tests/web_test.py` and `tests/e2e_test.py` load the web build in headless Chrome and print `errors []`. Screenshots viewed. Both use the shared `tests/common/webkit.py`.
 - G7.4: the live game page, every link and the version line were checked after the push with the shared `tests/common/page_check.py`.
 - G7.5: stated in the release notes and the report to Brian.
-- G7.8 (source): test state and commands come only from the shared `test_bridge.gd` (kit 1.3.0) with the whole-word `?test` flag. The only other test switches are command line flags (`--bot`, `--rules`, `--games`, `--season`). The Android build takes no test commands. Headless bots never write the player's save (`store.disabled`). The live build is an open item.
+- G7.8: test state and commands come only from the shared `test_bridge.gd` (kit 1.3.0) with the whole-word `?test` flag. The only other test switches are command line flags (`--bot`, `--rules`, `--games`, `--season`). The Android build takes no test commands. Headless bots never write the player's save (`store.disabled`). Shipped in v0.2.2.
 - G8.1: four CC0 lo-fi tracks by Holizna, found through Patch.gg.
 - G8.3: `CREDITS.md` lists every outside asset with its source and licence.
 - G8.4: eight fictional clubs, original player names, kits and formations. Nothing from the reference game is in the repo.
 - G10.1, G10.2: shared kit 1.5.0 pulled (1.1.0 at v0.2.1) into `addons/bc_common/`, `tools/common/` and `tests/common/`. `common.lock` names the version and commit. This game's own copies of the handoff script, Patch.gg fetcher and sound maker were removed.
 - G10.3: `bash tools/common/sync_common.sh --check .` is in the test gate and prints `COMMON check ok: 1.5.0 b2c2865`.
-- G10.4: the v0.2.1 release notes name kit 1.1.0.
+- G10.4: the v0.2.2 release notes name kit 1.5.0.
 - G10.5: the shared save store and test bridge came from this game. No other proposals yet.
 
 Engineering standards:
@@ -107,7 +104,7 @@ Engineering standards:
 - E6.2: music and crowd start only after the first press of Start.
 - E6.4: from v0.2.1 the shared `save_store.gd` writes the save. The browser calls `JavaScriptBridge.force_fs_sync()`. Android writes a temp file and renames it. The end-to-end test proves a reload after a match keeps it once the save reaches browser storage. In headless Chrome that takes up to about 45 seconds because it draws 1 or 2 frames a second. On a real device it takes about half a second (measured by frame rate, not on a device).
 - E6.5: from v0.2.1 the game saves on `NOTIFICATION_APPLICATION_PAUSED`, `NOTIFICATION_APPLICATION_FOCUS_OUT` and `NOTIFICATION_WM_CLOSE_REQUEST`.
-- E6.7: saves are read and written only by the kit's `save_store.gd` 1.4.0. Known keys and kinds only, counters clamped by `store.limits`, a 1 MB cap, a version guard and a `.bak` copy. The game has no backup codes and no delete-save button. The rules check deletes its own test file with `erase()`. `save_store_check.gd` prints `SAVESTORE check ok`. The live v0.2.1 browser build and APK still carry kit 1.1.0. They get this at the next release.
+- E6.7: saves are read and written only by the kit's `save_store.gd` 1.4.0. Known keys and kinds only, counters clamped by `store.limits`, a 1 MB cap, a version guard and a `.bak` copy. The game has no backup codes and no delete-save button. The rules check deletes its own test file with `erase()`. `save_store_check.gd` prints `SAVESTORE check ok`. Shipped in v0.2.2.
 - E6.6: `quit_on_go_back = false`. The Android back button opens and closes the Menu.
 
 Proposed rules this game already follows (not in force, listed for Brian):
@@ -116,7 +113,7 @@ Proposed rules this game already follows (not in force, listed for Brian):
 - G4.9: clubs, formations and the league are data in `data/teams.json`, `data/formations.json` and `data/league.json`.
 - G6.7: the signing key was fetched only after Brian said so in the chat (2026-11-14). It now comes from `game-signing` and lives outside the repo.
 - G7.6: `--bot --games=6` plays six full matches and prints each result. `--bot --rules` checks every restart and the league schedule, table, simulated scores and save file. `--bot --season` plays a full season. The browser tests read `window.lofi` instead of guessing wait times.
-- G7.7: the engineering release checklist was ticked for v0.2.1 and this file was reviewed.
+- G7.7: the engineering release checklist was ticked for v0.2.2 and this file was reviewed.
 - E5.5: the game caps the frame step and takes up to three smaller steps per frame.
 
 ## Not in use in this game
