@@ -31,6 +31,7 @@ This game has an opponent and a final score. Override rows for G4.1 and G4.4 in 
 - A season is saved under `league` in the save file. Quitting a league match never records it.
 - Save file is `user://lofi_league.json`, format `v: 1`, written with the shared `addons/bc_common/save_store.gd`. Only add fields, each with a safe default. The kit keeps the last good save as `lofi_league.json.bak`, clamps the counters to `store.limits` and never loads a save with a higher `v` (E6.7). Delete a save only with `store.erase()`. v0.2.0 added `league`, `seasons`, `titles` and `best_finish`.
 - The browser test state comes from the shared `addons/bc_common/test_bridge.gd` as `window.lofi` and `window.lofi_cmd`.
+- Xbox controller (G5.8): `main.gd` calls `InputSetup.add_controller_ui()` at startup so A chooses the focused menu button. B goes back on the modes, club picker and league screens and closes the Menu. In play B shoots or tackles. View and Menu both toggle the Menu. Player-facing text uses Xbox button names.
 - Every outside asset goes in `CREDITS.md` with its licence. Music comes from the Patch.gg library (G8.1).
 
 ## Test gate
@@ -42,6 +43,7 @@ This game has an opponent and a final score. Override rows for G4.1 and G4.4 in 
 - `godot --headless --path . -- --bot --rules` must print `RULES done, 0 failed`.
 - `godot --headless --path . -- --bot --games=6` must finish every match and print `BOT done`. Typical scores sit between 0 and 7 a side.
 - `godot --headless --path . -- --bot --season` must play a full league season through the real league path and print `SEASON done`.
+- `python3 tests/pad_test.py <web folder> <shots folder>` must print `errors []` (G5.8). A pretend Xbox controller plays from the title card into a match and through the Menu with no keyboard or touch.
 - `python3 tests/web_test.py <web folder> <shots folder>` must print `errors []`. View the screenshots. In `?test` mode the page reports `window.lofi` and runs one menu action from `window.lofi_cmd`.
 - `python3 tests/e2e_test.py <game page url> <shots folder>` must print `errors []`. It plays two league seasons, reloads, plays practice and exhibition and checks phone-size screens. Run it on a local copy of `docs/` before the push and on the live page after.
 - `python3 tests/common/page_check.py https://bclark10121-cloud.github.io/lo-fi-league/` after every push must print `errors []`.

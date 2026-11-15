@@ -9,6 +9,7 @@ const HudScript := preload("res://scripts/hud.gd")
 const League := preload("res://scripts/league.gd")
 const SaveStore := preload("res://addons/bc_common/save_store.gd")
 const TestBridge := preload("res://addons/bc_common/test_bridge.gd")
+const InputSetup := preload("res://addons/bc_common/input_setup.gd")
 
 const VERSION := "0.2.1"
 const HL := 30.0
@@ -152,6 +153,7 @@ func _ready() -> void:
 		elif a == "--verbose": verbose = true
 		elif a.begins_with("--games="): bot_games = int(a.substr(8))
 		elif a == "--season": bot_season = true
+	InputSetup.add_controller_ui()   # G5.8: Xbox A picks the focused button in every menu, B goes back
 	store = SaveStore.new(SAVE_PATH); store.disabled = bot
 	# E6.7: clamp the counters so an edited or broken save can never load a silly number
 	store.limits = {"wins": [0, 1000000], "draws": [0, 1000000], "losses": [0, 1000000], "goals_for": [0, 10000000],
@@ -559,6 +561,18 @@ func _input(e: InputEvent) -> void:
 		if hud.help_panel.visible: _on_menu("help_close")
 		else: _set_menu(not hud.menu_open)
 		get_viewport().set_input_as_handled()
+		return
+	# G5.8: the Xbox B button goes back. In play with the Menu closed, B shoots or tackles instead
+	if e is InputEventJoypadButton and e.pressed and e.button_index == JOY_BUTTON_B:
+		var back := ""
+		if hud.help_panel.visible: back = "help_close"
+		elif hud.menu_open: back = "toggle"
+		elif screen == S_MODES: back = "modes_back"
+		elif screen == S_TEAMS: back = "team_back"
+		elif screen == S_LEAGUE: back = "league_back"
+		if back != "":
+			_on_menu(back)
+			get_viewport().set_input_as_handled()
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_GO_BACK_REQUEST and hud != null:

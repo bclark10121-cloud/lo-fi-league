@@ -5,7 +5,7 @@ This file lists where this game does something else, and why. A rule not listed 
 Order of authority: Brian in the chat, then this file, then the standards.
 
 Last reviewed: v0.2.1 (2026-11-14). First engineering audit on the same date. Standards updates on 2026-11-15: G1.9, G7.8 and kit 1.3.0, then E6.7 and kit 1.4.0.
-Checked against: game-standards version 2026-11-15 (commit 416fd8c). Shared kit 1.4.0 (`common.lock`).
+Checked against: game-standards version 2026-11-15 (commit b2c2865). Shared kit 1.5.0 (`common.lock`).
 
 ## Overrides
 
@@ -25,7 +25,8 @@ Game standards:
 - G5.2: the sprint bar and the shot power meter sit on screen with the scoreboard. They are counted as status readouts. Brian to confirm.
 - G6.6: players, ball, posts and crossbar collide by plain maths. The nets do not catch the ball. A goal ends the play at the line.
 - G7.8: the source uses kit 1.3.0, so `window.lofi` and `window.lofi_cmd` work only with the whole-word `?test` flag. The live browser build in `docs/play/` is still the v0.2.1 build with kit 1.1.0. Its bridge switches on for any page address that contains the letters "test", such as `?contest`. The next release build ships the fix. No new build was pushed for this update (Brian, 2026-11-15).
-- G10.4: the next release notes name kit 1.4.0. The v0.2.1 notes name kit 1.1.0.
+- G10.4: the next release notes name kit 1.5.0.
+- G5.8: the source meets it (see Rules met). The live v0.2.1 build cannot choose a menu button with A, because Godot 4.6 gives A no menu action. With only a controller, a player cannot press Start on the title card. The game page says so and names the next version as the fix. It reaches players with the next release. The v0.2.1 notes name kit 1.1.0.
 
 Engineering standards (from the first audit, 2026-11-14):
 
@@ -52,7 +53,7 @@ Game standards:
 
 - G0.3: this file, at the repo root, in the appendix format, with the Checked against line.
 - G0.10: no copies of the standards in this repo. `handoff/` was removed on 2026-11-14. The standards are read from `game-standards`.
-- G0.12: checked against game-standards commit ee33b2f for v0.2.1, then against commits e4688a1, 0ea73bd and 416fd8c on 2026-11-15.
+- G0.12: checked against game-standards commit ee33b2f for v0.2.1, then against commits e4688a1, 0ea73bd, 416fd8c and b2c2865 on 2026-11-15.
 - G1.1: public repo `bclark10121-cloud/lo-fi-league`, created 2026-11-14.
 - G1.2: no key, keystore or password in the repo. `.gitignore` blocks `*.jks` and `*.keystore`.
 - G1.3: game page `docs/index.html`, served from `main` `/docs`.
@@ -73,6 +74,7 @@ Game standards:
 - G4.6: `BACKLOG.md` has Done, Now, Asked for by Brian, Ideas to choose from (numbered), Later, Not planned and Decisions.
 - G5.1: Menu button at the top right opens Resume, How to play, Sound, Music, Restart match and Quit to title in a row. It reads Close while open. Esc toggles it (headless Chrome). Controller Back is wired, not tested on a controller.
 - G5.3: drag on the left half to move, three buttons on the right. Shows and hides as E5.4 says (end-to-end test).
+- G5.8 (source): `InputSetup.add_controller_ui()` from kit 1.5.0. A chooses, B goes back, View and Menu toggle the Menu. The title card, How to play and the game page use Xbox button names. The game page has the Play with an Xbox controller section. `tests/pad_test.py` plays with a pretend Xbox controller and prints `errors []`. Not tried with a real controller.
 - G5.4, G5.5: title card shows the name, version line, one line on the game, keyboard, controller and touch controls and a Start button.
 - G5.6: the save file `user://lofi_league.json` (`v: 1`) is read and written by the shared `save_store.gd`. Each field loads with a safe default. Number fields stay numbers across a reload (rules check on disk, end-to-end reload check). This fixed a v0.2.0 bug where wins, draws, losses, seasons, titles and best finish reset on reload.
 - G6.1: sensor landscape, 1280 x 720 base. Renderer and stretch as E2.1 and E5.1 say. Physics engine as override row 5 says.
@@ -87,8 +89,8 @@ Game standards:
 - G8.1: four CC0 lo-fi tracks by Holizna, found through Patch.gg.
 - G8.3: `CREDITS.md` lists every outside asset with its source and licence.
 - G8.4: eight fictional clubs, original player names, kits and formations. Nothing from the reference game is in the repo.
-- G10.1, G10.2: shared kit 1.4.0 pulled (1.1.0 at v0.2.1) into `addons/bc_common/`, `tools/common/` and `tests/common/`. `common.lock` names the version and commit. This game's own copies of the handoff script, Patch.gg fetcher and sound maker were removed.
-- G10.3: `bash tools/common/sync_common.sh --check .` is in the test gate and prints `COMMON check ok: 1.4.0 416fd8c`.
+- G10.1, G10.2: shared kit 1.5.0 pulled (1.1.0 at v0.2.1) into `addons/bc_common/`, `tools/common/` and `tests/common/`. `common.lock` names the version and commit. This game's own copies of the handoff script, Patch.gg fetcher and sound maker were removed.
+- G10.3: `bash tools/common/sync_common.sh --check .` is in the test gate and prints `COMMON check ok: 1.5.0 b2c2865`.
 - G10.4: the v0.2.1 release notes name kit 1.1.0.
 - G10.5: the shared save store and test bridge came from this game. No other proposals yet.
 
