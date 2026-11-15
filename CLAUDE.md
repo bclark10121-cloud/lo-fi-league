@@ -1,6 +1,6 @@
 # Lo-Fi League: project rules
 
-Lo-Fi League is Brian Clark's laid-back 7 a side soccer game. Godot 4.6, Android and browser. This repo is public.
+Lo-Fi League is Brian's laid-back 7 a side soccer game. Godot 4.6, Android and browser. This repo is public.
 ## Standards (G0.10, G10)
 
 - Read `GAME_STANDARDS.md` (rule ids start with G) and `ENGINEERING_STANDARDS.md` (rule ids start with E) first. Both live only in the private repo `bclark10121-cloud/game-standards`. Clone it to `../game-standards`, outside this repo. This repo holds no copies.
