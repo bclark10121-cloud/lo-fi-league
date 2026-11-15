@@ -4,7 +4,7 @@ Standards: `handoff/GAME_STANDARDS.md` (rule ids start with G) and `handoff/ENGI
 This file lists where this game does something else, and why. A rule not listed here applies in full.
 Order of authority: Brian in the chat, then this file, then the standards.
 
-Last reviewed: v0.1.1 (2026-11-14).
+Last reviewed: v0.2.0 (2026-11-14).
 
 ## Overrides
 
@@ -18,10 +18,9 @@ A Proposed row is not in force. The standard applies until Brian agrees.
 
 ## Open items (rule applies, work not finished)
 
-- G4.2: pillars are written in `CLAUDE.md` as Proposed. Brian has not confirmed them.
 - G5.2: the sprint bar and the shot power meter sit on screen with the scoreboard. They are counted as status readouts. Brian to confirm.
 - G5.3: touch layout checked in headless Chrome only (drag on the left half, three buttons on the right). The pad shows after the first touch. E5.4 has not been checked.
-- G5.6: the save file `user://lofi_league.json` (`v: 1`) loads each field with a safe default. Not checked against E6.4 and E6.5.
+- G5.6: the save file `user://lofi_league.json` (`v: 1`) loads each field with a safe default. v0.2.0 added four fields. An old save loads with them at their defaults (rules check). Not checked against E6.4 and E6.5.
 - G6.1: `project.godot` sets sensor landscape and 1280 x 720. It also sets the Compatibility renderer, stretch `canvas_items`, aspect `expand` and Jolt from the old template. E2.1, E5.1 and E4.1 have not been checked. The game uses no physics bodies.
 - G6.6: players, ball, posts and crossbar collide by plain maths. The nets do not catch the ball. A goal ends the play at the line.
 - Engineering standards: `handoff/ENGINEERING_STANDARDS.md` has not arrived. No E rule has been checked. This repo has no E overrides.
@@ -37,15 +36,16 @@ Checked on 2026-11-14 by reading the files and by running the checks named below
 - G1.5: browser build in `docs/play/`, APK in `docs/downloads/`, release notes in `docs/release-notes/`.
 - G1.6, G2.1, G2.2: game page https://bclark10121-cloud.github.io/lo-fi-league/ and repo https://github.com/bclark10121-cloud/lo-fi-league given to Brian.
 - G1.2: no key, keystore or password in the folder. `.gitignore` blocks `*.jks` and `*.keystore`. The test key lives outside the repo.
-- G2.3: `LoFiLeague-v0.1.1.apk` built, arm64, package `com.brianclark.lofileague`, version code 2.
-- G2.4: `BACKLOG.md` updated for v0.1.0.
+- G2.3: `LoFiLeague-v0.2.0.apk` built, arm64, package `com.brianclark.lofileague`, version code 3.
+- G2.4: `BACKLOG.md` updated for v0.2.0.
 - G2.5: `tools/make_handoff.sh` builds the handoff zip with `GAME_STANDARDS.md`, this file, the templates and the reusable code.
-- G2.6: release notes with a test checklist in `docs/release-notes/v0.1.1.md`. Game page has the version line, what is new and the APK link.
+- G2.6: release notes with a test checklist in `docs/release-notes/v0.2.0.md`. Game page has the version line, what is new and the APK link.
+- G4.2: four pillars in `CLAUDE.md`, confirmed by Brian 2026-11-14.
 - G4.6: `BACKLOG.md` has Done, Now, Asked for by Brian, Ideas to choose from (numbered), Later, Not planned and Decisions.
 - G5.1: Menu button at the top right opens Resume, How to play, Sound, Music, Restart match and Quit to title in a row. It reads Close while open. Esc toggles it (headless Chrome). Controller Back is wired, not tested on a controller.
 - G5.4, G5.5: title card shows the name, version line, one line on the game, keyboard, controller and touch controls and a Start button.
-- G6.2: Web (no threads) and Android (arm64) export presets. Version code raised to 2 for v0.1.1.
-- G6.3: v0.1.1 is signed with `wandervalley.jks`. The signature SHA-256 starts with `5db69ffb`.
+- G6.2: Web (no threads) and Android (arm64) export presets. Version code raised to 3 for v0.2.0.
+- G6.3: v0.2.0 is signed with `wandervalley.jks`. The signature SHA-256 starts with `5db69ffb`.
 - G6.4: the pitch, goals, stands, skyline and players are built in code.
 - G6.5: pitch lines are painted into one ground texture. The outer ground sits 0.6 yards below the pitch. The control ring is a raised mesh.
 - G7.3: `tests/web_test.py` loads the web build in headless Chrome and prints `errors []`. Screenshots viewed.
@@ -58,9 +58,9 @@ Checked on 2026-11-14 by reading the files and by running the checks named below
 Proposed rules this game already follows (not in force, listed for Brian):
 
 - G4.8: review, name check, plan and backlog came before the build.
-- G4.9: clubs and formations are data in `data/teams.json` and `data/formations.json`.
+- G4.9: clubs, formations and the league are data in `data/teams.json`, `data/formations.json` and `data/league.json`.
 - G6.7: the signing key was fetched only after Brian said so in the chat (2026-11-14). It lives outside the repo.
-- G7.6: `--bot --games=6` plays six full matches and prints each result. `--bot --rules` checks every restart. The browser test reads `window.lofi` instead of guessing wait times.
+- G7.6: `--bot --games=6` plays six full matches and prints each result. `--bot --rules` checks every restart and the league schedule, table, simulated scores and save file. `--bot --season` plays a full season. The browser test reads `window.lofi` instead of guessing wait times.
 
 ## Not in use in this game
 

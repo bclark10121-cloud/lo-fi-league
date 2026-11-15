@@ -1,6 +1,6 @@
 # Lo-Fi League: backlog
 
-Updated 2026-11-14 for v0.1.1. Brian decides the order.
+Updated 2026-11-14 for v0.2.0. Brian decides the order.
 
 ## Done
 
@@ -21,10 +21,15 @@ Updated 2026-11-14 for v0.1.1. Brian decides the order.
 - Deeper greens on the pitch (Brian, 2026-11-14).
 - Public repo `bclark10121-cloud/lo-fi-league` created and the game page turned on (Brian, 2026-11-14).
 - v0.1.1: APK signed with the real key `wandervalley.jks` (Brian, 2026-11-14). Version code 2.
+- v0.2.0: League mode (idea 1). 8 clubs, 7 matchday round robin, standings table, simulated other matches, season saved on the device, champions and best finish at season end.
+- v0.2.0: two new clubs, Lamplight Wanderers and Window Seat Albion.
+- v0.2.0: mode screen (Exhibition, League, Practice) and a Back button on the club screen.
+- v0.2.0: test gate adds league rules checks, a full bot season and a league walk in the browser test.
+- Pillars confirmed by Brian (2026-11-14).
 
 ## Now
 
-- Brian plays v0.1.0 and reports how it feels.
+- Brian plays v0.2.0 and reports how the league and the matches feel.
 
 ## Asked for by Brian, not built yet
 
@@ -32,7 +37,7 @@ Nothing open.
 
 ## Ideas to choose from (Brian picks by number)
 
-1. League mode: 8 clubs, round robin, standings table.
+1. Done in v0.2.0: League mode.
 2. Four divisions with promotion and relegation.
 3. Knockout cup with extra time and penalty shootouts.
 4. Group stage then knockout cup.
@@ -57,6 +62,10 @@ Nothing open.
 23. Career mode: start in the lowest division with a small club.
 24. Throw-ins taken with the hands, with a throw animation.
 25. Teams switch ends at half time.
+26. Home and away in the league: the home club picks its kit and its crowd cheers louder.
+27. Double round robin: 14 matchdays, every club home and away.
+28. League history: past seasons' champions and your finishes.
+29. Simulate a matchday instead of playing it.
 
 ## Later
 
@@ -75,9 +84,21 @@ Nothing open.
 - 2026-11-14: 7 a side. Low-poly 3D with a side camera. "Lo-fi" means music and mood. First build is exhibition only.
 - 2026-11-14: Use best judgment for the first MVP. Brian tests and gives feedback.
 - 2026-11-14: Deeper greens on the pitch.
+- 2026-11-14: v0.2.0 scope is League mode only. Pillars confirmed as written.
 - 2026-11-14: Create the repo in the browser and push the game.
 - 2026-11-14: Fetch `wandervalley.jks` from `keeper-of-the-hollow-source` and sign with it.
 - 2026-11-14: G4.1, G4.4, G7.1 and things to find (G4.3, G7.2) do not apply to sports games or where they clearly do not make sense. Override rows 1 to 3 agreed.
+
+## Judgment calls made in v0.2.0 (Brian to confirm or change)
+
+1. Single round robin: 7 matchdays, so a season takes about 45 minutes of play.
+2. Other matches are simulated from each club's average player ratings, not played by the match engine.
+3. Ties in the table are split by goal difference, then goals scored, then club name.
+4. Two new clubs were added to reach 8. Their players are new and fictional.
+5. Quitting a league match never records it. Restart match replays the same fixture.
+6. Start over needs two presses. New season appears only when a season is over.
+7. Your club always attacks to the right. Home and away change nothing yet (idea 26).
+8. Best finish and titles are personal records only. No leaderboards.
 
 ## Judgment calls made in v0.1.0 (Brian to confirm or change)
 

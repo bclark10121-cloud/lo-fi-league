@@ -7,7 +7,7 @@ Never edit a standards file for this game. Propose the change to Brian.
 
 ## Pillars (never break these)
 
-Proposed 2026-11-14. Brian to confirm (G4.2).
+Confirmed by Brian 2026-11-14 (G4.2).
 
 1. Pick up and play. Move, pass, shoot, tackle. A match takes about 6 minutes.
 2. Laid-back mood. Lo-fi music, soft colors, friendly tackles, no injuries, no red cards.
@@ -23,15 +23,18 @@ This game has an opponent and a final score. Override rows for G4.1 and G4.4 in 
 - Side 0 (the player) always attacks +X, the right of the screen. The camera sits on the +Z sideline. Teams do not switch ends.
 - Players and the ball move with plain maths, not physics bodies. `main.gd` sets `want` and each player eases toward it.
 - Pitch lines are painted into one ground texture (G6.5). Never lay a thin layer on the grass.
-- Clubs live in `data/teams.json` and formations in `data/formations.json`. New clubs need no code. `tools/make_teams.py` wrote the first six.
-- Save file is `user://lofi_league.json`, format `v: 1`. Only add fields, each with a safe default.
+- Clubs live in `data/teams.json` and formations in `data/formations.json`. New clubs need no code. `tools/make_teams.py` wrote the eight clubs.
+- The league lives in `data/league.json` (clubs, points, simulated goals). `scripts/league.gd` holds the schedule, table and simulated matches as plain data.
+- A season is saved under `league` in the save file. Quitting a league match never records it.
+- Save file is `user://lofi_league.json`, format `v: 1`. Only add fields, each with a safe default. v0.2.0 added `league`, `seasons`, `titles` and `best_finish`.
 - Every outside asset goes in `CREDITS.md` with its licence. Music comes from the Patch.gg library (G8.1).
 
 ## Test gate
 
 - `godot --headless --path . -- --bot --rules` must print `RULES done, 0 failed`.
 - `godot --headless --path . -- --bot --games=6` must finish every match and print `BOT done`. Typical scores sit between 0 and 7 a side.
-- `python3 tests/web_test.py <web folder> <shots folder>` must print `errors []`. View the screenshots.
+- `godot --headless --path . -- --bot --season` must play a full league season through the real league path and print `SEASON done`.
+- `python3 tests/web_test.py <web folder> <shots folder>` must print `errors []`. View the screenshots. In `?test` mode the page reports `window.lofi` and runs one menu action from `window.lofi_cmd`.
 
 ## Deliver every time (every release)
 

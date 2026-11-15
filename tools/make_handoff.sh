@@ -16,7 +16,7 @@ cp scripts/hud.gd "$D/reusable/hud_soccer.gd"
 cp tests/web_test.py "$D/reusable/web_test_states.py"
 cp tools/make_sfx.py "$D/reusable/make_sfx_stadium.py"
 cp tools/patch_assets.py tools/make_handoff.sh "$D/reusable/"
-cp CLAUDE.md STANDARDS_OVERRIDES.md BACKLOG.md README.md CREDITS.md data/teams.json data/formations.json "$D/games/lo-fi-league/"
+cp CLAUDE.md STANDARDS_OVERRIDES.md BACKLOG.md README.md CREDITS.md data/teams.json data/formations.json data/league.json "$D/games/lo-fi-league/"
 cp docs/release-notes/*.md "$D/games/lo-fi-league/" 2>/dev/null || true
 cp -r handoff/games/. "$D/games/" 2>/dev/null || true
 (cd "$S" && zip -qr handoff.zip Game_Standards_handoff)

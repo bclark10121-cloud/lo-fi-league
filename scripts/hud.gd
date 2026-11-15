@@ -3,7 +3,7 @@ extends CanvasLayer
 # G5.1: one Menu button at the top right opens every option in a row across the top.
 
 signal start_pressed
-signal team_chosen(idx: int, practice: bool)
+signal team_chosen(idx: int)
 signal menu_action(name: String)
 
 const ACCENT := Color(1.0, 0.78, 0.62)
@@ -30,7 +30,19 @@ var meter: Control
 var pad: Control
 var burst_bar: ProgressBar
 var score_panel: PanelContainer
-var _practice_box: CheckBox
+var mode_panel: Control
+var mode_league_btn: Button
+var team_title: Label
+var team_note: Label
+var league_panel: Control
+var lg_title: Label
+var lg_grid: GridContainer
+var lg_info: Label
+var lg_play: Button
+var lg_new: Button
+var _lg_new_armed := false
+var over_again: Button
+var over_league: Button
 
 # touch state read by main.gd
 var pad_active := false
@@ -97,7 +109,7 @@ func build(version: String, teams: Array) -> void:
 	# shot power meter
 	meter = Meter.new(); meter.hud = self; root.add_child(meter); meter.anchor_left = 0.5; meter.anchor_right = 0.5; meter.anchor_top = 0.8; meter.anchor_bottom = 0.8
 	meter.offset_left = -180; meter.offset_right = 180; meter.offset_top = 0; meter.offset_bottom = 26; meter.visible = false; meter.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_build_title(version); _build_team(teams); _build_over(); _build_help()
+	_build_title(version); _build_modes(); _build_team(teams); _build_league(); _build_over(); _build_help()
 	# Menu button and its row, top right (built last so it sits on top)
 	menu_row = HBoxContainer.new(); root.add_child(menu_row); menu_row.anchor_left = 0; menu_row.anchor_right = 1; menu_row.offset_left = 300; menu_row.offset_right = -150; menu_row.offset_top = 12; menu_row.offset_bottom = 60
 	menu_row.alignment = BoxContainer.ALIGNMENT_END; menu_row.add_theme_constant_override("separation", 8); menu_row.visible = false
@@ -128,23 +140,76 @@ func _build_title(version: String) -> void:
 func focus_start() -> void:
 	(title_panel.find_child("StartBtn", true, false) as Button).grab_focus.call_deferred()
 
+func _build_modes() -> void:
+	mode_panel = _full(); mode_panel.mouse_filter = Control.MOUSE_FILTER_STOP; mode_panel.visible = false
+	var p := _panel(mode_panel); var v := VBoxContainer.new(); p.add_child(v); v.add_theme_constant_override("separation", 12)
+	v.add_child(_centre(_lbl("How do you want to play?", 38, ACCENT)))
+	for item in [["Exhibition", "One match against the computer", "mode_exhibition"], ["League", "A 7 matchday season with a table", "mode_league"], ["Practice", "Just you and a keeper. No clock", "mode_practice"]]:
+		var b := _btn(item[0], 28); b.custom_minimum_size = Vector2(460, 64); var act: String = item[2]
+		b.pressed.connect(func(): menu_action.emit(act)); v.add_child(b); b.name = act
+		v.add_child(_centre(_lbl(item[1], 17, Color(1, 1, 1, 0.75))))
+		if act == "mode_league": mode_league_btn = b
+	var back := _btn("Back", 22); back.size_flags_horizontal = Control.SIZE_SHRINK_CENTER; back.pressed.connect(func(): menu_action.emit("modes_back")); v.add_child(back)
+
+func show_modes(on: bool, league_text := "League") -> void:
+	mode_panel.visible = on
+	if on:
+		mode_league_btn.text = league_text
+		(mode_panel.find_child("mode_exhibition", true, false) as Button).grab_focus.call_deferred()
+
 func _build_team(teams: Array) -> void:
 	team_panel = _full(); team_panel.mouse_filter = Control.MOUSE_FILTER_STOP; team_panel.visible = false
 	var p := _panel(team_panel); var v := VBoxContainer.new(); p.add_child(v); v.add_theme_constant_override("separation", 12)
-	v.add_child(_centre(_lbl("Pick your club", 40, ACCENT)))
+	team_title = _centre(_lbl("Pick your club", 40, ACCENT)); v.add_child(team_title)
 	var g := GridContainer.new(); g.columns = 2; g.add_theme_constant_override("h_separation", 12); g.add_theme_constant_override("v_separation", 12); v.add_child(g); g.name = "Teams"
 	for i in teams.size():
 		var tm: Dictionary = teams[i]
-		var b := _btn(str(tm.name), 25); b.custom_minimum_size = Vector2(350, 66)
+		var b := _btn(str(tm.name), 25); b.custom_minimum_size = Vector2(350, 62)
 		var sw := ColorRect.new(); sw.color = Color(str(tm.home.shirt)); sw.set_anchors_and_offsets_preset(Control.PRESET_LEFT_WIDE); sw.offset_right = 18; sw.mouse_filter = Control.MOUSE_FILTER_IGNORE; b.add_child(sw)
 		var sw2 := ColorRect.new(); sw2.color = Color(str(tm.home.shorts)); sw2.set_anchors_and_offsets_preset(Control.PRESET_RIGHT_WIDE); sw2.offset_left = -18; sw2.mouse_filter = Control.MOUSE_FILTER_IGNORE; b.add_child(sw2)
-		b.pressed.connect(func(): team_chosen.emit(i, _practice_box.button_pressed)); g.add_child(b)
-	_practice_box = CheckBox.new(); _practice_box.text = "Practice (no clock, no score, keeper only)"; _practice_box.add_theme_font_size_override("font_size", 20); v.add_child(_practice_box)
-	v.add_child(_centre(_lbl("Exhibition: two 3-minute halves against the computer.", 18, Color(1, 1, 1, 0.8))))
+		b.pressed.connect(func(): team_chosen.emit(i)); g.add_child(b)
+	team_note = _centre(_lbl("", 18, Color(1, 1, 1, 0.8))); v.add_child(team_note)
+	var back := _btn("Back", 22); back.size_flags_horizontal = Control.SIZE_SHRINK_CENTER; back.pressed.connect(func(): menu_action.emit("team_back")); v.add_child(back)
 
-func show_team(on: bool) -> void:
+func show_team(on: bool, title := "Pick your club", note := "") -> void:
 	team_panel.visible = on
+	team_title.text = title; team_note.text = note
 	if on: (team_panel.find_child("Teams", true, false).get_child(0) as Button).grab_focus.call_deferred()
+
+func _build_league() -> void:
+	league_panel = _full(); league_panel.mouse_filter = Control.MOUSE_FILTER_STOP; league_panel.visible = false
+	var p := _panel(league_panel); var v := VBoxContainer.new(); p.add_child(v); v.add_theme_constant_override("separation", 10)
+	lg_title = _centre(_lbl("Lo-Fi League", 36, ACCENT)); v.add_child(lg_title)
+	var h := HBoxContainer.new(); h.add_theme_constant_override("separation", 26); v.add_child(h)
+	lg_grid = GridContainer.new(); lg_grid.columns = 8; lg_grid.add_theme_constant_override("h_separation", 16); lg_grid.add_theme_constant_override("v_separation", 4); h.add_child(lg_grid)
+	lg_info = _lbl("", 18); lg_info.custom_minimum_size = Vector2(380, 0); lg_info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART; h.add_child(lg_info)
+	var row := HBoxContainer.new(); row.alignment = BoxContainer.ALIGNMENT_CENTER; row.add_theme_constant_override("separation", 12); v.add_child(row)
+	lg_play = _btn("Play", 26); lg_play.custom_minimum_size = Vector2(300, 58); lg_play.pressed.connect(func(): menu_action.emit("league_play")); row.add_child(lg_play)
+	lg_new = _btn("Start over", 20); lg_new.pressed.connect(_on_lg_new); row.add_child(lg_new)
+	var back := _btn("Back", 20); back.pressed.connect(func(): menu_action.emit("league_back")); row.add_child(back)
+
+func _on_lg_new() -> void:
+	# two presses so a new season never starts by accident
+	if _lg_new_armed:
+		_lg_new_armed = false; lg_new.text = "Start over"; menu_action.emit("league_new")
+	else:
+		_lg_new_armed = true; lg_new.text = "Press again to start over"
+
+func show_league(on: bool, title := "", rows: Array = [], club := "", info := "", play_text := "Play", show_new := true) -> void:
+	league_panel.visible = on
+	if not on: return
+	lg_title.text = title; lg_info.text = info; lg_play.text = play_text
+	_lg_new_armed = false; lg_new.text = "Start over"; lg_new.visible = show_new
+	for c in lg_grid.get_children(): c.queue_free()
+	for head in ["#", "Club", "P", "W", "D", "L", "GD", "Pts"]:
+		lg_grid.add_child(_lbl(head, 16, Color(1, 1, 1, 0.6)))
+	for i in rows.size():
+		var r: Dictionary = rows[i]
+		var col := ACCENT if r.id == club else Color.WHITE
+		var gd := "%+d" % r.gd if r.gd != 0 else "0"
+		for t in [str(i + 1), r.name, str(r.p), str(r.w), str(r.d), str(r.l), gd, str(r.pts)]:
+			lg_grid.add_child(_lbl(t, 19, col))
+	lg_play.grab_focus.call_deferred()
 
 func _build_over() -> void:
 	over_panel = _full(); over_panel.mouse_filter = Control.MOUSE_FILTER_STOP; over_panel.visible = false
@@ -152,18 +217,20 @@ func _build_over() -> void:
 	over_title = _centre(_lbl("FULL TIME", 44, ACCENT)); v.add_child(over_title)
 	over_lbl = _centre(_lbl("", 24)); v.add_child(over_lbl)
 	var h := HBoxContainer.new(); h.alignment = BoxContainer.ALIGNMENT_CENTER; h.add_theme_constant_override("separation", 12); v.add_child(h)
-	var a := _btn("Play again", 26); a.pressed.connect(func(): menu_action.emit("restart")); h.add_child(a); a.name = "Again"
+	over_league = _btn("Back to league", 26); over_league.pressed.connect(func(): menu_action.emit("league")); h.add_child(over_league)
+	over_again = _btn("Play again", 26); over_again.pressed.connect(func(): menu_action.emit("restart")); h.add_child(over_again); over_again.name = "Again"
 	var b := _btn("Title", 26); b.pressed.connect(func(): menu_action.emit("title")); h.add_child(b)
 
-func show_over(text: String) -> void:
+func show_over(text: String, league := false) -> void:
 	over_lbl.text = text; over_panel.visible = true
-	(over_panel.find_child("Again", true, false) as Button).grab_focus.call_deferred()
+	over_league.visible = league; over_again.visible = not league
+	(over_league if league else over_again).grab_focus.call_deferred()
 
 func _build_help() -> void:
 	help_panel = _full(); help_panel.mouse_filter = Control.MOUSE_FILTER_STOP; help_panel.visible = false
 	var p := _panel(help_panel); var v := VBoxContainer.new(); p.add_child(v); v.add_theme_constant_override("separation", 10)
 	v.add_child(_centre(_lbl("How to play", 36, ACCENT)))
-	var txt := "You attack the goal on the right. You control the player with the ring.\n\nWith the ball\n  Pass: aim with the stick and press Pass. You take over the player who receives it.\n  Shoot: hold Shoot for power, then let go. Push up or down to aim at a corner.\n  Sprint: hold Sprint. The bar under the score shows how much is left.\n\nWithout the ball\n  Switch: press Pass to take the player nearest the ball.\n  Tackle: press Shoot when you are close to the ball.\n\nRules\n  Two 3-minute halves. Throw-ins, corners and goal kicks. No offside and no cards.\n  Keepers play by themselves.\n\nKeyboard: WASD or arrows, Space, F, Shift, Tab, Esc.   Controller: stick, A, X, RT, Back."
+	var txt := "You attack the goal on the right. You control the player with the ring.\n\nWith the ball\n  Pass: aim with the stick and press Pass. You take over the player who receives it.\n  Shoot: hold Shoot for power, then let go. Push up or down to aim at a corner.\n  Sprint: hold Sprint. The bar under the score shows how much is left.\n\nWithout the ball\n  Switch: press Pass to take the player nearest the ball.\n  Tackle: press Shoot when you are close to the ball.\n\nRules\n  Two 3-minute halves. Throw-ins, corners and goal kicks. No offside and no cards.\n  Keepers play by themselves.\n\nLeague\n  Pick a club and play 7 matchdays against the other 7 clubs. The other matches play out by themselves.\n  Win 3 points, draw 1. Your season saves after every match.\n\nKeyboard: WASD or arrows, Space, F, Shift, Tab, Esc.   Controller: stick, A, X, RT, Back."
 	v.add_child(_lbl(txt, 18))
 	var b := _btn("Close", 24); b.size_flags_horizontal = Control.SIZE_SHRINK_CENTER; b.pressed.connect(func(): menu_action.emit("help_close")); v.add_child(b); b.name = "HelpClose"
 

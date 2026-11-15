@@ -6,8 +6,9 @@ extends Node3D
 
 const PlayerModel := preload("res://scripts/player.gd")
 const HudScript := preload("res://scripts/hud.gd")
+const League := preload("res://scripts/league.gd")
 
-const VERSION := "0.1.1"
+const VERSION := "0.2.0"
 const HL := 30.0
 const HW := 20.0
 const GOAL_HW := 3.0
@@ -22,7 +23,7 @@ const RUN := 6.4
 const SPRINT := 1.28
 const SAVE_PATH := "user://lofi_league.json"
 
-enum {S_TITLE, S_TEAMS, S_PLAY}
+enum {S_TITLE, S_TEAMS, S_PLAY, S_MODES, S_LEAGUE}
 enum {RESTART, LIVE, GOAL, HALFTIME, OVER}
 
 class P extends RefCounted:
@@ -58,6 +59,11 @@ class P extends RefCounted:
 	var node: Node3D
 
 var teams: Array = []
+var by_id := {}
+var league_cfg := {}
+var mode := "attract"          # attract, exhibition, practice or league
+var pick_for := "exhibition"   # what the club picker is choosing for
+var bot_season := false
 var forms := {}
 var hud
 var cam: Camera3D
@@ -127,7 +133,8 @@ var _pa := false
 var _pb := false
 var _psw := false
 
-var save := {"v": 1, "sound": true, "music": true, "wins": 0, "draws": 0, "losses": 0, "goals_for": 0, "goals_against": 0, "team": ""}
+var save := {"v": 1, "sound": true, "music": true, "wins": 0, "draws": 0, "losses": 0, "goals_for": 0, "goals_against": 0, "team": "",
+	"league": {}, "seasons": 0, "titles": 0, "best_finish": 0}
 var snd := {}
 var music: AudioStreamPlayer
 var tracks: Array = []
@@ -141,9 +148,12 @@ func _ready() -> void:
 		if a == "--bot": bot = true
 		elif a == "--verbose": verbose = true
 		elif a.begins_with("--games="): bot_games = int(a.substr(8))
+		elif a == "--season": bot_season = true
 	if OS.has_feature("web"):
 		test_hook = str(JavaScriptBridge.eval("window.location.search")).contains("test")
 	teams = _load_json("res://data/teams.json")
+	for t in teams: by_id[t.id] = t
+	league_cfg = _load_json("res://data/league.json")
 	for f in _load_json("res://data/formations.json"): forms[f.id] = f.spots
 	_load_save()
 	_build_world()
@@ -156,6 +166,8 @@ func _ready() -> void:
 	if bot:
 		if OS.get_cmdline_user_args().has("--rules"):
 			_rules_test(); get_tree().quit(); return
+		if bot_season:
+			_bot_season_start(); return
 		_bot_next()
 	else:
 		_to_title()
@@ -171,7 +183,8 @@ func _load_save() -> void:
 	var d = JSON.parse_string(FileAccess.get_file_as_string(SAVE_PATH))
 	if d is Dictionary:
 		for k in save:
-			if d.has(k): save[k] = d[k]
+			if d.has(k) and typeof(d[k]) == typeof(save[k]): save[k] = d[k]
+		if not save.league.is_empty() and int(save.league.get("v", 0)) != 1: save.league = {}
 
 func _write_save() -> void:
 	if bot: return
@@ -376,27 +389,115 @@ func _apply_audio_labels() -> void:
 
 # ---------- screens ----------
 
+func _hide_panels() -> void:
+	hud.over_panel.visible = false; hud.show_team(false); hud.show_help(false); hud.show_modes(false); hud.show_league(false)
+	hud.title_panel.visible = false
+
 func _to_title() -> void:
-	screen = S_TITLE; paused = false; hud.set_menu(false); hud.over_panel.visible = false; hud.show_team(false); hud.show_help(false)
+	screen = S_TITLE; paused = false; hud.set_menu(false); _hide_panels()
 	hud.title_panel.visible = true; hud.focus_start()
 	_attract()
 
 func _attract() -> void:
 	var a := randi() % teams.size(); var b := (a + 1 + randi() % (teams.size() - 1)) % teams.size()
+	mode = "attract"
 	start_match(a, b, false, false)
 	attract = true
 
+func _team_ix(id: String) -> int:
+	for i in teams.size():
+		if teams[i].id == id: return i
+	return 0
+
 func _on_start() -> void:
 	_start_audio()
-	screen = S_TEAMS; hud.title_panel.visible = false; hud.show_team(true)
+	_to_modes()
 
-func _on_team(idx: int, prac: bool) -> void:
+func _to_modes() -> void:
+	screen = S_MODES; _hide_panels()
+	var lt := "League"
+	var lg: Dictionary = save.league
+	if League.is_over(lg): lt = "League: season over"
+	elif not lg.is_empty(): lt = "League: matchday %d of %d" % [int(lg.md) + 1, League.rounds(lg)]
+	hud.show_modes(true, lt)
+
+func _to_teams(for_what: String) -> void:
+	pick_for = for_what; screen = S_TEAMS; _hide_panels()
+	match for_what:
+		"league": hud.show_team(true, "Pick your club for the season", "7 matchdays. Every club plays every other club once.")
+		"practice": hud.show_team(true, "Pick your club for practice", "No clock and no score. Only a keeper defends.")
+		_: hud.show_team(true, "Pick your club", "Exhibition: two 3-minute halves against the computer.")
+
+func _on_team(idx: int) -> void:
 	_start_audio()
+	save.team = teams[idx].id
+	if pick_for == "league":
+		_new_season(teams[idx].id); _write_save(); _to_league(); return
+	_write_save()
 	var opp := (idx + 1 + randi() % (teams.size() - 1)) % teams.size()
-	save.team = teams[idx].id; _write_save()
-	hud.show_team(false); screen = S_PLAY
-	start_match(idx, opp, prac, true)
+	_hide_panels(); screen = S_PLAY
+	mode = pick_for
+	start_match(idx, opp, pick_for == "practice", true)
 	get_viewport().gui_release_focus()
+
+# ---------- league ----------
+
+func _new_season(club: String) -> void:
+	var n := int(save.seasons) + 1
+	save.league = League.new_season(league_cfg.clubs, club, n, randi())
+
+func _table() -> Array:
+	return League.table(save.league, league_cfg.clubs, by_id, int(league_cfg.points_win), int(league_cfg.points_draw))
+
+func _to_league() -> void:
+	var lg: Dictionary = save.league
+	if lg.is_empty():
+		_to_teams("league"); return
+	screen = S_LEAGUE; _hide_panels()
+	var rows := _table()
+	var rn := League.rounds(lg); var md := int(lg.md)
+	var club: String = lg.club
+	var info := ""
+	var play_text := ""
+	if League.is_over(lg):
+		var pos := League.position(rows, club)
+		info = "Season over.\nChampions: %s\nYou finished %s with %s.\n\n" % [rows[0].name, League.ordinal(pos), by_id[club].name]
+		play_text = "New season"
+	else:
+		var f := League.user_fixture(lg)
+		info = "Matchday %d of %d\nNext: %s  v  %s\n\n" % [md + 1, rn, by_id[f[0]].name, by_id[f[1]].name]
+		play_text = "Play matchday %d" % (md + 1)
+	if md > 0:
+		info += "Matchday %d results\n" % md
+		for r in lg.results[md - 1]:
+			info += "%s %d - %d %s\n" % [by_id[r[0]].abbr, int(r[2]), int(r[3]), by_id[r[1]].abbr]
+		info += "\n"
+	var best := int(save.best_finish)
+	info += "Best finish: %s.  Titles: %d" % [League.ordinal(best) if best > 0 else "none yet", int(save.titles)]
+	hud.show_league(true, "%s, season %d" % [league_cfg.name, int(lg.season)], rows, club, info, play_text, not League.is_over(lg))
+
+func _league_play() -> void:
+	var lg: Dictionary = save.league
+	if League.is_over(lg):
+		_to_teams("league"); return
+	var f := League.user_fixture(lg)
+	var opp: String = f[1] if f[0] == lg.club else f[0]
+	_hide_panels(); screen = S_PLAY; mode = "league"
+	start_match(_team_ix(lg.club), _team_ix(opp), false, true)
+	if human: hud.say("Matchday %d:  %s  v  %s" % [int(lg.md) + 1, by_id[lg.club].name, by_id[opp].name], 2.8)
+	get_viewport().gui_release_focus()
+
+func _league_after_match() -> Array:
+	# records the player's match, plays the rest of the matchday and closes the season after the last one
+	var lg: Dictionary = save.league
+	var res := League.play_round(lg, [score[0], score[1]], by_id, float(league_cfg.sim_goals))
+	if League.is_over(lg):
+		var pos := League.position(_table(), lg.club)
+		save.seasons = int(save.seasons) + 1
+		if pos == 1: save.titles = int(save.titles) + 1
+		if int(save.best_finish) == 0 or pos < int(save.best_finish): save.best_finish = pos
+	_write_save()
+	return res
 
 func _on_menu(action: String) -> void:
 	match action:
@@ -425,6 +526,19 @@ func _on_menu(action: String) -> void:
 				start_match(team_ix[0], team_ix[1], practice, true); get_viewport().gui_release_focus()
 		"title":
 			_set_menu(false); _to_title()
+		"mode_exhibition": _to_teams("exhibition")
+		"mode_practice": _to_teams("practice")
+		"mode_league": _to_league()
+		"modes_back": _to_title()
+		"team_back": _to_modes()
+		"league": _to_league()
+		"league_play": _league_play()
+		"league_new":
+			save.league = {}; _write_save(); _to_teams("league")
+		"league_back": _to_modes()
+		"end_match":
+			if test_hook and screen == S_PLAY and state == LIVE:
+				half = 2; clock = HALF_SECS - 0.3
 
 func _set_menu(open: bool) -> void:
 	hud.set_menu(open); paused = open and screen == S_PLAY
@@ -432,6 +546,8 @@ func _set_menu(open: bool) -> void:
 		hud.show_help(false); hud.reset_touch()
 		if screen == S_PLAY and state != OVER: get_viewport().gui_release_focus()
 		elif screen == S_TITLE: hud.focus_start()
+		elif screen == S_LEAGUE: hud.lg_play.grab_focus()
+		elif screen == S_MODES: (hud.mode_panel.find_child("mode_exhibition", true, false) as Button).grab_focus()
 
 func _input(e: InputEvent) -> void:
 	var toggle := false
@@ -529,7 +645,10 @@ func _process(dt: float) -> void:
 		for i in 40:
 			_step(1.0 / 60.0)
 			if state == OVER:
-				_bot_report(); bot_done += 1; _bot_next(); break
+				_bot_report(); bot_done += 1
+				if bot_season: _bot_season_next()
+				else: _bot_next()
+				break
 		return
 	_read_input()
 	if not paused:
@@ -863,6 +982,7 @@ func _goal(side: int) -> void:
 
 func _full_time() -> void:
 	state = OVER; state_t = 0.0; carrier = null
+	if mode == "league": _league_after_match()
 	if not human: return
 	var a: int = score[0]; var b: int = score[1]
 	if a > b: save.wins += 1
@@ -873,7 +993,15 @@ func _full_time() -> void:
 	var tot: float = maxf(0.1, poss_t[0] + poss_t[1])
 	var head := "You win" if a > b else ("You lose this one" if a < b else "A draw")
 	hud.over_title.text = "FULL TIME"
-	hud.show_over("%s\n%s  %d - %d  %s\nShots %d - %d      Possession %d%% - %d%%\nYour record: %d wins, %d draws, %d losses" % [head, teams[team_ix[0]].name, a, b, teams[team_ix[1]].name, shots[0], shots[1], int(round(poss_t[0] / tot * 100.0)), int(round(poss_t[1] / tot * 100.0)), save.wins, save.draws, save.losses])
+	var txt := "%s\n%s  %d - %d  %s\nShots %d - %d      Possession %d%% - %d%%\n" % [head, teams[team_ix[0]].name, a, b, teams[team_ix[1]].name, shots[0], shots[1], int(round(poss_t[0] / tot * 100.0)), int(round(poss_t[1] / tot * 100.0))]
+	if mode == "league":
+		var lg: Dictionary = save.league
+		var rows := _table()
+		txt += "Matchday %d of %d.  You are %s in the table." % [int(lg.md), League.rounds(lg), League.ordinal(League.position(rows, lg.club))]
+		if League.is_over(lg): txt += "\nThat was the last matchday. %s are the champions." % rows[0].name
+	else:
+		txt += "Your record: %d wins, %d draws, %d losses" % [save.wins, save.draws, save.losses]
+	hud.show_over(txt, mode == "league")
 
 # ---------- movement ----------
 
@@ -1175,9 +1303,15 @@ func _test_report() -> void:
 	var phase := 0
 	if screen == S_TEAMS: phase = 1
 	elif screen == S_PLAY: phase = 2 + state
+	elif screen == S_MODES: phase = 20
+	elif screen == S_LEAGUE: phase = 21
+	var cmd := str(JavaScriptBridge.eval("window.lofi_cmd || ''"))
+	if cmd != "":
+		JavaScriptBridge.eval("window.lofi_cmd = '';"); _on_menu(cmd)
 	var d := {"phase": phase, "half": half, "clock": snappedf(clock, 0.1), "score": score, "ball": [snappedf(bpos.x, 0.1), snappedf(bpos.y, 0.1), snappedf(bpos.z, 0.1)],
 		"carrier": carrier.side if carrier != null else -1, "mine": carrier != null and carrier == ctrl, "practice": practice, "menu": hud.menu_open, "touch": hud.touch_seen,
-		"ctrl": [snappedf(ctrl.pos.x, 0.1), snappedf(ctrl.pos.y, 0.1)] if ctrl != null else [], "shots": shots, "counts": counts, "paused": paused}
+		"ctrl": [snappedf(ctrl.pos.x, 0.1), snappedf(ctrl.pos.y, 0.1)] if ctrl != null else [], "shots": shots, "counts": counts, "paused": paused, "mode": mode,
+		"league_md": int(save.league.get("md", -1)), "league_results": (save.league.get("results", []) as Array).size(), "league_club": str(save.league.get("club", ""))}
 	JavaScriptBridge.eval("window.lofi=" + JSON.stringify(d) + ";")
 
 # ---------- test bot ----------
@@ -1222,7 +1356,107 @@ func _rules_test() -> void:
 	var prac_ok: bool = pl[1].size() == 1 and clock == 0.0 and state != OVER
 	print("RULES %s: practice runs 60 seconds with one keeper and no clock (goals %d)" % ["ok" if prac_ok else "FAIL", score[0]])
 	if not prac_ok: fails += 1
+	fails += _rules_league()
 	print("RULES done, %d failed" % fails)
+
+func _check(ok: bool, what: String) -> int:
+	print("RULES %s: %s" % ["ok" if ok else "FAIL", what])
+	return 0 if ok else 1
+
+func _rules_league() -> int:
+	var fails := 0
+	var clubs: Array = league_cfg.clubs
+	fails += _check(clubs.size() == 8 and clubs.all(func(c): return by_id.has(c)), "league has 8 clubs and each one is in teams.json")
+	# the schedule: 7 rounds, 4 matches each, every club once a round, every pair exactly once
+	for sd in [1, 2, 3, 99, 12345]:
+		var lg := League.new_season(clubs, clubs[sd % clubs.size()], 1, sd)
+		var ok := League.rounds(lg) == 7
+		var pairs := {}
+		for rnd in lg.fixtures:
+			var seen := {}
+			ok = ok and rnd.size() == 4
+			for f in rnd:
+				ok = ok and f[0] != f[1] and not seen.has(f[0]) and not seen.has(f[1])
+				seen[f[0]] = true; seen[f[1]] = true
+				var k: String = "|".join([f[0], f[1]] if f[0] < f[1] else [f[1], f[0]])
+				ok = ok and not pairs.has(k)
+				pairs[k] = true
+			ok = ok and not League.user_fixture({"fixtures": lg.fixtures, "md": 0, "club": lg.club}).is_empty()
+		fails += _check(ok and pairs.size() == 28, "schedule seed %d: 7 rounds of 4, every pair once (pairs %d)" % [sd, pairs.size()])
+	# the table: points, goal difference and order
+	var t := {"fixtures": [[["tapedeck", "vinyl"], ["rainy", "static"], ["cassette", "slowfade"], ["lamplight", "windowseat"]]], "md": 1, "club": "tapedeck",
+		"results": [[["tapedeck", "vinyl", 3, 0], ["rainy", "static", 1, 1], ["cassette", "slowfade", 0, 2], ["lamplight", "windowseat", 2, 2]]]}
+	var rows := League.table(t, clubs, by_id, 3, 1)
+	var pts := 0
+	for r in rows: pts += r.pts
+	fails += _check(rows[0].id == "tapedeck" and rows[0].pts == 3 and rows[0].gd == 3 and rows[1].id == "slowfade" and rows[7].id == "vinyl" and pts == 3 + 3 + 2 + 2, "table: points, goal difference and order")
+	fails += _check(League.ordinal(1) == "1st" and League.ordinal(2) == "2nd" and League.ordinal(3) == "3rd" and League.ordinal(11) == "11th" and League.ordinal(22) == "22nd", "ordinals")
+	# simulated scores look like real matches
+	var rng := RandomNumberGenerator.new(); rng.seed = 5
+	var tot := 0; var mx := 0
+	for i in 2000:
+		var g := League.sim_score(rng, by_id[clubs[i % 8]], by_id[clubs[(i + 3) % 8]], float(league_cfg.sim_goals))
+		tot += g[0] + g[1]; mx = maxi(mx, maxi(g[0], g[1]))
+	var avg := float(tot) / 2000.0
+	fails += _check(avg > 2.0 and avg < 4.5 and mx <= 9, "simulated matches average %.2f goals, most in one side %d" % [avg, mx])
+	# a whole season through the same path a real match uses, then the save round trip
+	var keep: Dictionary = save.duplicate(true)
+	save.league = {}; save.seasons = 0; save.titles = 0; save.best_finish = 0
+	_new_season("rainy")
+	for i in 7:
+		score = [2, 1] if i % 2 == 0 else [0, 0]
+		_league_after_match()
+	var lg2: Dictionary = save.league
+	var rows2 := _table()
+	var played := true
+	var pts2 := 0; var gf := 0; var ga := 0
+	for r in rows2:
+		played = played and r.p == 7
+		pts2 += r.pts; gf += r.gf; ga += r.ga
+	var mine := 0
+	for r in rows2:
+		if r.id == "rainy": mine = r.pts
+	fails += _check(League.is_over(lg2) and lg2.results.size() == 7 and played and gf == ga and mine == 4 * 3 + 3 * 1, "season: 7 matchdays, every club played 7, goals balance, your points %d" % mine)
+	fails += _check(int(save.seasons) == 1 and int(save.best_finish) == League.position(rows2, "rainy") and int(save.titles) == (1 if save.best_finish == 1 else 0), "season end: seasons %d, best finish %d, titles %d" % [save.seasons, save.best_finish, save.titles])
+	var back = JSON.parse_string(JSON.stringify(save))
+	var rows3 := League.table(back.league, clubs, by_id, 3, 1)
+	var same := rows3.size() == rows2.size()
+	for i in rows3.size(): same = same and rows3[i].id == rows2[i].id and rows3[i].pts == rows2[i].pts
+	fails += _check(same and League.is_over(back.league), "save file round trip keeps the season")
+	# an old save without league fields loads with safe defaults
+	save = keep.duplicate(true)
+	save.league = {}; save.seasons = 0; save.titles = 0; save.best_finish = 0
+	var old := {"v": 1, "sound": false, "wins": 2}
+	for k in save:
+		if old.has(k) and typeof(old[k]) == typeof(save[k]): save[k] = old[k]
+	fails += _check(save.league.is_empty() and save.sound == false and int(save.wins) == 2 and save.has("best_finish"), "old save file loads with the new fields at their defaults")
+	save = keep
+	return fails
+
+func _bot_season_start() -> void:
+	seed(20261114)
+	save.league = {}; save.seasons = 0; save.titles = 0; save.best_finish = 0
+	_new_season(league_cfg.clubs[0])
+	print("SEASON club %s" % by_id[save.league.club].name)
+	_bot_season_next()
+
+func _bot_season_next() -> void:
+	var lg: Dictionary = save.league
+	if int(lg.md) > 0 and lg.results.size() == int(lg.md):
+		var line := ""
+		for r in lg.results[int(lg.md) - 1]: line += "%s %d-%d %s   " % [by_id[r[0]].abbr, int(r[2]), int(r[3]), by_id[r[1]].abbr]
+		print("MATCHDAY %d: %s" % [int(lg.md), line])
+	if League.is_over(lg):
+		var rows := _table()
+		for i in rows.size():
+			var r: Dictionary = rows[i]
+			print("TABLE %d %-22s P%d W%d D%d L%d GF%d GA%d Pts%d" % [i + 1, r.name, r.p, r.w, r.d, r.l, r.gf, r.ga, r.pts])
+		print("SEASON done: finished %s, best finish %d, titles %d" % [League.ordinal(League.position(rows, lg.club)), int(save.best_finish), int(save.titles)])
+		get_tree().quit(); return
+	var f := League.user_fixture(lg)
+	var opp: String = f[1] if f[0] == lg.club else f[0]
+	mode = "league"
+	start_match(_team_ix(lg.club), _team_ix(opp), false, false)
 
 func _bot_next() -> void:
 	if bot_done >= bot_games:

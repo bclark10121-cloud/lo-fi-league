@@ -1,0 +1,7 @@
+{
+  "name": "Lo-Fi League",
+  "clubs": ["tapedeck", "vinyl", "rainy", "static", "cassette", "slowfade", "lamplight", "windowseat"],
+  "points_win": 3,
+  "points_draw": 1,
+  "sim_goals": 1.5
+}

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Writes data/teams.json: 6 fictional clubs with kits, a team style and 7 players each. Edit the JSON by hand after this, or change the lists here and run again.
+# Writes data/teams.json: 8 fictional clubs with kits, a team style and 7 players each. Edit the JSON by hand after this, or change the lists here and run again.
 import json, os, random
 random.seed(14)
 CLUBS = [
@@ -9,9 +9,11 @@ CLUBS = [
  ("static", "Sunday Static", "SUN", "1-3-2", ("f2cc8f", "6d597a", "6d597a", "f2cc8f"), ("6d597a", "f2cc8f", "f2cc8f", "6d597a"), (50, 60, 40, 65)),
  ("cassette", "Cassette City", "CAS", "2-3-1", ("b5838d", "ffe5d9", "ffe5d9", "b5838d"), ("ffe5d9", "b5838d", "b5838d", "ffe5d9"), (55, 55, 55, 50)),
  ("slowfade", "Slow Fade Athletic", "SFA", "2-2-2", ("81b29a", "264653", "264653", "81b29a"), ("264653", "81b29a", "81b29a", "264653"), (70, 45, 50, 45)),
+ ("lamplight", "Lamplight Wanderers", "LAM", "3-2-1", ("f6bd60", "3d405b", "3d405b", "f6bd60"), ("3d405b", "f6bd60", "f6bd60", "3d405b"), (55, 50, 60, 45)),
+ ("windowseat", "Window Seat Albion", "WSA", "1-3-2", ("4a6c6f", "f4f1de", "f4f1de", "4a6c6f"), ("f4f1de", "4a6c6f", "4a6c6f", "f4f1de"), (60, 60, 45, 55)),
 ]
 KEEPER = [("9c89b8", "f4f1de", "9c89b8", "9c89b8"), ("f6bd60", "3d405b", "f6bd60", "f6bd60")]
-NAMES = "Milo Remy Theo Kai Jonah Ezra Luca Nico Omar Felix Arlo Dante Hugo Idris Jude Koji Levi Mateo Noel Otis Pablo Quinn Rafa Soren Tariq Uri Vik Wes Yusuf Zane Anders Bram Cyrus Dev Emil Finn Gus Hari Ivo Jai Kofi Lars".split()
+NAMES = "Milo Remy Theo Kai Jonah Ezra Luca Nico Omar Felix Arlo Dante Hugo Idris Jude Koji Levi Mateo Noel Otis Pablo Quinn Rafa Soren Tariq Uri Vik Wes Yusuf Zane Anders Bram Cyrus Dev Emil Finn Gus Hari Ivo Jai Kofi Lars Mika Nils Oren Pim Ravi Sami Teo Ugo Vito Wren Yann Zeke Basil Cass".split()
 SKIN = ["f2c49c", "e3b08a", "c98f67", "a86f4b", "7a4f33", "5a3a26"]
 HAIR = ["2b2118", "4a3524", "7a5230", "c9a25a", "1b1b1f", "8c3b2a", "d8d2c4"]
 POS = ["GK", "DF", "DF", "MF", "MF", "MF", "FW"]

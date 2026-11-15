@@ -6,7 +6,7 @@ Game page (play in the browser or download the Android APK): https://bclark10121
 
 ## Status
 
-v0.1.0, first test build: one exhibition match against the computer, six fictional clubs, four formations, throw-ins, corners, goal kicks and a Practice mode.
+v0.2.0: League mode with a 7 matchday season and a table, exhibition matches against the computer, eight fictional clubs, four formations, throw-ins, corners, goal kicks and a Practice mode.
 
 ## Standards
 
@@ -19,8 +19,9 @@ v0.1.0, first test build: one exhibition match against the computer, six fiction
 - `project.godot`, `main.tscn`: the Godot project. Compatibility renderer.
 - `scripts/main.gd`: the pitch, the rules, the computer players, the camera, the test bot and the rules check.
 - `scripts/player.gd`: one player, built from simple shapes and animated in code.
-- `scripts/hud.gd`: scoreboard, Menu button, shot meter, panels and touch controls.
-- `data/teams.json`, `data/formations.json`: clubs and formations. New content needs no code.
+- `scripts/league.gd`: the league schedule, table and simulated matches.
+- `scripts/hud.gd`: scoreboard, Menu button, shot meter, mode and club screens, league table, panels and touch controls.
+- `data/teams.json`, `data/formations.json`, `data/league.json`: clubs, formations and the league. New content needs no code.
 - `audio/`: lo-fi music and a tackle sound from Patch.gg (see `CREDITS.md`) and stadium sounds made by `tools/make_sfx.py`.
 - `tests/web_test.py`: browser check with screenshots.
 - `docs/`: the GitHub Pages site. Game page at the root, the game in `docs/play/`, APKs in `docs/downloads/`.
@@ -31,6 +32,7 @@ v0.1.0, first test build: one exhibition match against the computer, six fiction
     godot --headless --path . --import
     godot --headless --path . -- --bot --rules                # rules check, must print: RULES done, 0 failed
     godot --headless --path . -- --bot --games=6 --verbose    # the computer plays both sides and prints each match
+    godot --headless --path . -- --bot --season               # plays a full league season, must print: SEASON done
     godot --headless --path . --export-release Web
     python3 tests/web_test.py <web folder> <shots folder>     # must print: errors []
     godot --headless --path . --export-release Android
