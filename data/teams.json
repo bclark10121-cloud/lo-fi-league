@@ -1,0 +1,56 @@
+[
+  {"id": "tapedeck", "name": "Tape Deck Rovers", "abbr": "TDR", "formation": "2-3-1", "home": {"shirt": "e07a5f", "trim": "f4f1de", "shorts": "3d405b", "socks": "e07a5f"}, "away": {"shirt": "f4f1de", "trim": "e07a5f", "shorts": "e07a5f", "socks": "f4f1de"}, "keeper": {"shirt": "9c89b8", "trim": "f4f1de", "shorts": "9c89b8", "socks": "9c89b8"}, "style": {"pass": 60, "shoot": 50, "tackle": 50, "run": 50}, "players": [
+    {"name": "Milo", "num": 1, "pos": "GK", "speed": 53, "pass": 56, "shot": 30, "tackle": 31, "control": 59, "skin": "5a3a26", "hair": "2b2118"},
+    {"name": "Remy", "num": 2, "pos": "DF", "speed": 55, "pass": 46, "shot": 35, "tackle": 59, "control": 43, "skin": "f2c49c", "hair": "7a5230"},
+    {"name": "Theo", "num": 4, "pos": "DF", "speed": 52, "pass": 64, "shot": 36, "tackle": 66, "control": 53, "skin": "e3b08a", "hair": "4a3524"},
+    {"name": "Kai", "num": 6, "pos": "MF", "speed": 42, "pass": 50, "shot": 46, "tackle": 55, "control": 64, "skin": "f2c49c", "hair": "1b1b1f"},
+    {"name": "Jonah", "num": 8, "pos": "MF", "speed": 50, "pass": 62, "shot": 55, "tackle": 68, "control": 38, "skin": "a86f4b", "hair": "1b1b1f"},
+    {"name": "Ezra", "num": 10, "pos": "MF", "speed": 64, "pass": 68, "shot": 55, "tackle": 56, "control": 49, "skin": "5a3a26", "hair": "8c3b2a"},
+    {"name": "Luca", "num": 9, "pos": "FW", "speed": 48, "pass": 60, "shot": 61, "tackle": 31, "control": 52, "skin": "7a4f33", "hair": "4a3524"}
+  ]},
+  {"id": "vinyl", "name": "Midnight Vinyl FC", "abbr": "MVF", "formation": "2-2-2", "home": {"shirt": "2b2d42", "trim": "ef8fa3", "shorts": "2b2d42", "socks": "ef8fa3"}, "away": {"shirt": "ef8fa3", "trim": "2b2d42", "shorts": "f4f1de", "socks": "2b2d42"}, "keeper": {"shirt": "f6bd60", "trim": "3d405b", "shorts": "f6bd60", "socks": "f6bd60"}, "style": {"pass": 45, "shoot": 65, "tackle": 45, "run": 60}, "players": [
+    {"name": "Nico", "num": 1, "pos": "GK", "speed": 40, "pass": 44, "shot": 35, "tackle": 44, "control": 63, "skin": "f2c49c", "hair": "7a5230"},
+    {"name": "Omar", "num": 2, "pos": "DF", "speed": 49, "pass": 51, "shot": 39, "tackle": 58, "control": 46, "skin": "a86f4b", "hair": "8c3b2a"},
+    {"name": "Felix", "num": 4, "pos": "DF", "speed": 49, "pass": 53, "shot": 46, "tackle": 59, "control": 57, "skin": "a86f4b", "hair": "1b1b1f"},
+    {"name": "Arlo", "num": 6, "pos": "MF", "speed": 54, "pass": 55, "shot": 43, "tackle": 54, "control": 49, "skin": "7a4f33", "hair": "4a3524"},
+    {"name": "Dante", "num": 8, "pos": "MF", "speed": 46, "pass": 54, "shot": 50, "tackle": 37, "control": 60, "skin": "a86f4b", "hair": "c9a25a"},
+    {"name": "Hugo", "num": 10, "pos": "MF", "speed": 62, "pass": 61, "shot": 44, "tackle": 55, "control": 50, "skin": "f2c49c", "hair": "8c3b2a"},
+    {"name": "Idris", "num": 9, "pos": "FW", "speed": 64, "pass": 38, "shot": 57, "tackle": 42, "control": 56, "skin": "e3b08a", "hair": "7a5230"}
+  ]},
+  {"id": "rainy", "name": "Rainy Window United", "abbr": "RWU", "formation": "3-2-1", "home": {"shirt": "7fb7be", "trim": "f4f1de", "shorts": "f4f1de", "socks": "7fb7be"}, "away": {"shirt": "355070", "trim": "7fb7be", "shorts": "355070", "socks": "f4f1de"}, "keeper": {"shirt": "9c89b8", "trim": "f4f1de", "shorts": "9c89b8", "socks": "9c89b8"}, "style": {"pass": 65, "shoot": 40, "tackle": 65, "run": 40}, "players": [
+    {"name": "Jude", "num": 1, "pos": "GK", "speed": 45, "pass": 50, "shot": 30, "tackle": 44, "control": 67, "skin": "f2c49c", "hair": "2b2118"},
+    {"name": "Koji", "num": 2, "pos": "DF", "speed": 30, "pass": 61, "shot": 36, "tackle": 67, "control": 50, "skin": "7a4f33", "hair": "7a5230"},
+    {"name": "Levi", "num": 4, "pos": "DF", "speed": 51, "pass": 54, "shot": 37, "tackle": 56, "control": 47, "skin": "f2c49c", "hair": "1b1b1f"},
+    {"name": "Mateo", "num": 6, "pos": "MF", "speed": 37, "pass": 70, "shot": 44, "tackle": 50, "control": 52, "skin": "5a3a26", "hair": "d8d2c4"},
+    {"name": "Noel", "num": 8, "pos": "MF", "speed": 54, "pass": 67, "shot": 50, "tackle": 56, "control": 41, "skin": "a86f4b", "hair": "1b1b1f"},
+    {"name": "Otis", "num": 10, "pos": "MF", "speed": 46, "pass": 69, "shot": 51, "tackle": 39, "control": 61, "skin": "f2c49c", "hair": "7a5230"},
+    {"name": "Pablo", "num": 9, "pos": "FW", "speed": 59, "pass": 46, "shot": 77, "tackle": 45, "control": 56, "skin": "e3b08a", "hair": "1b1b1f"}
+  ]},
+  {"id": "static", "name": "Sunday Static", "abbr": "SUN", "formation": "1-3-2", "home": {"shirt": "f2cc8f", "trim": "6d597a", "shorts": "6d597a", "socks": "f2cc8f"}, "away": {"shirt": "6d597a", "trim": "f2cc8f", "shorts": "f2cc8f", "socks": "6d597a"}, "keeper": {"shirt": "f6bd60", "trim": "3d405b", "shorts": "f6bd60", "socks": "f6bd60"}, "style": {"pass": 50, "shoot": 60, "tackle": 40, "run": 65}, "players": [
+    {"name": "Quinn", "num": 1, "pos": "GK", "speed": 52, "pass": 51, "shot": 33, "tackle": 53, "control": 66, "skin": "7a4f33", "hair": "c9a25a"},
+    {"name": "Rafa", "num": 2, "pos": "DF", "speed": 43, "pass": 53, "shot": 50, "tackle": 68, "control": 50, "skin": "e3b08a", "hair": "8c3b2a"},
+    {"name": "Soren", "num": 4, "pos": "DF", "speed": 51, "pass": 58, "shot": 30, "tackle": 71, "control": 49, "skin": "7a4f33", "hair": "8c3b2a"},
+    {"name": "Tariq", "num": 6, "pos": "MF", "speed": 58, "pass": 62, "shot": 49, "tackle": 57, "control": 68, "skin": "f2c49c", "hair": "8c3b2a"},
+    {"name": "Uri", "num": 8, "pos": "MF", "speed": 46, "pass": 53, "shot": 42, "tackle": 56, "control": 41, "skin": "f2c49c", "hair": "c9a25a"},
+    {"name": "Vik", "num": 10, "pos": "MF", "speed": 53, "pass": 57, "shot": 59, "tackle": 53, "control": 56, "skin": "5a3a26", "hair": "7a5230"},
+    {"name": "Wes", "num": 9, "pos": "FW", "speed": 58, "pass": 69, "shot": 67, "tackle": 43, "control": 52, "skin": "a86f4b", "hair": "c9a25a"}
+  ]},
+  {"id": "cassette", "name": "Cassette City", "abbr": "CAS", "formation": "2-3-1", "home": {"shirt": "b5838d", "trim": "ffe5d9", "shorts": "ffe5d9", "socks": "b5838d"}, "away": {"shirt": "ffe5d9", "trim": "b5838d", "shorts": "b5838d", "socks": "ffe5d9"}, "keeper": {"shirt": "9c89b8", "trim": "f4f1de", "shorts": "9c89b8", "socks": "9c89b8"}, "style": {"pass": 55, "shoot": 55, "tackle": 55, "run": 50}, "players": [
+    {"name": "Yusuf", "num": 1, "pos": "GK", "speed": 46, "pass": 42, "shot": 30, "tackle": 43, "control": 65, "skin": "5a3a26", "hair": "1b1b1f"},
+    {"name": "Zane", "num": 2, "pos": "DF", "speed": 49, "pass": 49, "shot": 39, "tackle": 67, "control": 49, "skin": "f2c49c", "hair": "7a5230"},
+    {"name": "Anders", "num": 4, "pos": "DF", "speed": 61, "pass": 41, "shot": 33, "tackle": 66, "control": 40, "skin": "f2c49c", "hair": "7a5230"},
+    {"name": "Bram", "num": 6, "pos": "MF", "speed": 65, "pass": 71, "shot": 63, "tackle": 53, "control": 45, "skin": "e3b08a", "hair": "1b1b1f"},
+    {"name": "Cyrus", "num": 8, "pos": "MF", "speed": 39, "pass": 52, "shot": 59, "tackle": 51, "control": 62, "skin": "a86f4b", "hair": "d8d2c4"},
+    {"name": "Dev", "num": 10, "pos": "MF", "speed": 51, "pass": 55, "shot": 46, "tackle": 51, "control": 36, "skin": "e3b08a", "hair": "d8d2c4"},
+    {"name": "Emil", "num": 9, "pos": "FW", "speed": 71, "pass": 52, "shot": 55, "tackle": 41, "control": 51, "skin": "e3b08a", "hair": "d8d2c4"}
+  ]},
+  {"id": "slowfade", "name": "Slow Fade Athletic", "abbr": "SFA", "formation": "2-2-2", "home": {"shirt": "81b29a", "trim": "264653", "shorts": "264653", "socks": "81b29a"}, "away": {"shirt": "264653", "trim": "81b29a", "shorts": "81b29a", "socks": "264653"}, "keeper": {"shirt": "f6bd60", "trim": "3d405b", "shorts": "f6bd60", "socks": "f6bd60"}, "style": {"pass": 70, "shoot": 45, "tackle": 50, "run": 45}, "players": [
+    {"name": "Finn", "num": 1, "pos": "GK", "speed": 44, "pass": 50, "shot": 40, "tackle": 48, "control": 55, "skin": "f2c49c", "hair": "c9a25a"},
+    {"name": "Gus", "num": 2, "pos": "DF", "speed": 55, "pass": 43, "shot": 50, "tackle": 63, "control": 46, "skin": "a86f4b", "hair": "c9a25a"},
+    {"name": "Hari", "num": 4, "pos": "DF", "speed": 40, "pass": 51, "shot": 51, "tackle": 54, "control": 42, "skin": "e3b08a", "hair": "8c3b2a"},
+    {"name": "Ivo", "num": 6, "pos": "MF", "speed": 44, "pass": 67, "shot": 42, "tackle": 56, "control": 44, "skin": "c98f67", "hair": "7a5230"},
+    {"name": "Jai", "num": 8, "pos": "MF", "speed": 53, "pass": 46, "shot": 50, "tackle": 48, "control": 60, "skin": "5a3a26", "hair": "c9a25a"},
+    {"name": "Kofi", "num": 10, "pos": "MF", "speed": 61, "pass": 70, "shot": 47, "tackle": 64, "control": 52, "skin": "7a4f33", "hair": "2b2118"},
+    {"name": "Lars", "num": 9, "pos": "FW", "speed": 57, "pass": 46, "shot": 54, "tackle": 35, "control": 49, "skin": "5a3a26", "hair": "4a3524"}
+  ]}
+]

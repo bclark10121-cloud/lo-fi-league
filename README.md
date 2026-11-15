@@ -1,0 +1,36 @@
+# Lo-Fi League
+
+Laid-back 7 a side soccer. Pass, shoot and take it easy. Built in Godot 4.6 for Android and the browser.
+
+Game page (play in the browser or download the Android APK): https://bclark10121-cloud.github.io/lo-fi-league/
+
+## Status
+
+v0.1.0, first test build: one exhibition match against the computer, six fictional clubs, four formations, throw-ins, corners, goal kicks and a Practice mode.
+
+## Standards
+
+- `handoff/GAME_STANDARDS.md`: the shared game standards (rule ids start with G). Never edit it for this game.
+- `STANDARDS_OVERRIDES.md`: where this game does something else, open items, rules met and rules not in use.
+- `CLAUDE.md`: this game's pillars and rules.
+
+## Layout
+
+- `project.godot`, `main.tscn`: the Godot project. Compatibility renderer.
+- `scripts/main.gd`: the pitch, the rules, the computer players, the camera, the test bot and the rules check.
+- `scripts/player.gd`: one player, built from simple shapes and animated in code.
+- `scripts/hud.gd`: scoreboard, Menu button, shot meter, panels and touch controls.
+- `data/teams.json`, `data/formations.json`: clubs and formations. New content needs no code.
+- `audio/`: lo-fi music and a tackle sound from Patch.gg (see `CREDITS.md`) and stadium sounds made by `tools/make_sfx.py`.
+- `tests/web_test.py`: browser check with screenshots.
+- `docs/`: the GitHub Pages site. Game page at the root, the game in `docs/play/`, APKs in `docs/downloads/`.
+- `BACKLOG.md`: the backlog. `PLAN.md`: the first plan. `handoff/`: the shared standards.
+
+## Build and test
+
+    godot --headless --path . --import
+    godot --headless --path . -- --bot --rules                # rules check, must print: RULES done, 0 failed
+    godot --headless --path . -- --bot --games=6 --verbose    # the computer plays both sides and prints each match
+    godot --headless --path . --export-release Web
+    python3 tests/web_test.py <web folder> <shots folder>     # must print: errors []
+    godot --headless --path . --export-release Android

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lo-Fi League</title><link rel="icon" href="icon.png">
+<meta name="description" content="Lo-Fi League is a laid-back 7 a side soccer game for Android and the browser. Pass, shoot and take it easy.">
+<style>
+:root{--ink:#2b2840;--accent:#5a4b8a;--warm:#e07a5f;--card:#fffaf4}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(#cfc6ea 0%,#f6dccf 48%,#e6eedf 100%) fixed;color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:860px;margin:0 auto;padding:36px 20px 60px}
+header{text-align:center}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(40px,8vw,64px);letter-spacing:3px;margin:14px 0 0;color:var(--accent);text-transform:uppercase}
+.tag{letter-spacing:4px;text-transform:uppercase;font-size:12px;opacity:.8;margin:4px 0 22px}
+.lead{font-size:18px;max-width:640px;margin:0 auto 24px;text-wrap:balance}
+.cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+a.btn{display:inline-block;padding:13px 22px;border-radius:14px;font-weight:700;text-decoration:none;border:1px solid rgba(0,0,0,.2)}
+a.primary{background:var(--accent);color:#fff}a.ghost{background:rgba(255,255,255,.75);color:var(--ink)}
+a.btn:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.note{font-size:13px;opacity:.8;text-align:center}.note a{color:inherit}
+.shots{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:34px 0}
+.shots img{width:100%;border-radius:14px;border:1px solid rgba(43,40,64,.2);display:block}
+h2{font-family:Georgia,"Times New Roman",serif;letter-spacing:1px;color:var(--accent);font-size:24px;margin:34px 0 10px;font-weight:400}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid rgba(43,40,64,.14);border-radius:14px;padding:14px 16px}
+.card b{color:var(--warm)}ol,ul{padding-left:20px;margin:6px 0}footer{margin-top:40px;font-size:13px;opacity:.7;text-align:center}footer a{color:inherit}
+@media (max-width:560px){.shots{grid-template-columns:1fr 1fr}.shots img:last-child{display:none}}
+</style></head><body><main>
+<header><h1>Lo-Fi League</h1><div class="tag">Laid-back 7 a side soccer</div>
+<p class="lead">Pass, shoot and take it easy. Pick one of six fictional clubs and play a relaxed match against the computer under a sunset sky, with lo-fi beats in the background.</p>
+<div class="cta"><a class="btn primary" href="play/">Play in your browser</a><a class="btn ghost" href="downloads/LoFiLeague-v0.1.0.apk">Download for Android (APK)</a></div>
+<p class="note">Version 0.1.0, first test build. <a href="release-notes/v0.1.0.md">Release notes</a> · <a href="https://github.com/bclark10121-cloud/lo-fi-league/blob/main/BACKLOG.md">Backlog</a> · <a href="https://github.com/bclark10121-cloud/lo-fi-league">Source on GitHub</a></p></header>
+<div class="shots"><img src="shot-match.jpg" alt="A 7 a side match seen from the sideline at sunset"><img src="shot-clubs.jpg" alt="The club picker with six fictional clubs"><img src="shot-shot.jpg" alt="A player filling the shot meter near goal"></div>
+<h2>What kind of game is this?</h2>
+<div class="grid">
+<div class="card"><b>Pick up and play.</b> Move, pass, shoot and tackle. Two 3-minute halves make a match of about 6 minutes.</div>
+<div class="card"><b>Laid-back mood.</b> Lo-fi music, soft colors and friendly tackles. No injuries and no red cards.</div>
+<div class="card"><b>Rules you know.</b> Kickoffs, throw-ins, corners, goal kicks and goals. Computer keepers on both sides.</div>
+</div>
+<h2>Things to do</h2>
+<ul><li>Play an exhibition match with any of six clubs: Tape Deck Rovers, Midnight Vinyl FC, Rainy Window United, Sunday Static, Cassette City and Slow Fade Athletic.</li>
+<li>Thread passes and take over the player who receives them.</li>
+<li>Hold the shot button for power and aim for a corner.</li>
+<li>Practice your finishing against just a keeper, with no clock.</li>
+<li>Build your win, draw and loss record. It saves on your device.</li></ul>
+<h2>Controls</h2>
+<div class="grid">
+<div class="card"><b>Keyboard</b><br>WASD or arrows move. Space passes or switches player. F shoots or tackles (hold for power). Shift sprints. Esc opens Menu.</div>
+<div class="card"><b>Controller</b><br>Left stick moves. A passes or switches. X shoots or tackles. RT sprints. Back opens Menu.</div>
+<div class="card"><b>Touch</b><br>Drag on the left half to move. Pass, Shoot and Sprint buttons on the right. Menu at the top right.</div>
+</div>
+<h2>Install on Android</h2>
+<ol><li>Tap Download for Android on this page.</li><li>Open the file. Allow installs from your browser if your phone asks.</li><li>Tap Install, then Open.</li><li>This test build uses a test signature. If an older Lo-Fi League is installed, uninstall it first.</li></ol>
+<h2>Feedback</h2>
+<p>Tell Brian what you think. Useful things to note:</p>
+<ul><li>How the passing, shooting and tackling feel.</li><li>Whether the computer is too easy or too hard.</li><li>Anything that looks wrong, with a screenshot.</li><li>Your phone or browser.</li></ul>
+<footer>Lo-Fi League by Brian Clark. Music by Holizna (CC0), found through Patch.gg. <a href="https://github.com/bclark10121-cloud/lo-fi-league/blob/main/CREDITS.md">Credits</a></footer>
+</main></body></html>
