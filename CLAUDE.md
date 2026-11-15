@@ -29,7 +29,7 @@ This game has an opponent and a final score. Override rows for G4.1 and G4.4 in 
 - Clubs live in `data/teams.json` and formations in `data/formations.json`. New clubs need no code. `tools/make_teams.py` wrote the eight clubs.
 - The league lives in `data/league.json` (clubs, points, simulated goals). `scripts/league.gd` holds the schedule, table and simulated matches as plain data.
 - A season is saved under `league` in the save file. Quitting a league match never records it.
-- Save file is `user://lofi_league.json`, format `v: 1`, written with the shared `addons/bc_common/save_store.gd`. Only add fields, each with a safe default. v0.2.0 added `league`, `seasons`, `titles` and `best_finish`.
+- Save file is `user://lofi_league.json`, format `v: 1`, written with the shared `addons/bc_common/save_store.gd`. Only add fields, each with a safe default. The kit keeps the last good save as `lofi_league.json.bak`, clamps the counters to `store.limits` and never loads a save with a higher `v` (E6.7). Delete a save only with `store.erase()`. v0.2.0 added `league`, `seasons`, `titles` and `best_finish`.
 - The browser test state comes from the shared `addons/bc_common/test_bridge.gd` as `window.lofi` and `window.lofi_cmd`.
 - Every outside asset goes in `CREDITS.md` with its licence. Music comes from the Patch.gg library (G8.1).
 
@@ -37,6 +37,7 @@ This game has an opponent and a final score. Override rows for G4.1 and G4.4 in 
 
 - `bash tools/common/sync_common.sh --check .` must print `COMMON check ok` (G10.3).
 - `bash tools/common/check_secrets.sh` must print `SECRETS check ok` (G1.9). No key, keystore, password or token in the repo.
+- `godot --headless --path . -s res://tests/common/save_store_check.gd` must print `SAVESTORE check ok` (E6.7).
 - Test hooks stay off for players (G7.8). `window.lofi` and `window.lofi_cmd` work only with the whole-word `?test` flag (kit 1.3.0). Every browser test opens `index.html?test`.
 - `godot --headless --path . -- --bot --rules` must print `RULES done, 0 failed`.
 - `godot --headless --path . -- --bot --games=6` must finish every match and print `BOT done`. Typical scores sit between 0 and 7 a side.
@@ -53,6 +54,7 @@ This game has an opponent and a final score. Override rows for G4.1 and G4.4 in 
 4. The backlog: `BACKLOG.md`, updated, linked and sent as a file.
 5. The game standards handoff zip, built with `tools/common/make_handoff.sh ../game-standards` and sent as a file.
 6. `docs/index.html` updated: the line under the buttons reads exactly `Version <version>. Release notes · Backlog · Source on GitHub` (G1.8). `docs/release-notes/v<version>.md` added with a test checklist and the kit version (G10.4). The browser build goes in `docs/play/`.
+7. The dashboard card refreshed in `bclark10121-cloud.github.io` in the same push: replace `images/lo-fi-league.jpg` with a fresh 960 x 540 screenshot of the new build, and update the card's name, tag line, description or link in `index.html` whenever they changed (G2.7). Change only this game's card. The version fills itself in from the version line. After the push, check the card shows the new version. Give Brian the dashboard link: https://bclark10121-cloud.github.io/
 
 ## Android signing
 

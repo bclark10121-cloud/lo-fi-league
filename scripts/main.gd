@@ -153,6 +153,9 @@ func _ready() -> void:
 		elif a.begins_with("--games="): bot_games = int(a.substr(8))
 		elif a == "--season": bot_season = true
 	store = SaveStore.new(SAVE_PATH); store.disabled = bot
+	# E6.7: clamp the counters so an edited or broken save can never load a silly number
+	store.limits = {"wins": [0, 1000000], "draws": [0, 1000000], "losses": [0, 1000000], "goals_for": [0, 10000000],
+		"goals_against": [0, 10000000], "seasons": [0, 100000], "titles": [0, 100000], "best_finish": [0, 8]}
 	bridge = TestBridge.new("lofi"); test_hook = bridge.enabled
 	teams = _load_json("res://data/teams.json")
 	for t in teams: by_id[t.id] = t
@@ -1435,7 +1438,7 @@ func _rules_league() -> int:
 	var loaded := st.load_into(dst)
 	fails += _check(wrote and loaded and typeof(dst.wins) == TYPE_INT and dst.wins == 3 and dst.seasons == 2 and dst.best_finish == 4 and dst.sound == false and dst.team == "rainy" and int(dst.league.md) == 5 and dst.new_field == 7,
 		"save file round trip on disk keeps numbers as numbers and new fields at their defaults (%s)" % [dst])
-	DirAccess.remove_absolute(ProjectSettings.globalize_path("user://rules_check_save.json"))
+	st.erase()   # E6.7: removes the check file and its .bak
 	return fails
 
 func _bot_season_start() -> void:
