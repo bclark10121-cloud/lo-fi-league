@@ -1,6 +1,6 @@
 # Lo-Fi League: backlog
 
-Updated 2026-11-15 for v0.2.3. Brian decides the order.
+Updated 2026-11-15 for v0.2.3. BC decides the order.
 
 ## Done
 
@@ -18,31 +18,31 @@ Updated 2026-11-15 for v0.2.3. Brian decides the order.
 - Win, draw and loss record saved on the device.
 - Keyboard, controller and touch. Menu button at the top right with Sound and Music toggles.
 - Side camera that follows the ball across the pitch. Sunset stadium with a skyline.
-- Deeper greens on the pitch (Brian, 2026-11-14).
-- Public repo `bclark10121-cloud/lo-fi-league` created and the game page turned on (Brian, 2026-11-14).
-- v0.1.1: APK signed with the real key `wandervalley.jks` (Brian, 2026-11-14). Version code 2.
+- Deeper greens on the pitch (BC, 2026-11-14).
+- Public repo `bclark10121-cloud/lo-fi-league` created and the game page turned on (BC, 2026-11-14).
+- v0.1.1: APK signed with the real key `wandervalley.jks` (BC, 2026-11-14). Version code 2.
 - v0.2.0: League mode (idea 1). 8 clubs, 7 matchday round robin, standings table, simulated other matches, season saved on the device, champions and best finish at season end.
 - v0.2.0: two new clubs, Lamplight Wanderers and Window Seat Albion.
 - v0.2.0: mode screen (Exhibition, League, Practice) and a Back button on the club screen.
 - v0.2.0: test gate adds league rules checks, a full bot season and a league walk in the browser test.
-- Pillars confirmed by Brian (2026-11-14).
+- Pillars confirmed by BC (2026-11-14).
 - v0.2.1: season saves at once in the browser and on Android (E6.4, E6.5). Records no longer reset on reload. Touch controls hide on key or gamepad input (E5.4). Version code 4.
 - v0.2.1: moved to one source. Standards read from `game-standards`, shared kit 1.1.0 pulled, key from `game-signing`, version line under the buttons on the game page (G1.8, Tiny Titans layout).
 - End-to-end test of the live game page: two full seasons, reloads, practice, exhibition and phone-size screens (`tests/e2e_test.py`).
-- v0.2.2: play with only an Xbox controller (G5.8, Brian 2026-11-15). A chooses and B goes back in every menu, View and Menu toggle the Menu, Xbox button names, connect steps on the game page, pretend controller test (`tests/pad_test.py`). Version code 5.
+- v0.2.2: play with only an Xbox controller (G5.8, BC 2026-11-15). A chooses and B goes back in every menu, View and Menu toggle the Menu, Xbox button names, connect steps on the game page, pretend controller test (`tests/pad_test.py`). Version code 5.
 - v0.2.2: shared kit 1.5.0. Saves keep a backup and never load a newer save (E6.7). Test hooks only with `?test` (G7.8). Secrets check in the test gate (G1.9). Game Shelf link in the footer (G1.10).
-- v0.2.3 comfort release (Brian, 2026-11-15: "use your best judgement on what qol features to add next"). Ideas 30 (bigger text on phones, Text in the Menu), 34 (Quit check in a league match), 35 (remember the last mode and club) and 36 (goal scorers and minutes at full time). Also: the match pauses itself when the game loses focus, and the Menu row wraps instead of running under Close. New `tests/qol_test.py`. Version code 6.
+- v0.2.3 comfort release (BC, 2026-11-15: "use your best judgement on what qol features to add next"). Ideas 30 (bigger text on phones, Text in the Menu), 34 (Quit check in a league match), 35 (remember the last mode and club) and 36 (goal scorers and minutes at full time). Also: the match pauses itself when the game loses focus, and the Menu row wraps instead of running under Close. New `tests/qol_test.py`. Version code 6.
 
 ## Now
 
-- Brian plays v0.2.3 on his phone and with an Xbox controller and reports how the text size, the league and the matches feel.
-- Brian picks the next release from the ideas below.
+- BC plays v0.2.3 on his phone and with an Xbox controller and reports how the text size, the league and the matches feel.
+- BC picks the next release from the ideas below.
 
-## Asked for by Brian, not built yet
+## Asked for by BC, not built yet
 
 Nothing open.
 
-## Ideas to choose from (Brian picks by number)
+## Ideas to choose from (BC picks by number)
 
 1. Done in v0.2.0: League mode.
 2. Four divisions with promotion and relegation.
@@ -119,11 +119,11 @@ Engineering
 - Any art, text or numbers copied from Pixel Cup Soccer or another game.
 - Injuries and red cards (they break pillar 2).
 
-## Decisions from Brian
+## Decisions from BC
 
 - 2026-11-14: Name is Lo-Fi League. Soccer. Godot.
 - 2026-11-14: 7 a side. Low-poly 3D with a side camera. "Lo-fi" means music and mood. First build is exhibition only.
-- 2026-11-14: Use best judgment for the first MVP. Brian tests and gives feedback.
+- 2026-11-14: Use best judgment for the first MVP. BC tests and gives feedback.
 - 2026-11-14: Deeper greens on the pitch.
 - 2026-11-14: v0.2.0 scope is League mode only. Pillars confirmed as written.
 - 2026-11-14: Run an end-to-end test and add QoL and feature ideas to the backlog.
@@ -132,7 +132,7 @@ Engineering
 - 2026-11-14: Fetch `wandervalley.jks` from `keeper-of-the-hollow-source` and sign with it.
 - 2026-11-14: G4.1, G4.4, G7.1 and things to find (G4.3, G7.2) do not apply to sports games or where they clearly do not make sense. Override rows 1 to 3 agreed.
 
-## Judgment calls made in v0.2.1 (Brian to confirm or change)
+## Judgment calls made in v0.2.1 (BC to confirm or change)
 
 1. Fixed the two save bugs as v0.2.1 before any new feature (G3.5).
 2. Removed every copy of the standards and other games' files from `handoff/`. They now come from `game-standards`.
@@ -140,7 +140,7 @@ Engineering
 4. Touch controls now hide on key or gamepad input (E5.4).
 5. The physics engine setting went back to Godot's default. The game uses no physics bodies (override row 5, Proposed).
 
-## Judgment calls made in v0.2.0 (Brian to confirm or change)
+## Judgment calls made in v0.2.0 (BC to confirm or change)
 
 1. Single round robin: 7 matchdays, so a season takes about 45 minutes of play.
 2. Other matches are simulated from each club's average player ratings, not played by the match engine.
@@ -151,10 +151,10 @@ Engineering
 7. Your club always attacks to the right. Home and away change nothing yet (idea 26).
 8. Best finish and titles are personal records only. No leaderboards.
 
-## Judgment calls made in v0.1.0 (Brian to confirm or change)
+## Judgment calls made in v0.1.0 (BC to confirm or change)
 
 1. Fictional clubs replace the real countries and clubs in the reference. The reference zip stays out of the repo.
-2. "Things to find" (G4.3 and G7.2) is listed under Not in use in `STANDARDS_OVERRIDES.md`. Confirmed by Brian.
+2. "Things to find" (G4.3 and G7.2) is listed under Not in use in `STANDARDS_OVERRIDES.md`. Confirmed by BC.
 3. Two 3-minute halves. Teams do not switch ends.
 4. No offside, fouls or cards.
 5. Pass goes to the teammate nearest the direction you aim. Control follows the ball.

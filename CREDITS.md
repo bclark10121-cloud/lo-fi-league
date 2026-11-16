@@ -1,6 +1,6 @@
 # Credits
 
-Lo-Fi League is made by Brian. Clubs, players, formations, pitch, stadium and interface are original and built in code.
+Lo-Fi League is made by BC. Clubs, players, formations, pitch, stadium and interface are original and built in code.
 
 ## Music (found through the Patch.gg asset library)
 

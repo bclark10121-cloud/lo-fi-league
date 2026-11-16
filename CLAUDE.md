@@ -1,16 +1,16 @@
 # Lo-Fi League: project rules
 
-Lo-Fi League is Brian's laid-back 7 a side soccer game. Godot 4.6, Android and browser. This repo is public.
+Lo-Fi League is BC's laid-back 7 a side soccer game. Godot 4.6, Android and browser. This repo is public.
 ## Standards (G0.10, G10)
 
 - Read `GAME_STANDARDS.md` (rule ids start with G) and `ENGINEERING_STANDARDS.md` (rule ids start with E) first. Both live only in the private repo `bclark10121-cloud/game-standards`. Clone it to `../game-standards`, outside this repo. This repo holds no copies.
-- Overrides, open items and the standards version this game was checked against live in `STANDARDS_OVERRIDES.md`. Order of authority: Brian in the chat, then `STANDARDS_OVERRIDES.md`, then the standards.
-- The shared kit is pulled into `addons/bc_common/`, `tools/common/` and `tests/common/` with `bash ../game-standards/common/sync_common.sh ../game-standards .`. `common.lock` names the version. Never edit those files here. Propose kit changes to Brian.
-- Never edit a standards file. Propose the change to Brian. The master changes first.
+- Overrides, open items and the standards version this game was checked against live in `STANDARDS_OVERRIDES.md`. Order of authority: BC in the chat, then `STANDARDS_OVERRIDES.md`, then the standards.
+- The shared kit is pulled into `addons/bc_common/`, `tools/common/` and `tests/common/` with `bash ../game-standards/common/sync_common.sh ../game-standards .`. `common.lock` names the version. Never edit those files here. Propose kit changes to BC.
+- Never edit a standards file. Propose the change to BC. The master changes first.
 
 ## Pillars (never break these)
 
-Confirmed by Brian 2026-11-14 (G4.2).
+Confirmed by BC 2026-11-14 (G4.2).
 
 1. Pick up and play. Move, pass, shoot, tackle. A match takes about 6 minutes.
 2. Laid-back mood. Lo-fi music, soft colors, friendly tackles, no injuries, no red cards.
@@ -50,29 +50,29 @@ The browser tests take minutes each here: this workspace draws the game in softw
 - `python3 tests/web_test.py <web folder> <shots folder>` must print `errors []`. View the screenshots. In `?test` mode the page reports `window.lofi` and runs one menu action from `window.lofi_cmd`.
 - `python3 tests/common/page_check.py https://bclark10121-cloud.github.io/lo-fi-league/` after every push must print `errors []`.
 
-Test what changed (G7.9, Brian 2026-11-15). Every release runs the quick checks above: kit, secrets, save store, rules, bot matches and the bot season. It also runs the browser tests for the parts it changed and the page check after the push. `web_test.py` covers one league match, a reload, an exhibition, touch and the Menu. `pad_test.py` covers the controller. `qol_test.py` covers the comfort features. Say in the report which ran and which were skipped.
+Test what changed (G7.9, BC 2026-11-15). Every release runs the quick checks above: kit, secrets, save store, rules, bot matches and the bot season. It also runs the browser tests for the parts it changed and the page check after the push. `web_test.py` covers one league match, a reload, an exhibition, touch and the Menu. `pad_test.py` covers the controller. `qol_test.py` covers the comfort features. Say in the report which ran and which were skipped.
 
-Android production release only (Google Play), or when Brian asks:
+Android production release only (Google Play), or when BC asks:
 
 - `python3 tests/e2e_test.py <game page url> <shots folder>` must print `errors []`. It plays two league seasons, reloads, plays practice and exhibition and checks phone-size screens. Run it on a local copy of `docs/` before the push and on the live page after.
 
 ## Deliver every time (every release)
 
-1. Game page link: https://bclark10121-cloud.github.io/lo-fi-league/ (give Brian this link, not the direct play link)
+1. Game page link: https://bclark10121-cloud.github.io/lo-fi-league/ (give BC this link, not the direct play link)
 2. GitHub repo link: https://github.com/bclark10121-cloud/lo-fi-league
-3. The APK, named `LoFiLeague-v<version>.apk`, in `docs/downloads/` and sent to Brian as a file. Package id `com.brianclark.lofileague`. Raise `version/code` by one on every build.
+3. The APK, named `LoFiLeague-v<version>.apk`, in `docs/downloads/` and sent to BC as a file. Package id `com.brianclark.lofileague`. Raise `version/code` by one on every build.
 4. The backlog: `BACKLOG.md`, updated, linked and sent as a file.
 5. The game standards handoff zip, built with `tools/common/make_handoff.sh ../game-standards` and sent as a file.
 6. `docs/index.html` updated: the line under the buttons reads exactly `Version <version>. Release notes · Backlog · Source on GitHub` (G1.8). `docs/release-notes/v<version>.md` added with a test checklist and the kit version (G10.4). The browser build goes in `docs/play/`.
-7. The dashboard card refreshed in `bclark10121-cloud.github.io` in the same push: replace `images/lo-fi-league.jpg` with a fresh 960 x 540 screenshot of the new build, and update the card's name, tag line, description or link in `index.html` whenever they changed (G2.7). Change only this game's card. The version fills itself in from the version line. After the push, check the card shows the new version. Give Brian the dashboard link: https://bclark10121-cloud.github.io/
+7. The dashboard card refreshed in `bclark10121-cloud.github.io` in the same push: replace `images/lo-fi-league.jpg` with a fresh 960 x 540 screenshot of the new build, and update the card's name, tag line, description or link in `index.html` whenever they changed (G2.7). Change only this game's card. The version fills itself in from the version line. After the push, check the card shows the new version. Give BC the dashboard link: https://bclark10121-cloud.github.io/
 
 ## Android signing
 
-Sign every APK with Brian's key `wandervalley.jks` (G6.3). The signature SHA-256 starts with `5db69ffb`.
+Sign every APK with BC's key `wandervalley.jks` (G6.3). The signature SHA-256 starts with `5db69ffb`.
 The key and its settings live in the private repo `bclark10121-cloud/game-signing` (G1.2, G1.7). Clone it to `../game-signing`, outside this repo.
 Build with `bash tools/common/sign_android.sh <apk path>`. It exports, signs and fails unless the signature is right. Never commit the key or its passwords here.
 v0.1.0 was signed with a throwaway test key. Testers uninstall v0.1.0 once before installing v0.1.1 or later.
 
-## Reporting to Brian
+## Reporting to BC
 
 Lead with the links and files. Segment the answer. Short active sentences. No em dashes, no semicolons, no Oxford comma. State plainly what was tested and where. List every judgment call.

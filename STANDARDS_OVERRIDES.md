@@ -2,7 +2,7 @@
 
 Standards: `GAME_STANDARDS.md` (rule ids start with G) and `ENGINEERING_STANDARDS.md` (rule ids start with E) in the private repo `bclark10121-cloud/game-standards`. This repo holds no copies.
 This file lists where this game does something else, and why. A rule not listed here applies in full.
-Order of authority: Brian in the chat, then this file, then the standards.
+Order of authority: BC in the chat, then this file, then the standards.
 
 Last reviewed: v0.2.3 (2026-11-15). First engineering audit on 2026-11-14. v0.2.2 ships G1.9, G7.8, E6.7, G5.8 and kit 1.5.0.
 Checked against: game-standards version 2026-11-15 (commit b2c2865). Shared kit 1.5.0 (`common.lock`).
@@ -11,18 +11,18 @@ Checked against: game-standards version 2026-11-15 (commit b2c2865). Shared kit 
 
 | # | Rule | Standard says | This game does | Why | Ends when | Agreed |
 |---|---|---|---|---|---|---|
-| 1 | G4.1 | Calm games. No combat. No way to lose. A reset never costs anything | A soccer match against the computer with a final score. A match ends in a win, a draw or a loss. Tackles win the ball. No injuries and no cards. Restart match costs nothing | Sports game. Brian, 2026-11-14: these rules do not apply to sports games or where they clearly do not make sense | Never, unless Brian changes the kind of game | 2026-11-14 |
-| 2 | G4.4 | Records and achievements are personal bests only. No leaderboards, no opponents | One computer opponent per match. A win, draw and loss record saved on the device. No leaderboards | Sports game. Brian, 2026-11-14: these rules do not apply to sports games or where they clearly do not make sense | Never, unless Brian changes the kind of game | 2026-11-14 |
-| 3 | G7.1 | A headless test driver proves the main route is drivable with 0 resets | A headless test bot plays 6 full matches and a full league season. Every match must finish and print its result | A soccer match has no route to drive. Brian, 2026-11-14: these rules do not apply to sports games or where they clearly do not make sense | G7.6 comes into force. The bot then counts as a rule met | 2026-11-14 |
+| 1 | G4.1 | Calm games. No combat. No way to lose. A reset never costs anything | A soccer match against the computer with a final score. A match ends in a win, a draw or a loss. Tackles win the ball. No injuries and no cards. Restart match costs nothing | Sports game. BC, 2026-11-14: these rules do not apply to sports games or where they clearly do not make sense | Never, unless BC changes the kind of game | 2026-11-14 |
+| 2 | G4.4 | Records and achievements are personal bests only. No leaderboards, no opponents | One computer opponent per match. A win, draw and loss record saved on the device. No leaderboards | Sports game. BC, 2026-11-14: these rules do not apply to sports games or where they clearly do not make sense | Never, unless BC changes the kind of game | 2026-11-14 |
+| 3 | G7.1 | A headless test driver proves the main route is drivable with 0 resets | A headless test bot plays 6 full matches and a full league season. Every match must finish and print its result | A soccer match has no route to drive. BC, 2026-11-14: these rules do not apply to sports games or where they clearly do not make sense | G7.6 comes into force. The bot then counts as a rule met | 2026-11-14 |
 | 5 | E4.1 | The default is GodotPhysics3D. Avoid Jolt on browser builds. A game that uses no physics engine records an override | No physics engine is used. Players and the ball move with plain maths in `main.gd`. `project.godot` keeps Godot's default engine, which runs nothing | Simple maths gives arcade control and the same result on every device | The game adds physics bodies | Proposed |
 
-A Proposed row is not in force. The standard applies until Brian agrees.
+A Proposed row is not in force. The standard applies until BC agrees.
 
 ## Open items (rule applies, work not finished)
 
 Game standards:
 
-- G5.2: the sprint bar and the shot power meter sit on screen with the scoreboard. They are counted as status readouts. Brian to confirm.
+- G5.2: the sprint bar and the shot power meter sit on screen with the scoreboard. They are counted as status readouts. BC to confirm.
 - G6.6: players, ball, posts and crossbar collide by plain maths. The nets do not catch the ball. A goal ends the play at the line.
 
 Engineering standards (from the first audit, 2026-11-14):
@@ -56,7 +56,7 @@ Game standards:
 - G1.3: game page `docs/index.html`, served from `main` `/docs`.
 - G1.4: the game page has the description, Play in your browser, the APK download, three screenshots, what kind of game it is, things to do, controls, install steps, a feedback list and links to release notes, backlog and source.
 - G1.5: browser build in `docs/play/`, APK in `docs/downloads/`, release notes in `docs/release-notes/`.
-- G1.6, G2.1, G2.2: game page https://bclark10121-cloud.github.io/lo-fi-league/ and repo https://github.com/bclark10121-cloud/lo-fi-league given to Brian.
+- G1.6, G2.1, G2.2: game page https://bclark10121-cloud.github.io/lo-fi-league/ and repo https://github.com/bclark10121-cloud/lo-fi-league given to BC.
 - G1.7: one public repo. No private repo for this game. The key comes from `game-signing` at build time and lives in a folder outside the repo.
 - G1.10: the game page footer links to The Game Shelf at https://bclark10121-cloud.github.io/. Lo-Fi League has its card there. The card reads its version from the version line.
 - G1.11: no person's name on the game page (done 2026-11-15 in commit 0332d0a). The repo description was not checked from here.
@@ -67,8 +67,8 @@ Game standards:
 - G2.4: `BACKLOG.md` updated for v0.2.3.
 - G2.5: `tools/common/make_handoff.sh ../game-standards` builds the handoff zip from `game-standards` plus this game's files.
 - G2.6: the game page has the version line and the APK link. `docs/release-notes/v0.2.3.md` says what is new and has a test checklist.
-- G4.2: four pillars in `CLAUDE.md`, confirmed by Brian 2026-11-14.
-- G4.6: `BACKLOG.md` has Done, Now, Asked for by Brian, Ideas to choose from (numbered), Later, Not planned and Decisions.
+- G4.2: four pillars in `CLAUDE.md`, confirmed by BC 2026-11-14.
+- G4.6: `BACKLOG.md` has Done, Now, Asked for by BC, Ideas to choose from (numbered), Later, Not planned and Decisions.
 - G5.1: Menu button at the top right opens Resume, How to play, Sound, Music, Restart match and Quit to title in a row. It reads Close while open. Esc toggles it (headless Chrome). Controller Back is wired, not tested on a controller. From v0.2.3 the row wraps onto a second line when it is too wide, which happens only with Large text on a desktop-size screen. On phones it stays one row.
 - G5.3: drag on the left half to move, three buttons on the right. Shows and hides as E5.4 says (end-to-end test).
 - G5.8: `InputSetup.add_controller_ui()` from kit 1.5.0. A chooses, B goes back, View and Menu toggle the Menu. The title card, How to play and the game page use Xbox button names. The game page has the Play with an Xbox controller section. `tests/pad_test.py` plays with a pretend Xbox controller and prints `errors []`. Not tried with a real controller.
@@ -81,7 +81,7 @@ Game standards:
 - G6.5: pitch lines are painted into one ground texture. The outer ground sits 0.6 yards below the pitch. The control ring is a raised mesh.
 - G7.3: `tests/web_test.py` and `tests/e2e_test.py` load the web build in headless Chrome and print `errors []`. Screenshots viewed. Both use the shared `tests/common/webkit.py`.
 - G7.4: the live game page, every link and the version line were checked after the push with the shared `tests/common/page_check.py`.
-- G7.5: stated in the release notes and the report to Brian.
+- G7.5: stated in the release notes and the report to BC.
 - G7.8: test state and commands come only from the shared `test_bridge.gd` (kit 1.3.0) with the whole-word `?test` flag. The only other test switches are command line flags (`--bot`, `--rules`, `--games`, `--season`). The Android build takes no test commands. Headless bots never write the player's save (`store.disabled`). Shipped in v0.2.2.
 - G8.1: four CC0 lo-fi tracks by Holizna, found through Patch.gg.
 - G8.3: `CREDITS.md` lists every outside asset with its source and licence.
@@ -107,19 +107,19 @@ Engineering standards:
 - E6.7: saves are read and written only by the kit's `save_store.gd` 1.4.0. Known keys and kinds only, counters clamped by `store.limits`, a 1 MB cap, a version guard and a `.bak` copy. The game has no backup codes and no delete-save button. The rules check deletes its own test file with `erase()`. `save_store_check.gd` prints `SAVESTORE check ok`. Shipped in v0.2.2.
 - E6.6: `quit_on_go_back = false`. The Android back button opens and closes the Menu.
 
-Proposed rules this game already follows (not in force, listed for Brian):
+Proposed rules this game already follows (not in force, listed for BC):
 
 - G4.8: review, name check, plan and backlog came before the build.
 - G4.9: clubs, formations and the league are data in `data/teams.json`, `data/formations.json` and `data/league.json`.
-- G6.7: the signing key was fetched only after Brian said so in the chat (2026-11-14). It now comes from `game-signing` and lives outside the repo.
+- G6.7: the signing key was fetched only after BC said so in the chat (2026-11-14). It now comes from `game-signing` and lives outside the repo.
 - G7.6: `--bot --games=6` plays six full matches and prints each result. `--bot --rules` checks every restart and the league schedule, table, simulated scores and save file. `--bot --season` plays a full season. The browser tests read `window.lofi` instead of guessing wait times.
-- G7.9: the test gate in `CLAUDE.md` is split into every release and Android production release only. The two-season end-to-end test runs only for a Google Play release or when Brian asks.
+- G7.9: the test gate in `CLAUDE.md` is split into every release and Android production release only. The two-season end-to-end test runs only for a Google Play release or when BC asks.
 - G7.7: the engineering release checklist was ticked for v0.2.3 and this file was reviewed.
 - E5.5: the game caps the frame step and takes up to three smaller steps per frame.
 
 ## Not in use in this game
 
-- G4.3 and G7.2: things to find. A soccer match has no finds, counter or journal. Confirmed by Brian 2026-11-14 (does not apply to sports games).
+- G4.3 and G7.2: things to find. A soccer match has no finds, counter or journal. Confirmed by BC 2026-11-14 (does not apply to sports games).
 - G4.5: no seasonal theme.
 - G5.7: the game shows no speed or distance.
 - G4.7, G6.8 and G6.9: retired rules.
@@ -129,14 +129,14 @@ Proposed rules this game already follows (not in force, listed for Brian):
 
 ## How to add an override
 
-1. Flag the conflict to Brian with the options. Do not override by yourself.
-2. Add the row as Proposed and list it as a judgment call in the report to Brian.
+1. Flag the conflict to BC with the options. Do not override by yourself.
+2. Add the row as Proposed and list it as a judgment call in the report to BC.
 3. Once he agrees, put the date in the Agreed column.
 4. When an override ends, move its row to Ended overrides with the date.
-5. When an override fits every game, ask Brian to make it a standard. Then end the override.
+5. When an override fits every game, ask BC to make it a standard. Then end the override.
 
 ## Ended overrides
 
 | # | Rule | This game did | Ended | Why |
 |---|---|---|---|---|
-| 4 | G6.3 | v0.1.0 was signed with a throwaway test key. The row stayed Proposed and was never in force | 2026-11-14 | Brian said in the chat to fetch `wandervalley.jks`. v0.1.1 and later use the real key, now from `game-signing` |
+| 4 | G6.3 | v0.1.0 was signed with a throwaway test key. The row stayed Proposed and was never in force | 2026-11-14 | BC said in the chat to fetch `wandervalley.jks`. v0.1.1 and later use the real key, now from `game-signing` |

@@ -1,6 +1,6 @@
 # Lo-Fi League: plan before the build
 
-Written 2026-11-14 for Brian. G4.8 (Proposed) asks for a review, a plan and a backlog before any build.
+Written 2026-11-14 for BC. G4.8 (Proposed) asks for a review, a plan and a backlog before any build.
 Rule ids updated 2026-11-14 to the shared standards: G for `GAME_STANDARDS.md`, E for `ENGINEERING_STANDARDS.md`, both read from the private repo `game-standards`. Overrides and open items live in `STANDARDS_OVERRIDES.md`.
 
 ## 1. What I reviewed
@@ -47,7 +47,7 @@ The editor zip stays out of the public repo.
 - "Lo-fi" is a common word for a music style. Many games use it.
 - Limits: this was a web search. I did not check trademark records or search inside the Play Store.
 
-## 5. Proposed pillars (Brian to confirm)
+## 5. Proposed pillars (BC to confirm)
 
 1. Pick up and play. Move, pass, shoot, tackle. A match takes about 6 minutes.
 2. Laid-back mood. Lo-fi music, soft colors, friendly fouls, no injuries, no red cards.
@@ -94,10 +94,10 @@ Team size and camera are open. See section 10.
 | 1 | G4.1 and G4.4 calm, no way to lose, no opponents | A soccer match has an opponent and a result | Proposed override rows 1 and 2 |
 | 2 | G4.3 and G7.2 things to find | Soccer has no finds | Listed under Not in use in `STANDARDS_OVERRIDES.md` |
 | 3 | G5.7 US units | Soccer pitches are marked in yards. No speed readout planned | Yards on the pitch. No override needed |
-| 4 | G6.3 signing key | The key lives in a private repo | Proposed override row 4: a test key until Brian says to use the real one |
-| 5 | G1.1 public repo | I need Brian's go-ahead to create and push a public repo | Ask at build time |
+| 4 | G6.3 signing key | The key lives in a private repo | Proposed override row 4: a test key until BC says to use the real one |
+| 5 | G1.1 public repo | I need BC's go-ahead to create and push a public repo | Ask at build time |
 
-## 10. Open questions for Brian
+## 10. Open questions for BC
 
 1. Team size: 11 a side, 7 a side or 5 a side?
 2. Look and camera: low-poly 3D or 2D pixel art?
