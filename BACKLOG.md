@@ -1,6 +1,6 @@
 # Lo-Fi League: backlog
 
-Updated 2026-11-15 for v0.3.0. BC decides the order.
+Updated 2026-11-16 for v0.3.1. BC decides the order.
 
 ## Done
 
@@ -34,6 +34,7 @@ Updated 2026-11-15 for v0.3.0. BC decides the order.
 - v0.2.3 comfort release (BC, 2026-11-15: "use your best judgement on what qol features to add next"). Ideas 30 (bigger text on phones, Text in the Menu), 34 (Quit check in a league match), 35 (remember the last mode and club) and 36 (goal scorers and minutes at full time). Also: the match pauses itself when the game loses focus, and the Menu row wraps instead of running under Close. New `tests/qol_test.py`. Version code 6.
 
 - v0.3.0 standards catch-up (Release 4, BC 2026-11-15: "ok move forward"). Source moved to the private `game-studio` and the public repo became a page repo (G1.7). Kit 1.9.1 Settings with Music and Sound levels, Full screen, Frame rate, Rumble, Opponent, Controls, Text size and Reset settings (G5.11, G5.13). Five save slots with `Slot <number>` on the title card (G5.12). Opponent Easy, Normal or Hard (G4.12, idea 15 in part). Tester tools behind the code (G5.9, G5.10). Title card controls for the device in use (G5.14). Pause when the controller drops (G5.15). Menu row Resume, Settings, How to play, Restart match, Title (G5.16). Second press on Restart match and Start over (G5.17). Rumble on goals and tackles (idea 42 in part). New icon (G6.10). Privacy page (G6.13). GitHub Releases and the newest two APKs (G2.10, G1.12). Version code 7.
+- v0.3.1 (2026-11-16), sound fix (BC 2026-11-16: no music in the browser). The Music and Sfx buses come from `default_bus_layout.tres` instead of `AudioServer.add_bus()` at runtime, which left every sound silent in the browser build. New `tests/audio_test.py` measures the page's real sound output. Version code 8.
 
 ## Now
 
@@ -156,6 +157,13 @@ From the Open items in `STANDARDS_OVERRIDES.md`, plus what has not been tried on
 - 2026-11-14: Create the repo in the browser and push the game.
 - 2026-11-14: Fetch `wandervalley.jks` from `keeper-of-the-hollow-source` and sign with it.
 - 2026-11-14: G4.1, G4.4, G7.1 and things to find (G4.3, G7.2) do not apply to sports games or where they clearly do not make sense. Override rows 1 to 3 agreed.
+
+## Judgment calls made in v0.3.1 (BC to confirm or change)
+
+1. A patch number (v0.3.1) for a sound fix only. No other change rides along.
+2. The engineering rule Home by Dusk proposed (E6.8: buses come from `default_bus_layout.tres`, never `AudioServer.add_bus()` at runtime, and every release measures real page sound) stays Proposed. Not in force until BC approves it.
+3. The sound test lives in this game's `tests/` for now, not in the shared kit. Moving it to the kit is a kit change for BC to approve.
+4. The sound test checks one moment: the first click and Enter on the title card. It does not walk every area.
 
 ## Judgment calls made in v0.3.0 (BC to confirm or change)
 
