@@ -1,6 +1,6 @@
 # Lo-Fi League: backlog
 
-Updated 2026-11-15 for v0.2.3. BC decides the order.
+Updated 2026-11-15 for v0.3.0. BC decides the order.
 
 ## Done
 
@@ -33,10 +33,12 @@ Updated 2026-11-15 for v0.2.3. BC decides the order.
 - v0.2.2: shared kit 1.5.0. Saves keep a backup and never load a newer save (E6.7). Test hooks only with `?test` (G7.8). Secrets check in the test gate (G1.9). Game Shelf link in the footer (G1.10).
 - v0.2.3 comfort release (BC, 2026-11-15: "use your best judgement on what qol features to add next"). Ideas 30 (bigger text on phones, Text in the Menu), 34 (Quit check in a league match), 35 (remember the last mode and club) and 36 (goal scorers and minutes at full time). Also: the match pauses itself when the game loses focus, and the Menu row wraps instead of running under Close. New `tests/qol_test.py`. Version code 6.
 
+- v0.3.0 standards catch-up (Release 4, BC 2026-11-15: "ok move forward"). Source moved to the private `game-studio` and the public repo became a page repo (G1.7). Kit 1.9.1 Settings with Music and Sound levels, Full screen, Frame rate, Rumble, Opponent, Controls, Text size and Reset settings (G5.11, G5.13). Five save slots with `Slot <number>` on the title card (G5.12). Opponent Easy, Normal or Hard (G4.12, idea 15 in part). Tester tools behind the code (G5.9, G5.10). Title card controls for the device in use (G5.14). Pause when the controller drops (G5.15). Menu row Resume, Settings, How to play, Restart match, Title (G5.16). Second press on Restart match and Start over (G5.17). Rumble on goals and tackles (idea 42 in part). New icon (G6.10). Privacy page (G6.13). GitHub Releases and the newest two APKs (G2.10, G1.12). Version code 7.
+
 ## Now
 
-- BC plays v0.2.3 on his phone and with an Xbox controller and reports how the text size, the league and the matches feel.
-- BC picks the next release from the ideas below.
+- BC plays v0.3.0 on his phone and with an Xbox controller: Settings, the five save slots, the Opponent choice and the Tester tools.
+- BC picks the next release from the ideas below. Game features wait until he opens development again (`PLAN.md` at the root of `game-studio`).
 
 ## Asked for by BC, not built yet
 
@@ -58,7 +60,7 @@ Nothing open.
 12. Yellow cards. No red cards.
 13. Substitutions and stamina.
 14. Lob pass, through ball and header.
-15. Difficulty levels and match length setting.
+15. Match length setting. Difficulty is done in v0.3.0 (Opponent in Settings).
 16. Weather and night matches.
 17. Several stadiums.
 18. Two players on one device.
@@ -88,7 +90,7 @@ Quality of life (from the 2026-11-14 end-to-end run)
 39. Fixtures screen: the whole season's fixtures and results, from the table screen.
 40. Club screen: tap a club in the table to see its players and ratings.
 41. Touch: left-handed layout and a button size setting.
-42. Controller rumble on a tackle, a save and a goal.
+42. Rumble on a keeper save. Goals and tackles rumble from v0.3.0.
 43. First-match hints: one line at the bottom suggests the next useful action. Turns off after three matches.
 
 New features
@@ -110,7 +112,6 @@ Engineering
 
 ## Later
 
-- Google Play release.
 - Online play.
 
 ## Not planned
@@ -121,6 +122,8 @@ Engineering
 
 ## Decisions from BC
 
+- 2026-11-15, 10:07 PM: there is no Google Play store and no end-to-end testing in this project. Every Proposed override row agreed, row 5 included. Old commits of the public repo keep their history (`DECISIONS.md` items 21 to 23).
+- 2026-11-15: "ok move forward". Lo-Fi League is next in Release 4, the standards catch-up.
 - 2026-11-14: Name is Lo-Fi League. Soccer. Godot.
 - 2026-11-14: 7 a side. Low-poly 3D with a side camera. "Lo-fi" means music and mood. First build is exhibition only.
 - 2026-11-14: Use best judgment for the first MVP. BC tests and gives feedback.
@@ -131,6 +134,16 @@ Engineering
 - 2026-11-14: Create the repo in the browser and push the game.
 - 2026-11-14: Fetch `wandervalley.jks` from `keeper-of-the-hollow-source` and sign with it.
 - 2026-11-14: G4.1, G4.4, G7.1 and things to find (G4.3, G7.2) do not apply to sports games or where they clearly do not make sense. Override rows 1 to 3 agreed.
+
+## Judgment calls made in v0.3.0 (BC to confirm or change)
+
+1. Opponent Easy, Normal and Hard scale only the computer side's speed, tackling and shooting (0.9, 1.0 and 1.08). The simulated league matches stay the same.
+2. A new player on a touch screen starts with Text size Larger, as v0.2.3 started with Large. The old Text, Sound and Music choices move to Settings.
+3. Title in a league match keeps its own one-time question (`Press again to quit. It will not count`), because a quit league match is never recorded. Restart match and Start over use the kit second press.
+4. Screen shake and Reduce motion stay hidden in Settings: the game has neither.
+5. `tests/e2e_test.py` was removed from the source: no end-to-end runs in this project. It stays in the public repo's history.
+6. The title card got its own Settings button next to `Slot <number>`, as Tiny Titans Football has.
+7. Rumble buzzes strong when you score, soft when you concede and soft when your tackle wins or loses the ball.
 
 ## Judgment calls made in v0.2.1 (BC to confirm or change)
 
