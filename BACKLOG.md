@@ -110,6 +110,28 @@ Engineering
 
 54. Clear the engineering open items in `STANDARDS_OVERRIDES.md`: typed arrays, squared distances, one MultiMesh for the boards and the skyline, safe areas, 3D render scale and a 60 fps cap on phones, input actions for keys, the shadow atlas size and `.wav` short sounds.
 
+## Unfinished standards items (2026-11-15)
+
+From the Open items in `STANDARDS_OVERRIDES.md`, plus what has not been tried on a real device. Each line comes off when it is done. BC picks when.
+
+- G5.2: BC to confirm the sprint bar and the shot power meter count as status readouts.
+- G6.6: the nets do not catch the ball. A goal ends the play at the line.
+- E1.2: 7 variables and about 26 plain `Array` values are not typed.
+- E1.3: the HUD redraws the touch pad every frame, even when it is hidden.
+- E1.5: 22 play checks use `distance_to()` in place of squared distances.
+- E2.3: each player model makes its own control ring material.
+- E2.5: the directional shadow atlas is not capped at 2048.
+- E3.1: draw calls not measured (estimate about 300 with 14 players).
+- E3.2: the 12 ad boards and 16 skyline blocks should be one `MultiMeshInstance3D` each.
+- E3.3: the pitch, crowd, window and ball textures have no VRAM compression.
+- E3.4: no `visibility_range_end` on scenery and `mesh_lod_threshold` not raised.
+- E4.6: VRAM not measured.
+- E5.2: `scaling_3d_scale` not set and no 60 fps cap on mobile.
+- E5.3: the HUD does not read the display safe area. Not checked with a notch.
+- E5.4: keyboard movement reads raw keys, not input actions.
+- E6.3: short sounds are `.ogg`, not `.wav`. The tackle sound is stereo 44.1 kHz.
+- Real device check: a phone, the Retroid, an Xbox controller and sound. v0.3.0 ran only headless and in a headless browser.
+
 ## Later
 
 - Online play.
