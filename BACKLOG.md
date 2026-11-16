@@ -1,6 +1,6 @@
 # Lo-Fi League: backlog
 
-Updated 2026-11-16 for v0.3.1. BC decides the order.
+Updated 2026-11-16 for v0.3.2. BC decides the order.
 
 ## Done
 
@@ -35,9 +35,11 @@ Updated 2026-11-16 for v0.3.1. BC decides the order.
 
 - v0.3.0 standards catch-up (Release 4, BC 2026-11-15: "ok move forward"). Source moved to the private `game-studio` and the public repo became a page repo (G1.7). Kit 1.9.1 Settings with Music and Sound levels, Full screen, Frame rate, Rumble, Opponent, Controls, Text size and Reset settings (G5.11, G5.13). Five save slots with `Slot <number>` on the title card (G5.12). Opponent Easy, Normal or Hard (G4.12, idea 15 in part). Tester tools behind the code (G5.9, G5.10). Title card controls for the device in use (G5.14). Pause when the controller drops (G5.15). Menu row Resume, Settings, How to play, Restart match, Title (G5.16). Second press on Restart match and Start over (G5.17). Rumble on goals and tackles (idea 42 in part). New icon (G6.10). Privacy page (G6.13). GitHub Releases and the newest two APKs (G2.10, G1.12). Version code 7.
 - v0.3.1 (2026-11-16), sound fix (BC 2026-11-16: no music in the browser). The Music and Sfx buses come from `default_bus_layout.tres` instead of `AudioServer.add_bus()` at runtime, which left every sound silent in the browser build. New `tests/audio_test.py` measures the page's real sound output. Version code 8.
+- v0.3.2 (2026-11-16), browser crash fix (BC 2026-11-16: "memory access out of bounds" on startup in the Retroid Pocket Flip 2 browser). The Sfx bus in `default_bus_layout.tres` had no send. Godot 4.6's `set_bus_layout()` looks each send up before the bus exists, so an empty send read past the end of the bus list at random. Sfx now sends to Master, which also routes the sound effects in the browser. `tests/audio_test.py` fails on a bus with no send. Engine moved to Godot 4.6.3. Version code 9.
 
 ## Now
 
+- BC opens v0.3.2 in the Retroid Pocket Flip 2 browser a few times. It must reach the title card every time.
 - BC plays v0.3.0 on his phone and with an Xbox controller: Settings, the five save slots, the Opponent choice and the Tester tools.
 - BC picks the next release from the ideas below. Game features wait until he opens development again (`PLAN.md` at the root of `game-studio`).
 
@@ -145,6 +147,7 @@ From the Open items in `STANDARDS_OVERRIDES.md`, plus what has not been tried on
 
 ## Decisions from BC
 
+- 2026-11-16: fix the browser crash. Upgrade to Godot 4.6.3. After the real cause turned up (the Sfx bus had no send), release only the two games with the gap: Lo-Fi League and The Scenic Route.
 - 2026-11-15, 10:07 PM: there is no Google Play store and no end-to-end testing in this project. Every Proposed override row agreed, row 5 included. Old commits of the public repo keep their history (`DECISIONS.md` items 21 to 23).
 - 2026-11-15: "ok move forward". Lo-Fi League is next in Release 4, the standards catch-up.
 - 2026-11-14: Name is Lo-Fi League. Soccer. Godot.
@@ -157,6 +160,12 @@ From the Open items in `STANDARDS_OVERRIDES.md`, plus what has not been tried on
 - 2026-11-14: Create the repo in the browser and push the game.
 - 2026-11-14: Fetch `wandervalley.jks` from `keeper-of-the-hollow-source` and sign with it.
 - 2026-11-14: G4.1, G4.4, G7.1 and things to find (G4.3, G7.2) do not apply to sports games or where they clearly do not make sense. Override rows 1 to 3 agreed.
+
+## Judgment calls made in v0.3.2 (BC to confirm or change)
+
+1. Godot 4.6.3, the newest 4.6 patch, instead of 4.7. The engineering standard says Godot 4.6, so no override is needed. 4.6.3 alone does not fix the crash.
+2. A patch number (v0.3.2) for the send fix and the engine change only. No other change rides along.
+3. The cause comes from reading Godot's source, not from a crash on the test machine. BC's Retroid test is the real proof.
 
 ## Judgment calls made in v0.3.1 (BC to confirm or change)
 
