@@ -45,7 +45,7 @@ Updated 2026-11-16 for v0.3.2. BC decides the order.
 
 ## Asked for by BC, not built yet
 
-Nothing open.
+1. Suno music, first in line (BC, 2026-11-16, waits on G8.7). Replace the four Holizna tracks, which The Scenic Route plays too, with lo-fi tracks made for this game: a menu track and three match tracks. Fits idea 21, the lo-fi radio.
 
 ## Ideas to choose from (BC picks by number)
 
@@ -215,3 +215,13 @@ From the Open items in `STANDARDS_OVERRIDES.md`, plus what has not been tried on
 8. The kit clash check swaps the computer club to its away kit.
 9. v0.1.1 keeps the same game as v0.1.0. Only the version and the signature changed.
 10. The first push holds the full game, the v0.1.0 build and the APK, and the standards files with the four override rows still Proposed.
+
+## v0.4.0 (2026-11-17, Release 6)
+
+- Shipped: the shared start screen (G5.21, kit 1.10.0) with this game's own painted scene (`scripts/title_art.gd`). Continue only when there is something to continue, Play opens the slot list, Settings, Quit off the web. Long key lists, tips and credits left the start screen.
+
+### Judgment calls in v0.4.0 (BC to confirm)
+
+1. The controls line on the start screen is cut to the main keys and buttons. How to play keeps the full list.
+2. The Game Shelf card shows the new start screen in place of a play picture.
+3. Play, then a slot, leads to a new How do you want to play screen. Continue goes straight there for the slot in use. B goes back to the title card.
