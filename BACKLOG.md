@@ -1,8 +1,10 @@
 # Lo-Fi League: backlog
 
-Updated 2026-11-18 for v0.7.0.
+Updated 2026-11-18 for v0.7.1. BC decides the order.
 
 ## Done
+
+- v0.7.1 (2026-11-18): start screen music (G5.21, asked for by BC). The title track is "Study And Relax" (Kevin MacLeod, CC BY 4.0), `audio/title.ogg`. It plays on the start screen and the menus and fades into the lo-fi playlist when a match starts (`_music_sync()`). On Android and desktop it starts with the start screen, in a browser on the first press. No two games share a title track.
 
 - v0.7.0 (2026-11-18), Release 8 (Back at the top and both orientations, kit 1.13.0): Back at the top left of Settings, the slot list, the modes, the club picker, the league table and How to play (asked for by BC, G5.30). Plays fully upright and sideways (asked for by BC, G6.18): a steeper upright camera that shows both sidelines, clubs in one column, the league info under the table, the Menu row under the scoreboard and banners that wrap. Turning the phone mid-match keeps the match. `tests/orient_test.py` and `tests/look_shot.gd`.
 
