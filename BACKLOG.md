@@ -1,6 +1,6 @@
 # Lo-Fi League: backlog
 
-Updated 2026-11-17 for v0.5.0.
+Updated 2026-11-17 for v0.6.0.
 
 ## Done
 
@@ -59,12 +59,12 @@ Updated 2026-11-17 for v0.5.0.
 6. Player editor: head, hair, skin and shirt number.
 7. More formations (12 or more) and a formation picker before kickoff.
 8. Team style sliders: pass, shoot, tackle and run.
-9. Special player skills such as a curved shot or a quick turn.
+9. Special player skills such as a curved shot or a quick turn. Skill moves for everyone done in v0.6.0 (Flick, Step-over, Roulette). Per-player skills still open.
 10. Offside, with a toggle.
 11. Fouls, free kicks and penalties.
 12. Yellow cards. No red cards.
 13. Substitutions and stamina.
-14. Lob pass, through ball and header.
+14. Lob pass, through ball and header. Through ball done in v0.6.0. Lob pass and header still open.
 15. Match length setting. Difficulty is done in v0.3.0 (Opponent in Settings).
 16. Weather and night matches.
 17. Several stadiums.
@@ -227,3 +227,34 @@ From the Open items in `STANDARDS_OVERRIDES.md`, plus what has not been tried on
 1. The controls line on the start screen is cut to the main keys and buttons. How to play keeps the full list.
 2. The Game Shelf card shows gameplay (BC, 2026-11-17: picked from three options).
 3. Play, then a slot, leads to a new How do you want to play screen. Continue goes straight there for the slot in use. B goes back to the title card.
+
+## v0.6.0 "Flow" (2026-11-17)
+
+BC, 2026-11-17: "a more chill game where i can pass freely and move around the field ... fun on offense, be the beautiful game with cool dribbling and through passes to players moving forward to scoring positions ... more arcade than realistic." BC picked: feel rework first, a skill move button, automatic runs plus a through ball button and a soft, chill defense.
+
+- Shipped: skill move button (Flick, Step-over, Roulette), through ball button, forward runs, chill defense on the computer side, closer ball control, crisper passes, Thru and Skill touch buttons, new controls in How to play, the start screen and the game page. The computer plays through balls, runs and skill moves too.
+- Shipped: music starts on the first press anywhere. Since v0.4.0 the start screen stayed silent until a slot was picked, and `tests/audio_test.py` failed on the v0.4.0 build too.
+- Shipped: How to play is a full-screen panel that scrolls (the stick and D-pad scroll it). Its text ran off the screen with Larger text.
+- New `tests/flow_check.gd` (prints `FLOW check ok`). `tests/web_test.py` and `tests/qol_test.py` pick a slot after Play, as the v0.4.0 start screen asks. Both failed on v0.4.0 before this fix.
+
+### Judgment calls in v0.6.0 (BC to confirm)
+
+1. Version 0.6.0. League mode shipped back in v0.2.0, and BC's other chat shipped v0.5.0 (Release 7) while this was being built, so Flow sits on top of it as v0.6.0.
+2. Buttons: Y through ball, X skill move (tackle without the ball), B shoot. X no longer shoots. Keyboard L through ball and I skill move. Touch Thru and Skill.
+3. Skill move picks the move from the stick: forward Flick, sideways Step-over, none or back Roulette. One second cooldown. A tackle during a move always fails.
+4. The move's name shows on screen for under a second.
+5. Chill defense works on Easy, Normal and Hard. The Opponent setting still scales speed, tackling and shooting on top of it.
+6. The computer uses the new through balls, runs and skill moves too, so the attract match on the start screen flows the same way.
+7. Up to two runners at a time. Only forwards and attacking midfielders run. The player you control never runs by himself.
+8. No offside, so runners can stay in behind.
+9. The Game Shelf picture stays as BC picked it. Only the card text and update time changed.
+10. Through ball and Skill move join Change controls as their own actions. X left Shoot so it can be Skill move.
+11. Change controls names fixed to match play: Pass and switch (was Pass and tackle) and Shoot and tackle (was Shoot and slide). Pass never tackled and there is no slide.
+12. How to play became a full-screen panel that scrolls. Its text ran off the screen with Larger text.
+
+### Ideas from v0.6.0 (BC picks)
+
+- Lob through ball: hold Through for a chipped ball over the defense.
+- Call a run: press LB with the ball to send the nearest forward.
+- One-two: pass and the receiver plays it straight back into space.
+- Skill move trail: a soft light streak behind the ball during a move.
