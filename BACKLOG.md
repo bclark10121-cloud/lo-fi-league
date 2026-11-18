@@ -1,8 +1,10 @@
 # Lo-Fi League: backlog
 
-Updated 2026-11-16 for v0.3.2. BC decides the order.
+Updated 2026-11-17 for v0.5.0.
 
 ## Done
+
+- v0.5.0 (2026-11-17), Release 7 (standards review, kit 1.12.0): Records page with 10 achievements and 9 stats, Change controls with Sprint Hold or Toggle, Picture and Battery saver, backup codes, old-save checks, an error log and sound at one loudness level.
 
 - Reviewed the game standards, the Keeper of the Hollow overrides and the reference team editor. Name check for "Lo-Fi League".
 - Plan written: `PLAN.md`.
@@ -223,5 +225,5 @@ From the Open items in `STANDARDS_OVERRIDES.md`, plus what has not been tried on
 ### Judgment calls in v0.4.0 (BC to confirm)
 
 1. The controls line on the start screen is cut to the main keys and buttons. How to play keeps the full list.
-2. The Game Shelf card shows the new start screen in place of a play picture.
+2. The Game Shelf card shows gameplay (BC, 2026-11-17: picked from three options).
 3. Play, then a slot, leads to a new How do you want to play screen. Continue goes straight there for the slot in use. B goes back to the title card.
