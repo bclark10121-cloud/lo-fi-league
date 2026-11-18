@@ -1,6 +1,6 @@
 # Lo-Fi League: backlog
 
-Updated 2026-11-17 for v0.6.1.
+Updated 2026-11-17 for v0.6.2.
 
 ## Done
 
@@ -268,6 +268,14 @@ BC, 2026-11-17: "a more chill game where i can pass freely and move around the f
 
 1. Shipped as a quick fix on its own. The new icon comes in the next release.
 
-### Asked for by BC, not built yet
+## v0.6.2 (2026-11-17)
 
-- New icon: keep the idea of headphones on a soccer ball, at a much higher quality (BC, 2026-11-17: "use meshy or any other source").
+- New icon (BC, 2026-11-17: "I love the idea of headphones on a soccer ball, but we need a higher quality image", "use meshy or any other source"). A real 3D model of a ball wearing headphones, rendered at 2048 with soft light and shadows on the sunset pitch. BC picked Mint from three headphone colors (Coral, Violet, Mint).
+- New `tools/icon_render/` (three.js in headless Chrome) and a new `tools/make_icon_master.py`.
+
+### Judgment calls in v0.6.2 (BC to confirm)
+
+1. Built the model in code with three.js instead of Meshy. No Meshy connection is set up in this workspace, and a code model can be rerendered in any color or angle.
+2. The ball uses the classic 12 black pentagons and 20 white hexagons with thin seams. The headphones have a cream band with a coral pad, mint cups, navy cushions and a coral ring on each cup.
+3. The sunset sky and striped pitch from the old icon stay behind the ball, with a soft glow and a shadow on the grass.
+4. The Game Shelf picture stays as BC picked it. Only the game page icon, the Android icon and the browser tab icon changed.
