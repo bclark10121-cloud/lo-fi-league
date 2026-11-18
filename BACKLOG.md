@@ -1,8 +1,10 @@
 # Lo-Fi League: backlog
 
-Updated 2026-11-17 for v0.6.2.
+Updated 2026-11-18 for v0.7.0.
 
 ## Done
+
+- v0.7.0 (2026-11-18), Release 8 (Back at the top and both orientations, kit 1.13.0): Back at the top left of Settings, the slot list, the modes, the club picker, the league table and How to play (asked for by BC, G5.30). Plays fully upright and sideways (asked for by BC, G6.18): a steeper upright camera that shows both sidelines, clubs in one column, the league info under the table, the Menu row under the scoreboard and banners that wrap. Turning the phone mid-match keeps the match. `tests/orient_test.py` and `tests/look_shot.gd`.
 
 - v0.5.0 (2026-11-17), Release 7 (standards review, kit 1.12.0): Records page with 10 achievements and 9 stats, Change controls with Sprint Hold or Toggle, Picture and Battery saver, backup codes, old-save checks, an error log and sound at one loudness level.
 
@@ -267,6 +269,18 @@ BC, 2026-11-17: "a more chill game where i can pass freely and move around the f
 ### Judgment calls in v0.6.1 (BC to confirm)
 
 1. Shipped as a quick fix on its own. The new icon comes in the next release.
+
+## v0.7.0 (2026-11-18, Back at the top and both orientations)
+
+### Judgment calls in v0.7.0 (BC to confirm)
+
+1. The full time card keeps Back to league, Play again and Title in a row. It is a result card, not a menu (same call as Tiny Titans Football).
+2. Upright, the camera rises to 34 yards and moves in to 18. It shows both sidelines and about 32 yards of the length, so the goals come into view as the ball nears them. BC to judge on a phone.
+3. Upright, the touch buttons keep their landscape spots in the lower right corner. They fit a 720 wide screen.
+4. How to play hides the scoreboard, the Menu button and the Menu row while it is open, so its Back at the top left sits clear.
+5. Back keeps its own height when a long panel title wraps to two lines.
+6. The APK turns with the phone but follows Android's rotation lock (fullUser), as in the pilot.
+7. Version 0.7.0, a minor: new layouts and a new camera (G6.11).
 
 ## v0.6.2 (2026-11-17)
 
