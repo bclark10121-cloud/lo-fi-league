@@ -1,6 +1,6 @@
 # Lo-Fi League: backlog
 
-Updated 2026-11-17 for v0.6.0.
+Updated 2026-11-17 for v0.6.1.
 
 ## Done
 
@@ -258,3 +258,16 @@ BC, 2026-11-17: "a more chill game where i can pass freely and move around the f
 - Call a run: press LB with the ball to send the nearest forward.
 - One-two: pass and the receiver plays it straight back into space.
 - Skill move trail: a soft light streak behind the ball during a move.
+
+## v0.6.1 (2026-11-17)
+
+- Fixed (BC, 2026-11-17: "neither load when selecting the play or settings option", APK and browser): the start screen was added to the HUD layer above `hud.root`, where the Save slots list and Settings live, so both opened behind it. The start screen now goes in `hud.root` first. Quit worked because it sits on the start screen.
+- `tests/flow_check.gd` checks the slot list and Settings sit above the start screen. The browser suites read state, not pixels, so they passed with the panels hidden.
+
+### Judgment calls in v0.6.1 (BC to confirm)
+
+1. Shipped as a quick fix on its own. The new icon comes in the next release.
+
+### Asked for by BC, not built yet
+
+- New icon: keep the idea of headphones on a soccer ball, at a much higher quality (BC, 2026-11-17: "use meshy or any other source").
