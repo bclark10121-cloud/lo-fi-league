@@ -4,6 +4,8 @@ Updated 2026-11-18 for v0.7.1. BC decides the order.
 
 ## Done
 
+- v0.7.3 (2026-11-19): Godot 4.7.2 (G6.19), no change to play. The Flow notes from BC's sweep wait for his details. Known: `flow_check` is random around its pass line (50 of 200), a fixed seed is the fix.
+
 - v0.7.2 (2026-11-18): start screen title (G5.21 Title, asked for by BC). The name sits in the dead center, above the buttons, in Monoton (SIL Open Font License 1.1), on the start screen, the game page and the Game Shelf card. Kit 1.15.0.
 
 - v0.7.1 (2026-11-18): start screen music (G5.21, asked for by BC). The title track is "Study And Relax" (Kevin MacLeod, CC BY 4.0), `audio/title.ogg`. It plays on the start screen and the menus and fades into the lo-fi playlist when a match starts (`_music_sync()`). On Android and desktop it starts with the start screen, in a browser on the first press. No two games share a title track.
@@ -47,9 +49,11 @@ Updated 2026-11-18 for v0.7.1. BC decides the order.
 
 ## Now
 
-- BC opens v0.3.2 in the Retroid Pocket Flip 2 browser a few times. It must reach the title card every time.
-- BC plays v0.3.0 on his phone and with an Xbox controller: Settings, the five save slots, the Opponent choice and the Tester tools.
-- BC picks the next release from the ideas below. Game features wait until he opens development again (`PLAN.md` at the root of `game-studio`).
+- Playtest sweep results (BC, 2026-11-19, 8:59 PM):
+  - Good: Retroid browser reaches the title card, upright camera. No halo behind the title.
+  - Needs work (details asked): Flow (through balls, runs, skill moves, chill defense).
+  - All judgment calls from v0.4.0 to v0.7.0 confirmed.
+- BC picks the next release from the ideas below.
 
 ## Asked for by BC, not built yet
 
@@ -228,7 +232,7 @@ From the Open items in `STANDARDS_OVERRIDES.md`, plus what has not been tried on
 
 - Shipped: the shared start screen (G5.21, kit 1.10.0) with this game's own painted scene (`scripts/title_art.gd`). Continue only when there is something to continue, Play opens the slot list, Settings, Quit off the web. Long key lists, tips and credits left the start screen.
 
-### Judgment calls in v0.4.0 (BC to confirm)
+### Judgment calls in v0.4.0 (confirmed by BC 2026-11-19)
 
 1. The controls line on the start screen is cut to the main keys and buttons. How to play keeps the full list.
 2. The Game Shelf card shows gameplay (BC, 2026-11-17: picked from three options).
@@ -243,7 +247,7 @@ BC, 2026-11-17: "a more chill game where i can pass freely and move around the f
 - Shipped: How to play is a full-screen panel that scrolls (the stick and D-pad scroll it). Its text ran off the screen with Larger text.
 - New `tests/flow_check.gd` (prints `FLOW check ok`). `tests/web_test.py` and `tests/qol_test.py` pick a slot after Play, as the v0.4.0 start screen asks. Both failed on v0.4.0 before this fix.
 
-### Judgment calls in v0.6.0 (BC to confirm)
+### Judgment calls in v0.6.0 (confirmed by BC 2026-11-19)
 
 1. Version 0.6.0. League mode shipped back in v0.2.0, and BC's other chat shipped v0.5.0 (Release 7) while this was being built, so Flow sits on top of it as v0.6.0.
 2. Buttons: Y through ball, X skill move (tackle without the ball), B shoot. X no longer shoots. Keyboard L through ball and I skill move. Touch Thru and Skill.
@@ -270,13 +274,13 @@ BC, 2026-11-17: "a more chill game where i can pass freely and move around the f
 - Fixed (BC, 2026-11-17: "neither load when selecting the play or settings option", APK and browser): the start screen was added to the HUD layer above `hud.root`, where the Save slots list and Settings live, so both opened behind it. The start screen now goes in `hud.root` first. Quit worked because it sits on the start screen.
 - `tests/flow_check.gd` checks the slot list and Settings sit above the start screen. The browser suites read state, not pixels, so they passed with the panels hidden.
 
-### Judgment calls in v0.6.1 (BC to confirm)
+### Judgment calls in v0.6.1 (confirmed by BC 2026-11-19)
 
 1. Shipped as a quick fix on its own. The new icon comes in the next release.
 
 ## v0.7.0 (2026-11-18, Back at the top and both orientations)
 
-### Judgment calls in v0.7.0 (BC to confirm)
+### Judgment calls in v0.7.0 (confirmed by BC 2026-11-19)
 
 1. The full time card keeps Back to league, Play again and Title in a row. It is a result card, not a menu (same call as Tiny Titans Football).
 2. Upright, the camera rises to 34 yards and moves in to 18. It shows both sidelines and about 32 yards of the length, so the goals come into view as the ball nears them. BC to judge on a phone.
@@ -291,7 +295,7 @@ BC, 2026-11-17: "a more chill game where i can pass freely and move around the f
 - New icon (BC, 2026-11-17: "I love the idea of headphones on a soccer ball, but we need a higher quality image", "use meshy or any other source"). A real 3D model of a ball wearing headphones, rendered at 2048 with soft light and shadows on the sunset pitch. BC picked Mint from three headphone colors (Coral, Violet, Mint).
 - New `tools/icon_render/` (three.js in headless Chrome) and a new `tools/make_icon_master.py`.
 
-### Judgment calls in v0.6.2 (BC to confirm)
+### Judgment calls in v0.6.2 (confirmed by BC 2026-11-19)
 
 1. Built the model in code with three.js instead of Meshy. No Meshy connection is set up in this workspace, and a code model can be rerendered in any color or angle.
 2. The ball uses the classic 12 black pentagons and 20 white hexagons with thin seams. The headphones have a cream band with a coral pad, mint cups, navy cushions and a coral ring on each cup.
