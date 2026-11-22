@@ -34,3 +34,7 @@ Changes: re-encoded to Ogg Vorbis at a lower bit rate.
 ## Player model (v0.8.0)
 
 - The low-poly player was made for this game in Meshy (Image to 3D, licence Private) from original reference art made with Gemini (Nano Banana Pro) from Claude's prompts (G8.3, G8.4, G8.5). Running and Walking motions from Meshy's auto rig.
+
+## Animal athletes (v0.9.0)
+
+- The six animal players (rabbit, bear, fox, cat, raccoon, frog) were made for this game in Meshy (Image to 3D, licence Private) from original reference art made with Gemini (Nano Banana) from Claude's prompts (G8.3, G8.4, G8.5, G8.8). Rigged with Meshy's Humanoid auto rig. Motions from Meshy's motion library: Running, Walking, Idle, Kick a Soccer Ball, Sliding Rool, Sliding Stumble, Dive Down and Land, Victory Cheer.

@@ -1,6 +1,6 @@
 # Lo-Fi League: backlog
 
-Updated 2026-11-21 for v0.8.2. BC decides the order.
+Updated 2026-11-22 for v0.9.0. BC decides the order.
 
 ## v0.8.0 (2026-11-21): arcade play and new 3D players, done
 
@@ -11,12 +11,15 @@ Updated 2026-11-21 for v0.8.2. BC decides the order.
 
 ## Next (BC's picks, 2026-11-21, 7:26 PM)
 
+- All four picks are built: reward cards and star players in v0.8.2, animal athletes and goal replay in v0.9.0.
 - Picker: https://bclark10121-cloud.github.io/bc-decisions/2026-11-21-lofi-next/ (research of Mario Strikers, NBA Jam, Rocket League, Super Mega Baseball, Super Arcade Football, Golazo, Windjammers 2 and Score! Hero).
 - BC: "Character set: A. Animal athletes. More fun in the match: Goal replay and celebrations. Reasons to come back: Reward card after every match. Personality and control: Star players."
 - Also asked (2026-11-21): more space between Lo-Fi and League on the start screen title. Built, not released.
 - Not picked this round, kept as ideas: On Fire streak, power-ups, weather and modifiers, challenge mode with stars, knockout cup, weekly cup event, difficulty slider 0 to 99, team editor, commentary line.
 
 ## Done
+
+- v0.9.0 (released 2026-11-22, built 2026-11-21): animal teams (foxes, frogs, cats, raccoons, bears and rabbits, BC's pick A), new motions (idle, kick, slide, stumble, cheer), goal replay and celebrations (BC's pick), Camera in Settings with Medium by default (BC's pick B) and the Game Shelf card foxes against bears (BC's pick A). Owls and turtles wait (item 3). Fresh review fixes on 2026-11-22: the Menu holds every player motion (G5.15), the replay skip hint follows a remapped key (G5.14) and `tests/speck_check.py` guards the kit speck rule.
 
 - v0.8.2 (2026-11-21): reward cards after every match, star players with skills and a wider gap in the start screen title (BC's picks).
 
@@ -75,10 +78,26 @@ Updated 2026-11-21 for v0.8.2. BC decides the order.
   - Needs work (details asked): Flow (through balls, runs, skill moves, chill defense).
   - All judgment calls from v0.4.0 to v0.7.0 confirmed.
 - BC picks the next release from the ideas below.
+- Notes from the v0.9.0 fresh review and look check (2026-11-22). None changed v0.9.0:
+  - Fox shirt texture: a large area inside the shirt sits at hue 321, one degree outside the shirt marker window, so about 4,950 texels keep a pink tint. Repaint the fox's shirt marker in the texture (or widen the shirt window for the fox only) and rerun `tests/speck_check.py`.
+  - Kit speck rule: 3 of 8 paints a few fur texels past the kit edge seam (most on the fox: 397 of a 500 budget). The pale fringe rule paints a few too (rabbit 74, raccoon 36, bear 28) and is only reported. A cleaner texture ends both.
+  - `tests/speck_check.py` copies the shader's hue and saturation limits. Read them from the shader as well, and check the outer-band line still uses `SPECK_NEED_OUT`.
+  - `tests/replay_check.gd`: add direct checks that the Menu holds a slide and a stumble, and that Settings open over a match holds motions. The cheer clip check passes with nothing to test when the scorer has no cheer clip.
+  - `tests/settings_test.py`: `moved()` waits up to 5 seconds when a press cannot move the focus. A miss in `to()` can cost about 70 seconds.
+  - Size budget (G6.16): the browser build is about 64.6 MB of the 70 MB budget with six animal models. Owl and turtle add about 2.2 MB each. Shrink the animal textures or the motion clips before adding more teams (items 2 and 3 below).
+  - Motions: a feet-first slide clip in place of the head-first belly slide. A keeper dive clip that lands on the side.
+  - The GOAL banner overlaps the start of the replay. Own goals get no cheer.
 
 ## Asked for by BC, not built yet
 
 1. Suno music, first in line (BC, 2026-11-16, waits on G8.7). Replace the four Holizna tracks, which The Scenic Route plays too, with lo-fi tracks made for this game: a menu track and three match tracks. Fits idea 21, the lo-fi radio.
+2. More animal teams with strengths and weaknesses (BC, 2026-11-21, 8:20 PM: "add addtional teams and allow user to select what animal team to pick and each team has advantage and disadvantages, like speed, shooting, offense, defense, etc").
+   - More animal teams beyond the first six. The owl and turtle are already made in Meshy and wait for rigging (see item 3).
+   - The player picks an animal team. The club picker already exists, so this adds the animal and its strengths to each card.
+   - Each team has clear strong and weak points the player sees before picking: speed, shooting, offense, defense and so on. Each club already has hidden `style` numbers (pass, shoot, tackle, run) in `data/teams.json`. This makes them visible and gives each animal a real trade-off.
+   - Open for BC: how many teams, which animals and the rating bars to show.
+3. Owl and turtle teams (BC, 2026-11-21: "6 animal teams now, 2 later"). v0.9.0 ships rabbit, bear, raccoon, cat, frog and fox. Midnight Vinyl FC (owl) and Slow Fade Athletic (turtle) keep the human players until these two are rigged. Both are remeshed to 10K in Meshy.
+4. Closer camera, done in v0.9.0. Kept here as a record: closer camera and more player motions (BC, 2026-11-21). Camera in Settings (Wide, Medium, Close), Medium by default (BC's pick). Idle, kick, slide and stumble motions. The keeper dive keeps the old tilt, since Meshy's dive lands head first.
 
 ## Ideas to choose from (BC picks by number)
 
