@@ -1,10 +1,19 @@
 # Lo-Fi League: backlog
 
-Updated 2026-11-18 for v0.7.1. BC decides the order.
+Updated 2026-11-21 for v0.8.0. BC decides the order.
+
+## v0.8.0 (2026-11-21): arcade play and new 3D players, done
+
+- BC asked for new player graphics and easier, arcade play: faster ball movement, more goals, less tight defense. Picks: real 3D models, full arcade, all four changes (speed, easier scoring, super shot, looser defense), both sides.
+- Arcade play is built and tested, not released (game-studio commit 361f672). Bot matches average about 13 goals with about 3 super goals.
+- BC, 2026-11-21: "ship together". v0.8.0 ships the arcade play and the new players in one release.
+- Player look picker: https://bclark10121-cloud.github.io/bc-decisions/2026-11-21-lofi-players/. BC's picks, 2026-11-21: "Player look: C. Retro low-poly. Body types: One body." Then Meshy in BC's browser (G8.5), rigged GLB, club colors painted over marker kit colors.
 
 ## Done
 
-- v0.7.3 (2026-11-19): Godot 4.7.2 (G6.19), no change to play. The Flow notes from BC's sweep wait for his details. Known: `flow_check` is random around its pass line (50 of 200), a fixed seed is the fix.
+- v0.8.0 (2026-11-21): arcade play on both sides (faster, more goals, looser defense), the super shot and new low-poly 3D players from Meshy painted in club colors.
+
+- v0.7.3 (2026-11-19): Godot 4.7.2 (G6.19), no change to play. The Flow notes from BC's sweep wait for his details. `flow_check` now uses a fixed seed (2026-11-19, test only): 36 of 200 every run.
 
 - v0.7.2 (2026-11-18): start screen title (G5.21 Title, asked for by BC). The name sits in the dead center, above the buttons, in Monoton (SIL Open Font License 1.1), on the start screen, the game page and the Game Shelf card. Kit 1.15.0.
 
@@ -49,6 +58,7 @@ Updated 2026-11-18 for v0.7.1. BC decides the order.
 
 ## Now
 
+- Staged for the next release (BC, 2026-11-19, 10:32 PM): full screen by default in the browser (G5.11, standards 19b). Pull kit 1.17.0 with `sync_common.sh`: the game goes full screen on the first tap, click or key press, and remembers when the player turns it off. Test: `tests/common` browser run, first click sets full screen. Also take G6.20 (120 frames a second) at the same release.
 - Playtest sweep results (BC, 2026-11-19, 8:59 PM):
   - Good: Retroid browser reaches the title card, upright camera. No halo behind the title.
   - Needs work (details asked): Flow (through balls, runs, skill moves, chill defense).

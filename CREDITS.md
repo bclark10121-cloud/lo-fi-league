@@ -30,3 +30,7 @@ Changes: re-encoded to Ogg Vorbis at a lower bit rate.
 
 - "Study And Relax" by Kevin MacLeod (incompetech.com, https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1900030), licensed Creative Commons Attribution 4.0 International (https://creativecommons.org/licenses/by/4.0/). From the Patch.gg library. Changed by Patch: converted from MP3 to Ogg Vorbis, credit added to the Ogg comments. Changed: trimmed to a loop and level-matched. File `audio/title.ogg`.
 - Title font: Monoton, SIL Open Font License 1.1. Start screen, game page and Game Shelf card name (G5.21 Title, 2026-11-18). License text in `FONT-LICENSE-Monoton.txt`.
+
+## Player model (v0.8.0)
+
+- The low-poly player was made for this game in Meshy (Image to 3D, licence Private) from original reference art made with Gemini (Nano Banana Pro) from Claude's prompts (G8.3, G8.4, G8.5). Running and Walking motions from Meshy's auto rig.
