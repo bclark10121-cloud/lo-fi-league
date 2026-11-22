@@ -1,6 +1,6 @@
 # Lo-Fi League: backlog
 
-Updated 2026-11-21 for v0.8.0. BC decides the order.
+Updated 2026-11-21 for v0.8.1. BC decides the order.
 
 ## v0.8.0 (2026-11-21): arcade play and new 3D players, done
 
@@ -10,6 +10,8 @@ Updated 2026-11-21 for v0.8.0. BC decides the order.
 - Player look picker: https://bclark10121-cloud.github.io/bc-decisions/2026-11-21-lofi-players/. BC's picks, 2026-11-21: "Player look: C. Retro low-poly. Body types: One body." Game Shelf card picker https://bclark10121-cloud.github.io/bc-decisions/2026-11-21-lofi-shelf/, BC's pick 2026-11-21: "Game Shelf card picture: C. Super goal." Then Meshy in BC's browser (G8.5), rigged GLB, club colors painted over marker kit colors.
 
 ## Done
+
+- v0.8.1 (2026-11-21): standards catch-up. Kit 1.25.0, full screen in the browser, 120 fps, wide screens, player level and Locker cosmetics (G4.20), daily goals (G4.19) and trophies for season results (G4.18).
 
 - v0.8.0 (2026-11-21): arcade play on both sides (faster, more goals, looser defense), the super shot and new low-poly 3D players from Meshy painted in club colors.
 
@@ -58,7 +60,7 @@ Updated 2026-11-21 for v0.8.0. BC decides the order.
 
 ## Now
 
-- Staged for the next release (BC, 2026-11-19, 10:32 PM): full screen by default in the browser (G5.11, standards 19b). Pull kit 1.17.0 with `sync_common.sh`: the game goes full screen on the first tap, click or key press, and remembers when the player turns it off. Test: `tests/common` browser run, first click sets full screen. Also take G6.20 (120 frames a second) at the same release.
+- Done in v0.8.1: full screen by default in the browser (G5.11, standards 19b). Pull kit 1.17.0 with `sync_common.sh`: the game goes full screen on the first tap, click or key press, and remembers when the player turns it off. Test: `tests/common` browser run, first click sets full screen. Also take G6.20 (120 frames a second) at the same release.
 - Playtest sweep results (BC, 2026-11-19, 8:59 PM):
   - Good: Retroid browser reaches the title card, upright camera. No halo behind the title.
   - Needs work (details asked): Flow (through balls, runs, skill moves, chill defense).
