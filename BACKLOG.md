@@ -7,7 +7,7 @@ Updated 2026-11-21 for v0.8.0. BC decides the order.
 - BC asked for new player graphics and easier, arcade play: faster ball movement, more goals, less tight defense. Picks: real 3D models, full arcade, all four changes (speed, easier scoring, super shot, looser defense), both sides.
 - Arcade play is built and tested, not released (game-studio commit 361f672). Bot matches average about 13 goals with about 3 super goals.
 - BC, 2026-11-21: "ship together". v0.8.0 ships the arcade play and the new players in one release.
-- Player look picker: https://bclark10121-cloud.github.io/bc-decisions/2026-11-21-lofi-players/. BC's picks, 2026-11-21: "Player look: C. Retro low-poly. Body types: One body." Then Meshy in BC's browser (G8.5), rigged GLB, club colors painted over marker kit colors.
+- Player look picker: https://bclark10121-cloud.github.io/bc-decisions/2026-11-21-lofi-players/. BC's picks, 2026-11-21: "Player look: C. Retro low-poly. Body types: One body." Game Shelf card picker https://bclark10121-cloud.github.io/bc-decisions/2026-11-21-lofi-shelf/, BC's pick 2026-11-21: "Game Shelf card picture: C. Super goal." Then Meshy in BC's browser (G8.5), rigged GLB, club colors painted over marker kit colors.
 
 ## Done
 
