@@ -1,6 +1,6 @@
 # Lo-Fi League: backlog
 
-Updated 2026-11-21 for v0.8.1. BC decides the order.
+Updated 2026-11-21 for v0.8.2. BC decides the order.
 
 ## v0.8.0 (2026-11-21): arcade play and new 3D players, done
 
@@ -9,7 +9,16 @@ Updated 2026-11-21 for v0.8.1. BC decides the order.
 - BC, 2026-11-21: "ship together". v0.8.0 ships the arcade play and the new players in one release.
 - Player look picker: https://bclark10121-cloud.github.io/bc-decisions/2026-11-21-lofi-players/. BC's picks, 2026-11-21: "Player look: C. Retro low-poly. Body types: One body." Game Shelf card picker https://bclark10121-cloud.github.io/bc-decisions/2026-11-21-lofi-shelf/, BC's pick 2026-11-21: "Game Shelf card picture: C. Super goal." Then Meshy in BC's browser (G8.5), rigged GLB, club colors painted over marker kit colors.
 
+## Next (BC's picks, 2026-11-21, 7:26 PM)
+
+- Picker: https://bclark10121-cloud.github.io/bc-decisions/2026-11-21-lofi-next/ (research of Mario Strikers, NBA Jam, Rocket League, Super Mega Baseball, Super Arcade Football, Golazo, Windjammers 2 and Score! Hero).
+- BC: "Character set: A. Animal athletes. More fun in the match: Goal replay and celebrations. Reasons to come back: Reward card after every match. Personality and control: Star players."
+- Also asked (2026-11-21): more space between Lo-Fi and League on the start screen title. Built, not released.
+- Not picked this round, kept as ideas: On Fire streak, power-ups, weather and modifiers, challenge mode with stars, knockout cup, weekly cup event, difficulty slider 0 to 99, team editor, commentary line.
+
 ## Done
+
+- v0.8.2 (2026-11-21): reward cards after every match, star players with skills and a wider gap in the start screen title (BC's picks).
 
 - v0.8.1 (2026-11-21): standards catch-up. Kit 1.25.0, full screen in the browser, 120 fps, wide screens, player level and Locker cosmetics (G4.20), daily goals (G4.19) and trophies for season results (G4.18).
 
